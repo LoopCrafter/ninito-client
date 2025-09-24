@@ -6,6 +6,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--color-secondary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -41,11 +44,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --gradient-hero: linear-gradient(
-    135deg,
-    hsl(var(--baby-blue)),
-    hsl(var(--baby-pink))
-  );
+  --gradient-hero: linear-gradient(135deg, var(--baby-blue), var(--baby-pink));
   --color-baby-blue: var(--baby-blue);
   --color-baby-pink: var(--baby-pink);
   --color-baby-neutral: var(--baby-neutral);
@@ -61,8 +60,6 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
@@ -87,6 +84,9 @@
   --baby-blue: hsl(193 45% 85%);
   --baby-pink: hsl(350 50% 88%);
   --baby-neutral: hsl(45 20% 95%);
+  --secondary: hsl(350 50% 88%);
+  --secondary-foreground: hsl(220 13% 18%);
+  --secondary-hover: hsl(350 50% 78%);
 }
 
 .dark {
@@ -137,5 +137,8 @@
   }
   .container {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .hero-gradient {
+    background: var(--gradient-hero);
   }
 }

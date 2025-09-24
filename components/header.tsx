@@ -14,9 +14,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-baby-blue to-baby-pink bg-clip-text text-transparent">
-            نینیتو
-          </h1>
+          <h1 className="text-2xl font-bold text-rose-400">نینیتو</h1>
         </div>
 
         {/* Search Bar - Desktop */}
