@@ -144,37 +144,4 @@
   button {
     cursor: pointer;
   }
-
-  /* globals.css یا کامپوننت CSS خودت */
-  .swiper-button-next,
-  .swiper-button-prev {
-    background-color: rgba(0, 0, 0, 0.5); /* پس زمینه نیمه شفاف */
-    width: 24px; /* اندازه */
-    height: 24px;
-    border-radius: 9999px; /* گرد */
-    color: white; /* فلش‌ها */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .swiper-button-next:hover,
-  .swiper-button-prev:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  .swiper-horizontal .swiper-button-prev .swiper-navigation-icon,
-  .swiper-horizontal.swiper-rtl .swiper-button-next .swiper-navigation-icon {
-    width: 2opx !important;
-    height: 20px !important;
-  }
-  .swiper-horizontal.swiper-rtl
-    .swiper-button-next
-    .swiper-navigation-icon
-    path,
-  .swiper-horizontal .swiper-button-prev .swiper-navigation-icon path {
-    fill: #efefef !important;
-  }
 }
