@@ -1,6 +1,7 @@
 import { CategoriesSection } from "@/components/categories-section";
 import FeaturedProducts from "@/components/featured-products";
 import { HeroSection } from "@/components/hero-section";
+import { WhyNinito } from "@/components/why-ninito";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <HeroSection />
       <CategoriesSection />
       <FeaturedProducts />
+      <WhyNinito />
     </div>
   );
 }
