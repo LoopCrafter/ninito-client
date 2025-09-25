@@ -1,3 +1,5 @@
+import { Product } from "@/types/product";
+
 export const mockProducts = [
   {
     id: "1",
@@ -149,5 +151,100 @@ export const reviews = [
       "پتوی مسافرتی خیلی کاربردیه! برای سفرها عالیه و آسون حمل میشه. بچه‌م هم دوسش داره.",
     product: "پتوی مسافرتی قابل حمل",
     avatar: "👩",
+  },
+];
+
+export const sampleProducts: Product[] = [
+  {
+    id: "1",
+    name: "آغوشی نوزاد پرمیوم",
+    price: 850000,
+    originalPrice: 1200000,
+    image: "/placeholder.svg",
+    rating: 4.8,
+    reviewCount: 124,
+    colors: [
+      { name: "آبی پاستیلی", value: "#B3D9F2" },
+      { name: "صورتی پاستیلی", value: "#F2B3D9" },
+    ],
+    category: "آغوشی",
+    inStock: true,
+    isNew: true,
+    discount: 30,
+  },
+  {
+    id: "2",
+    name: "قنداق نوزاد ضد حساسیت",
+    price: 650000,
+    image: "/placeholder.svg",
+    rating: 4.5,
+    reviewCount: 89,
+    colors: [
+      { name: "آبی پاستیلی", value: "#B3D9F2" },
+      { name: "صورتی پاستیلی", value: "#F2B3D9" },
+      { name: "سفید", value: "#FFFFFF" },
+    ],
+    category: "قنداق",
+    inStock: true,
+  },
+  {
+    id: "3",
+    name: "پتوی مسافرتی نرم",
+    price: 420000,
+    image: "/placeholder.svg",
+    rating: 4.6,
+    reviewCount: 156,
+    colors: [
+      { name: "آبی پاستیلی", value: "#B3D9F2" },
+      { name: "صورتی پاستیلی", value: "#F2B3D9" },
+    ],
+    category: "پتو",
+    inStock: true,
+  },
+  {
+    id: "4",
+    name: "بالش شیردهی ارگونومیک",
+    price: 390000,
+    originalPrice: 450000,
+    image: "/placeholder.svg",
+    rating: 4.7,
+    reviewCount: 67,
+    colors: [
+      { name: "آبی پاستیلی", value: "#B3D9F2" },
+      { name: "کرم", value: "#F5F5DC" },
+    ],
+    category: "بالش",
+    inStock: false,
+    discount: 13,
+  },
+  {
+    id: "5",
+    name: "تشک بازی ضخیم",
+    price: 580000,
+    image: "/placeholder.svg",
+    rating: 4.4,
+    reviewCount: 92,
+    colors: [
+      { name: "آبی پاستیلی", value: "#B3D9F2" },
+      { name: "صورتی پاستیلی", value: "#F2B3D9" },
+      { name: "زرد", value: "#FFEB3B" },
+    ],
+    category: "تشک",
+    inStock: true,
+  },
+  {
+    id: "6",
+    name: "آغوشی ضد کولیک مخصوص شب",
+    price: 920000,
+    image: "/placeholder.svg",
+    rating: 4.9,
+    reviewCount: 201,
+    colors: [
+      { name: "آبی پاستیلی", value: "#B3D9F2" },
+      { name: "سفید", value: "#FFFFFF" },
+    ],
+    category: "آغوشی",
+    inStock: true,
+    isNew: true,
   },
 ];
