@@ -1,5 +1,6 @@
 "use client";
 import { ProductFilters } from "@/components/product-filters";
+import { ProductsHeader } from "@/components/products-header";
 import { sampleProducts } from "@/mock";
 import { useState } from "react";
 
@@ -84,7 +85,19 @@ export default function Products() {
         <ProductFilters filters={filters} onFiltersChange={setFilters} />
 
         {/* Main Content */}
-        <div className="flex-1"></div>
+        <div className="flex-1">
+          <ProductsHeader
+            viewMode={viewMode}
+            sortBy={sortBy}
+            onViewModeChange={setViewMode}
+            onSortChange={setSortBy}
+            totalProducts={filteredProducts.length}
+            searchQuery={filters.searchQuery}
+            onSearchChange={(query) =>
+              setFilters((prev) => ({ ...prev, searchQuery: query }))
+            }
+          />
+        </div>
       </div>
     </div>
   );
