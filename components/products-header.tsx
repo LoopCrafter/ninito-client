@@ -112,8 +112,8 @@ export function ProductsHeader({
             className={cn(
               "px-3 py-2 rounded-md transition-all",
               viewMode === "grid"
-                ? "bg-background shadow-sm"
-                : "hover:bg-background/50"
+                ? "bg-selected shadow-sm"
+                : "hover:bg-selected/50"
             )}
           >
             <Grid3X3 className="h-4 w-4" />
@@ -125,8 +125,8 @@ export function ProductsHeader({
             className={cn(
               "px-3 py-2 rounded-md transition-all",
               viewMode === "list"
-                ? "bg-background shadow-sm"
-                : "hover:bg-background/50"
+                ? "bg-selected shadow-sm"
+                : "hover:bg-selected/50"
             )}
           >
             <List className="h-4 w-4" />

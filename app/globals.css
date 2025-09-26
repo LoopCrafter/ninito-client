@@ -87,6 +87,7 @@
   --secondary: hsl(350 50% 88%);
   --secondary-foreground: hsl(220 13% 18%);
   --secondary-hover: hsl(350 50% 78%);
+  --selected: var(--color-sky-400);
 }
 
 .dark {
@@ -124,6 +125,7 @@
   --baby-blue: hsl(193, 35%, 20%);
   --baby-pink: hsl(350, 30%, 20%);
   --baby-neutral: hsl(220, 13%, 12%);
+  --selected: var(--color-indigo-950);
 }
 
 @layer base {
@@ -135,6 +137,9 @@
     direction: rtl;
     font-family: var(--font-vazir), sans-serif;
     background-color: hsl(0 0% 98%);
+  }
+  .bg-selected {
+    background-color: var(--selected);
   }
   .container {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;

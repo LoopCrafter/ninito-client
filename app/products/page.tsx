@@ -1,6 +1,7 @@
 "use client";
 import { ProductFilters } from "@/components/product-filters";
 import { ProductsHeader } from "@/components/products-header";
+import { ProductsList } from "@/components/products-list";
 import { sampleProducts } from "@/mock";
 import { useState } from "react";
 
@@ -96,6 +97,14 @@ export default function Products() {
             onSearchChange={(query) =>
               setFilters((prev) => ({ ...prev, searchQuery: query }))
             }
+          />
+
+          <ProductsList
+            products={currentProducts}
+            viewMode={viewMode}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
           />
         </div>
       </div>

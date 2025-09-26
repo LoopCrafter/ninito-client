@@ -160,7 +160,7 @@ export const sampleProducts: Product[] = [
     name: "آغوشی نوزاد پرمیوم",
     price: 850000,
     originalPrice: 1200000,
-    image: "/placeholder.svg",
+    image: "/images/placeholder.svg",
     rating: 4.8,
     reviewCount: 124,
     colors: [
@@ -176,7 +176,7 @@ export const sampleProducts: Product[] = [
     id: "2",
     name: "قنداق نوزاد ضد حساسیت",
     price: 650000,
-    image: "/placeholder.svg",
+    image: "/images/placeholder.svg",
     rating: 4.5,
     reviewCount: 89,
     colors: [
@@ -191,7 +191,7 @@ export const sampleProducts: Product[] = [
     id: "3",
     name: "پتوی مسافرتی نرم",
     price: 420000,
-    image: "/placeholder.svg",
+    image: "/images/placeholder.svg",
     rating: 4.6,
     reviewCount: 156,
     colors: [
@@ -206,7 +206,7 @@ export const sampleProducts: Product[] = [
     name: "بالش شیردهی ارگونومیک",
     price: 390000,
     originalPrice: 450000,
-    image: "/placeholder.svg",
+    image: "/images/placeholder.svg",
     rating: 4.7,
     reviewCount: 67,
     colors: [
@@ -221,7 +221,7 @@ export const sampleProducts: Product[] = [
     id: "5",
     name: "تشک بازی ضخیم",
     price: 580000,
-    image: "/placeholder.svg",
+    image: "/images/placeholder.svg",
     rating: 4.4,
     reviewCount: 92,
     colors: [
@@ -236,7 +236,7 @@ export const sampleProducts: Product[] = [
     id: "6",
     name: "آغوشی ضد کولیک مخصوص شب",
     price: 920000,
-    image: "/placeholder.svg",
+    image: "/images/placeholder.svg",
     rating: 4.9,
     reviewCount: 201,
     colors: [
