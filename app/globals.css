@@ -44,7 +44,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --gradient-hero: linear-gradient(135deg, var(--baby-blue), var(--baby-pink));
+  --gradient-hero: linear-gradient(135deg, var(--baby-pink), var(--baby-blue));
   --color-baby-blue: var(--baby-blue);
   --color-baby-pink: var(--baby-pink);
   --color-baby-neutral: var(--baby-neutral);

@@ -112,19 +112,19 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">ارتباط با ما</h4>
             <div className="space-y-3 text-sm">
-              <div className="flex items-start space-x-3 space-x-reverse">
+              <div className="flex items-start gap-3">
                 <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <span className="text-muted-foreground">
                   تهران، خیابان ولیعصر، پلاک ۱۲۳۴
                 </span>
               </div>
 
-              <div className="flex items-center space-x-3 space-x-reverse">
+              <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 <span className="text-muted-foreground">۰۲۱-۱۲۳۴۵۶۷۸</span>
               </div>
 
-              <div className="flex items-center space-x-3 space-x-reverse">
+              <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 <span className="text-muted-foreground">info@ninito.com</span>
               </div>
@@ -153,7 +153,7 @@ export function Footer() {
               © ۲۰۲۵ نینیتو - تمام حقوق محفوظ است
             </p>
 
-            <div className="flex items-center space-x-6 space-x-reverse text-sm">
+            <div className="flex items-center gap-6 text-sm">
               <a
                 href="#"
                 className="text-muted-foreground hover:text-primary transition-colors"

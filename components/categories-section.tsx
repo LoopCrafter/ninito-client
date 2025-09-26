@@ -1,6 +1,7 @@
 "use client";
 
 import { Baby, Shirt, Bed, Car, Gift, Heart } from "lucide-react";
+import Link from "next/link";
 
 const categories = [
   {
@@ -65,9 +66,9 @@ export function CategoriesSection() {
           {categories.map((category) => {
             const IconComponent = category.icon;
             return (
-              <a
+              <Link
                 key={category.id}
-                href="/products"
+                href={`/products?category=${category.id}`}
                 className="category-card block cursor-pointer rounded-3xl bg-white shadow-md hover:shadow-xl transition-shadow duration-300 py-6 px-4 text-center"
               >
                 <div
@@ -79,7 +80,7 @@ export function CategoriesSection() {
                   {category.name}
                 </h3>
                 <p className="text-sm text-gray-500">{category.description}</p>
-              </a>
+              </Link>
             );
           })}
         </div>

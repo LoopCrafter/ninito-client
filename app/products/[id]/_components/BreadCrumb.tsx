@@ -9,7 +9,7 @@ type BreadCrumbProps = {
 const BreadCrumb: React.FC<BreadCrumbProps> = ({ category, productName }) => {
   return (
     <nav className="mb-8">
-      <ol className="flex items-center space-x-2 space-x-reverse text-sm text-muted-foreground">
+      <ol className="flex items-center gap-2 text-sm text-muted-foreground">
         <li>
           <Link href="/" className="hover:text-primary transition-colors">
             خانه

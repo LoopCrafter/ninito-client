@@ -40,7 +40,7 @@ export function HeroSection() {
               </div>
 
               {/* Stats */}
-              <div className="flex justify-center lg:justify-start space-x-8 space-x-reverse pt-8">
+              <div className="flex justify-center lg:justify-start gap-8 pt-8">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">۱۰۰+</div>
                   <div className="text-sm text-muted-foreground">

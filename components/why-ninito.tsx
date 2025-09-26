@@ -1,5 +1,6 @@
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const benefits = [
   "کیفیت بالا و استاندارد اروپایی",
@@ -28,10 +29,7 @@ export function WhyNinito() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {benefits.map((benefit, index) => (
-                <div
-                  key={index}
-                  className="flex items-start space-x-3 space-x-reverse"
-                >
+                <div key={index} className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <span className="text-sm">{benefit}</span>
                 </div>
@@ -39,10 +37,14 @@ export function WhyNinito() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="btn-hero">شروع خرید</Button>
-              <Button variant="outline" className="btn-secondary">
-                درباره ما بیشتر بدانید
-              </Button>
+              <Link href="/products">
+                <Button className="btn-hero">شروع خرید</Button>
+              </Link>
+              <Link href="/about">
+                <Button variant="outline" className="btn-secondary">
+                  درباره ما بیشتر بدانید
+                </Button>
+              </Link>
             </div>
           </div>
 

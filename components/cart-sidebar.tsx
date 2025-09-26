@@ -10,26 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-
-// Mock cart data
-const mockCartItems = [
-  {
-    id: "1",
-    name: "آغوشی نوزاد نینیتو",
-    price: 450000,
-    quantity: 1,
-    image: "/placeholder.svg",
-    color: "آبی پاستیلی",
-  },
-  {
-    id: "2",
-    name: "قنداق نرم پاستیلی",
-    price: 320000,
-    quantity: 2,
-    image: "/placeholder.svg",
-    color: "صورتی پاستیلی",
-  },
-];
+import { mockCartItems } from "@/mock";
 
 export function CartSidebar() {
   const [cartItems, setCartItems] = useState(mockCartItems);
@@ -71,11 +52,11 @@ export function CartSidebar() {
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-[400px] sm:w-[540px]">
-        <SheetHeader>
+        <SheetHeader dir="ltr">
           <SheetTitle className="text-right">سبد خرید شما</SheetTitle>
         </SheetHeader>
 
-        <div className="mt-6 space-y-4">
+        <div className="mt-6 p-2">
           {cartItems.length === 0 ? (
             <div className="text-center py-8">
               <ShoppingBag className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -86,7 +67,7 @@ export function CartSidebar() {
               {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center space-x-4 space-x-reverse border-b pb-4"
+                  className="flex items-center gap-4 border-b pb-4"
                 >
                   <img
                     src={item.image}
@@ -102,7 +83,7 @@ export function CartSidebar() {
                       {formatPrice(item.price)}
                     </p>
                   </div>
-                  <div className="flex items-center space-x-2 space-x-reverse">
+                  <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
                       size="icon"

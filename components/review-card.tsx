@@ -20,7 +20,7 @@ const ReviewCard: React.FC<Props> = ({ review, totalReviews }) => {
     >
       <div className="bg-card rounded-2xl p-6 card-shadow h-full">
         {/* Header */}
-        <div className="flex items-center space-x-4 space-x-reverse mb-4">
+        <div className="flex items-center gap-4 mb-4">
           <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-xl">
             {review.avatar}
           </div>

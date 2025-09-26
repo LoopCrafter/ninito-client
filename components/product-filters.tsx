@@ -85,12 +85,11 @@ export function ProductFilters({
             onValueChange={handlePriceRangeChange}
             max={2000000}
             min={0}
-            step={50000}
             className="mb-4"
           />
           <div className="flex justify-between text-sm text-muted-foreground mb-4">
-            <span>{formatPrice(tempPriceRange[0])}</span>
             <span>{formatPrice(tempPriceRange[1])}</span>
+            <span>{formatPrice(tempPriceRange[0])}</span>
           </div>
           <Button
             size="sm"

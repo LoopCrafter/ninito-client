@@ -46,7 +46,7 @@ export function ProductsHeader({
     <div className="space-y-4 mb-8">
       {/* Controls Bar */}
       <div className="flex items-center justify-between bg-card p-4 rounded-xl card-shadow">
-        <div className="flex items-center space-x-4 space-x-reverse">
+        <div className="flex items-center gap-4">
           {/* Mobile Search Toggle */}
           <Button
             variant="ghost"

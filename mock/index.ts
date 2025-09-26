@@ -294,3 +294,24 @@ export const mockProduct = {
   category: "آغوشی",
   sku: "NIN-001-BL",
 };
+
+export const mockCartItems = [
+  {
+    id: "1",
+    name: "آغوشی نوزاد نینیتو",
+    price: 450000,
+    quantity: 1,
+    image:
+      "https://images.unsplash.com/photo-1553456558-aff63285bdd1?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fHByb2R1Y3R8ZW58MHx8MHx8fDA%3D",
+    color: "آبی پاستیلی",
+  },
+  {
+    id: "2",
+    name: "قنداق نرم پاستیلی",
+    price: 320000,
+    quantity: 2,
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D",
+    color: "صورتی پاستیلی",
+  },
+];

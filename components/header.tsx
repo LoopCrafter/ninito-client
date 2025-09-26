@@ -22,12 +22,12 @@ export function Header() {
             <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="جستجو در محصولات..."
-              className="pl-4 pr-10 rounded-full"
+              className="pl-4 pr-10 rounded-full focus:outline-none"
             />
           </div>
         </div>
 
-        <div className="flex items-center space-x-4 space-x-reverse">
+        <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
@@ -36,27 +36,21 @@ export function Header() {
           >
             <Search className="h-4 w-4" />
           </Button>
-
           {/* Theme Toggle */}
           <ThemeToggle />
-
           {/* Login Button */}
           <Button variant="ghost" className="hidden sm:flex">
             <User className="h-4 w-4 ml-2" />
             ورود / ثبت نام
           </Button>
 
-          {/* Cart */}
           <CartSidebar />
-
           {/* Mobile Menu */}
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-4 w-4" />
           </Button>
         </div>
       </div>
-
-      {/* Mobile Search Bar */}
       {isSearchOpen && (
         <div className="md:hidden border-t px-4 py-3">
           <div className="relative">
