@@ -44,31 +44,6 @@ export function ProductsHeader({
 
   return (
     <div className="space-y-4 mb-8">
-      {/* Title and Results Count */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-baby-blue to-baby-pink bg-clip-text text-transparent">
-            محصولات نینیتو
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            {totalProducts} محصول یافت شد
-          </p>
-        </div>
-      </div>
-
-      {/* Search Bar - Desktop */}
-      <div className="hidden md:block">
-        <div className="relative max-w-md">
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="جستجو در محصولات..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-4 pr-10 rounded-full"
-          />
-        </div>
-      </div>
-
       {/* Controls Bar */}
       <div className="flex items-center justify-between bg-card p-4 rounded-xl card-shadow">
         <div className="flex items-center space-x-4 space-x-reverse">
@@ -83,7 +58,7 @@ export function ProductsHeader({
           </Button>
 
           {/* Sort Dropdown */}
-          <div className="flex items-center space-x-2 space-x-reverse">
+          <div className="flex items-center gap-2">
             <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
             <Select
               value={sortBy}

@@ -107,10 +107,7 @@ export function ProductFilters({
         <h3 className="font-semibold mb-4">دسته‌بندی</h3>
         <div className="space-y-3">
           {categories.map((category) => (
-            <div
-              key={category}
-              className="flex items-center space-x-2 space-x-reverse"
-            >
+            <div key={category} className="flex items-center gap-2">
               <Checkbox
                 id={category}
                 checked={filters.categories.includes(category)}
@@ -130,7 +127,7 @@ export function ProductFilters({
       </div>
 
       <div>
-        <div className="flex items-center space-x-2 space-x-reverse">
+        <div className="flex items-center gap-2">
           <Checkbox
             id="inStock"
             checked={filters.inStock}
@@ -151,10 +148,7 @@ export function ProductFilters({
         <h3 className="font-semibold mb-4">رنگ</h3>
         <div className="grid grid-cols-2 gap-3">
           {colors.map((color) => (
-            <div
-              key={color.name}
-              className="flex items-center space-x-2 space-x-reverse"
-            >
+            <div key={color.name} className="flex items-center gap-2">
               <button
                 className={cn(
                   "w-6 h-6 rounded-full border-2 transition-all flex-shrink-0",

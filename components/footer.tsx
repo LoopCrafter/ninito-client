@@ -21,20 +21,20 @@ export function Footer() {
             <h4 className="font-semibold mb-4">دسترسی سریع</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   صفحه اصلی
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/products"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   محصولات
-                </a>
+                </Link>
               </li>
               <li>
                 <a
