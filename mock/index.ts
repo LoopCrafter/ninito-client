@@ -160,7 +160,7 @@ export const sampleProducts: Product[] = [
     name: "آغوشی نوزاد پرمیوم",
     price: 850000,
     originalPrice: 1200000,
-    image: "/images/placeholder.svg",
+    images: ["/images/placeholder.svg"],
     rating: 4.8,
     reviewCount: 124,
     colors: [
@@ -171,12 +171,13 @@ export const sampleProducts: Product[] = [
     inStock: true,
     isNew: true,
     discount: 30,
+    description: "",
   },
   {
     id: "2",
     name: "قنداق نوزاد ضد حساسیت",
     price: 650000,
-    image: "/images/placeholder.svg",
+    images: ["/images/placeholder.svg"],
     rating: 4.5,
     reviewCount: 89,
     colors: [
@@ -186,12 +187,13 @@ export const sampleProducts: Product[] = [
     ],
     category: "قنداق",
     inStock: true,
+    description: "",
   },
   {
     id: "3",
     name: "پتوی مسافرتی نرم",
     price: 420000,
-    image: "/images/placeholder.svg",
+    images: ["/images/placeholder.svg"],
     rating: 4.6,
     reviewCount: 156,
     colors: [
@@ -200,13 +202,14 @@ export const sampleProducts: Product[] = [
     ],
     category: "پتو",
     inStock: true,
+    description: "",
   },
   {
     id: "4",
     name: "بالش شیردهی ارگونومیک",
     price: 390000,
     originalPrice: 450000,
-    image: "/images/placeholder.svg",
+    images: ["/images/placeholder.svg"],
     rating: 4.7,
     reviewCount: 67,
     colors: [
@@ -216,12 +219,13 @@ export const sampleProducts: Product[] = [
     category: "بالش",
     inStock: false,
     discount: 13,
+    description: "",
   },
   {
     id: "5",
     name: "تشک بازی ضخیم",
     price: 580000,
-    image: "/images/placeholder.svg",
+    images: ["/images/placeholder.svg"],
     rating: 4.4,
     reviewCount: 92,
     colors: [
@@ -231,12 +235,13 @@ export const sampleProducts: Product[] = [
     ],
     category: "تشک",
     inStock: true,
+    description: "",
   },
   {
     id: "6",
     name: "آغوشی ضد کولیک مخصوص شب",
     price: 920000,
-    image: "/images/placeholder.svg",
+    images: ["/images/placeholder.svg"],
     rating: 4.9,
     reviewCount: 201,
     colors: [
@@ -246,5 +251,46 @@ export const sampleProducts: Product[] = [
     category: "آغوشی",
     inStock: true,
     isNew: true,
+    description: "",
   },
 ];
+
+export const mockProduct = {
+  id: "1",
+  name: "آغوشی طرح خرس کوچولو",
+  price: 2850000,
+  originalPrice: 3200000,
+  rating: 4.5,
+  reviewCount: 127,
+  description:
+    "آغوشی فوق‌العاده نرم و راحت با طرح خرس کوچولو، مناسب برای نوزادان 0 تا 6 ماه",
+  fullDescription: `این آغوشی با استفاده از بهترین پارچه‌های طبیعی و نرم تولید شده است. طراحی خاص آن باعث احساس امنیت و آرامش نوزاد می‌شود. قابل شستشو در ماشین لباسشویی و مقاوم در برابر استفاده‌های متعدد.
+
+ویژگی‌ها:
+• جنس: پارچه کتان ارگانیک 100%
+• ابعاد: 70×90 سانتی‌متر  
+• مناسب برای سنین: 0 تا 6 ماه
+• قابل شستشو در دمای 30 درجه
+• ضدحساسیت و بدون مواد شیمیایی`,
+  specifications: {
+    material: "پارچه کتان ارگانیک 100%",
+    dimensions: "70×90 سانتی‌متر",
+    ageRange: "0 تا 6 ماه",
+    washCare: "قابل شستشو در دمای 30 درجه",
+    features: "ضدحساسیت، بدون مواد شیمیایی",
+  },
+  colors: [
+    { name: "آبی پاستیلی", value: "blue", class: "bg-baby-blue" },
+    { name: "صورتی پاستیلی", value: "pink", class: "bg-baby-pink" },
+    { name: "کرم", value: "cream", class: "bg-neutral-200" },
+  ],
+  images: [
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D",
+    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D",
+    "https://images.unsplash.com/photo-1541643600914-78b084683601?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D",
+    "https://images.unsplash.com/photo-1553456558-aff63285bdd1?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fHByb2R1Y3R8ZW58MHx8MHx8fDA%3D",
+  ],
+  inStock: true,
+  category: "آغوشی",
+  sku: "NIN-001-BL",
+};

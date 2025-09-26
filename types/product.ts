@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   price: number;
   originalPrice?: number;
-  image: string;
+  images: string[];
   rating: number;
   reviewCount: number;
   colors: Array<{ name: string; value: string }>;
@@ -11,4 +11,6 @@ export interface Product {
   inStock: boolean;
   isNew?: boolean;
   discount?: number;
+  description: string;
+  sku?: string;
 }

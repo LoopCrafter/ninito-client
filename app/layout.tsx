@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="fa" dir="rtl">
       <body className={`${vazirFont.variable} antialiased`}>
         <Header />
-        <main>{children}</main>
+        <main className="container mx-auto px-4 py-8">{children}</main>
         <Footer />
       </body>
     </html>

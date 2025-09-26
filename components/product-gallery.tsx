@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,14 +7,9 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 interface ProductGalleryProps {
   images: string[];
   productName: string;
-  selectedColor: string;
 }
 
-export function ProductGallery({
-  images,
-  productName,
-  selectedColor,
-}: ProductGalleryProps) {
+export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {

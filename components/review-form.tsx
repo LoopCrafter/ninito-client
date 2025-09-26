@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { Star, User } from "lucide-react";
 import { useForm } from "react-hook-form";
