@@ -15,6 +15,7 @@ import { ProductCard } from "@/components/product-card";
 import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { ViewMode } from "@/app/products/page";
+import Link from "next/link";
 
 interface ProductsListProps {
   products: Product[];
@@ -55,7 +56,11 @@ export function ProductsList({
       {viewMode === "grid" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
+            <ProductCard
+              key={product.id}
+              image={product.images[0]}
+              {...product}
+            />
           ))}
         </div>
       ) : (
@@ -130,11 +135,16 @@ function ProductListItem({ product }: { product: Product }) {
       <div className="flex items-center gap-6">
         {/* Product Image */}
         <div className="relative w-32 h-32 flex-shrink-0">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover rounded-lg"
-          />
+          <Link
+            href={`/products/${product.id}`}
+            className="block w-full h-full"
+          >
+            <img
+              src={product.images[0]}
+              alt={product.name}
+              className="w-full h-full object-cover rounded-lg"
+            />
+          </Link>
 
           {/* Badges */}
           <div className="absolute top-2 right-2 flex flex-col gap-1">
@@ -151,16 +161,14 @@ function ProductListItem({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* Product Info */}
         <div className="flex-1">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="space-y-3">
-              {/* Name */}
-              <h3 className="font-semibold text-lg leading-tight">
-                {product.name}
-              </h3>
-
-              {/* Rating */}
+              <Link href={`/products/${product.id}`} className="block">
+                <h3 className="font-semibold text-lg leading-tight">
+                  {product.name}
+                </h3>
+              </Link>
               <div className="flex items-center gap-2">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
@@ -180,7 +188,6 @@ function ProductListItem({ product }: { product: Product }) {
                 </span>
               </div>
 
-              {/* Colors */}
               <div className="flex items-center gap-3">
                 <span className="text-sm text-muted-foreground">رنگ:</span>
                 <div className="flex gap-2">

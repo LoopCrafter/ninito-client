@@ -4,6 +4,7 @@ import { Heart, ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface ProductCardProps {
   id: string;
@@ -38,11 +39,13 @@ export function ProductCard({
   return (
     <div className="product-card group p-3 border border-gray-200 rounded-xl bg-white">
       <div className="relative overflow-hidden rounded-xl mb-4">
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+        <Link href={`/products/${id}`} className="block w-full h-full">
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </Link>
 
         <div className="absolute top-2 right-2 flex flex-col gap-1">
           {discount && (
@@ -52,7 +55,6 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Wishlist Button */}
         <Button
           variant="ghost"
           size="icon"
@@ -73,14 +75,16 @@ export function ProductCard({
         </div>
       </div>
 
-      {/* Product Info */}
       <div className="space-y-3">
-        {/* Name */}
-        <h3 className="font-medium text-sm leading-tight line-clamp-2">
-          {name}
-        </h3>
+        <Link
+          href={`/products/${id}`}
+          className="text-sm text-muted-foreground"
+        >
+          <h3 className="font-medium text-sm leading-tight line-clamp-2">
+            {name}
+          </h3>
+        </Link>
 
-        {/* Rating */}
         <div className="flex items-center gap-1">
           <div className="flex">
             {[...Array(5)].map((_, i) => (
@@ -98,7 +102,6 @@ export function ProductCard({
           <span className="text-xs text-muted-foreground">({reviewCount})</span>
         </div>
 
-        {/* Colors */}
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">رنگ:</span>
           <div className="flex gap-1">
@@ -119,7 +122,6 @@ export function ProductCard({
           </div>
         </div>
 
-        {/* Price */}
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <div className="font-semibold text-primary">

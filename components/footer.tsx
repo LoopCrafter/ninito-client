@@ -1,5 +1,6 @@
 import { Instagram, MessageSquare, Phone, Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -44,12 +45,12 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/contact"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   تماس با ما
-                </a>
+                </Link>
               </li>
               <li>
                 <a
