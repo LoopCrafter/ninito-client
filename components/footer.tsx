@@ -37,12 +37,12 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/about"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   درباره ما
-                </a>
+                </Link>
               </li>
               <li>
                 <Link
@@ -91,12 +91,12 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/faq"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   سوالات متداول
-                </a>
+                </Link>
               </li>
               <li>
                 <a
