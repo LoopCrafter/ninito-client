@@ -48,9 +48,7 @@ export function ProductCard({
 
         <div className="absolute top-2 right-2 flex flex-col gap-1">
           {discount && (
-            <Badge className="bg-destructive text-white">
-              {discount}% تخفیف
-            </Badge>
+            <Badge className="bg-rose-400 text-white">{discount}% تخفیف</Badge>
           )}
         </div>
 

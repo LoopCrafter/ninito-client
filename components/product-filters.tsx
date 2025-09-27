@@ -36,10 +36,6 @@ export function ProductFilters({
 }: ProductFiltersProps) {
   const [tempPriceRange, setTempPriceRange] = useState(filters.priceRange);
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
-  };
-
   const handleCategoryChange = (category: string, checked: boolean) => {
     const newCategories = checked
       ? [...filters.categories, category]
@@ -66,99 +62,15 @@ export function ProductFilters({
 
   const clearFilters = () => {
     const clearedFilters: Filters = {
-      priceRange: [0, 2000000],
+      priceRange: [0, 20000000],
       categories: [],
       inStock: false,
       colors: [],
       searchQuery: filters.searchQuery,
     };
     onFiltersChange(clearedFilters);
-    setTempPriceRange([0, 2000000]);
+    setTempPriceRange([0, 20000000]);
   };
-
-  const FilterContent = () => (
-    <div className="space-y-6">
-      <div>
-        <h3 className="font-semibold mb-4">دسته‌بندی</h3>
-        <div className="space-y-3">
-          {categories.map((category) => (
-            <div key={category} className="flex items-center gap-2">
-              <Checkbox
-                id={category}
-                checked={filters.categories.includes(category)}
-                onCheckedChange={(checked) =>
-                  handleCategoryChange(category, checked as boolean)
-                }
-              />
-              <label
-                htmlFor={category}
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                {category}
-              </label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="flex items-center gap-2">
-          <Checkbox
-            id="inStock"
-            checked={filters.inStock}
-            onCheckedChange={(checked) =>
-              onFiltersChange({ ...filters, inStock: checked as boolean })
-            }
-          />
-          <label
-            htmlFor="inStock"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            فقط کالاهای موجود
-          </label>
-        </div>
-      </div>
-
-      <div>
-        <h3 className="font-semibold mb-4">رنگ</h3>
-        <div className="grid grid-cols-2 gap-3">
-          {colors.map((color) => (
-            <div key={color.name} className="flex items-center gap-2">
-              <button
-                className={cn(
-                  "w-6 h-6 rounded-full border-2 transition-all flex-shrink-0",
-                  filters.colors.includes(color.name)
-                    ? "border-primary scale-110"
-                    : "border-gray-300"
-                )}
-                style={{ backgroundColor: color.value }}
-                onClick={() =>
-                  handleColorChange(
-                    color.name,
-                    !filters.colors.includes(color.name)
-                  )
-                }
-                title={color.name}
-              />
-              <span className="text-sm">{color.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="pt-4 border-t">
-        <Button
-          variant="outline"
-          onClick={clearFilters}
-          className="w-full"
-          size="sm"
-        >
-          <X className="h-4 w-4 ml-2" />
-          حذف همه فیلترها
-        </Button>
-      </div>
-    </div>
-  );
 
   return (
     <>
@@ -176,15 +88,26 @@ export function ProductFilters({
             </Badge>
           )}
         </div>
-        <SliderPriceRange
-          value={tempPriceRange}
-          onChange={handlePriceRangeChange}
-          min={0}
-          max={20000000}
-          step={10000}
-          applyPriceRange={applyPriceRange}
-        />
-        <FilterContent />
+        <div className="flex flex-col gap-4">
+          <SliderPriceRange
+            value={tempPriceRange}
+            onChange={handlePriceRangeChange}
+            min={0}
+            max={20000000}
+            step={10000}
+            applyPriceRange={applyPriceRange}
+          />
+          <CategoryFilters
+            filters={filters}
+            handleCategoryChange={handleCategoryChange}
+            onFiltersChange={onFiltersChange}
+          />
+          <ColorFilters
+            filters={filters}
+            handleColorChange={handleColorChange}
+          />
+          <ClearFiltersButton onClick={clearFilters} filters={filters} />
+        </div>
       </div>
 
       <div className="lg:hidden">
@@ -211,7 +134,7 @@ export function ProductFilters({
             <SheetHeader>
               <SheetTitle>فیلترها</SheetTitle>
             </SheetHeader>
-            <div className="mt-6">
+            <div className="mt-6 p-3 flex flex-col gap-3">
               <SliderPriceRange
                 value={tempPriceRange}
                 onChange={handlePriceRangeChange}
@@ -220,7 +143,19 @@ export function ProductFilters({
                 step={10000}
                 applyPriceRange={applyPriceRange}
               />
-              <FilterContent />
+              <CategoryFilters
+                filters={filters}
+                handleCategoryChange={handleCategoryChange}
+                onFiltersChange={onFiltersChange}
+              />
+              <ColorFilters
+                filters={filters}
+                handleColorChange={handleColorChange}
+              />
+              <ClearFiltersButton
+                onClick={() => clearFilters()}
+                filters={filters}
+              />
             </div>
           </SheetContent>
         </Sheet>
@@ -271,4 +206,116 @@ const SliderPriceRange: React.FC<SliderPriceRangeProps> = ({
       </div>
     </div>
   );
+};
+
+type CategoryFiltersProps = {
+  filters: Filters;
+  handleCategoryChange: (category: string, checked: boolean) => void;
+  onFiltersChange: (filters: Filters) => void;
+};
+const CategoryFilters: React.FC<CategoryFiltersProps> = ({
+  filters,
+  handleCategoryChange,
+  onFiltersChange,
+}) => {
+  return (
+    <div>
+      <h3 className="font-semibold mb-4">دسته‌بندی</h3>
+      <div className="space-y-3">
+        {categories.map((category) => (
+          <div key={category} className="flex items-center gap-2 ">
+            <Checkbox
+              id={category}
+              checked={filters.categories.includes(category)}
+              onCheckedChange={(checked) =>
+                handleCategoryChange(category, checked as boolean)
+              }
+            />
+            <label
+              htmlFor={category}
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+            >
+              {category}
+            </label>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-2 mt-3 cursor-pointer">
+        <Checkbox
+          id="inStock"
+          checked={filters.inStock}
+          onCheckedChange={(checked) =>
+            onFiltersChange({ ...filters, inStock: checked as boolean })
+          }
+        />
+        <label
+          htmlFor="inStock"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70  cursor-pointer"
+        >
+          فقط کالاهای موجود
+        </label>
+      </div>
+    </div>
+  );
+};
+
+type ColorFiltersProps = {
+  filters: Filters;
+  handleColorChange: (color: string, checked: boolean) => void;
+};
+
+const ColorFilters: React.FC<ColorFiltersProps> = ({
+  filters,
+  handleColorChange,
+}) => {
+  return (
+    <div>
+      <h3 className="font-semibold mb-4">رنگ</h3>
+      <div className="grid grid-cols-2 gap-3">
+        {colors.map((color) => (
+          <div key={color.name} className="flex items-center gap-2">
+            <button
+              className={cn(
+                "w-6 h-6 rounded-full border-2 transition-all flex-shrink-0",
+                filters.colors.includes(color.name)
+                  ? "border-primary scale-110"
+                  : "border-gray-300"
+              )}
+              style={{ backgroundColor: color.value }}
+              onClick={() =>
+                handleColorChange(
+                  color.name,
+                  !filters.colors.includes(color.name)
+                )
+              }
+              title={color.name}
+            />
+            <span className="text-sm">{color.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ClearFiltersButton: React.FC<{
+  onClick: () => void;
+  filters: {
+    priceRange: number[];
+    categories: string[];
+    inStock: boolean;
+    colors: string[];
+    searchQuery: string;
+  };
+}> = ({ onClick, filters }) => {
+  return filters.categories.length > 0 ||
+    filters.colors.length > 0 ||
+    filters.inStock ? (
+    <div className="pt-4 border-t">
+      <Button variant="outline" onClick={onClick} className="w-full" size="sm">
+        <X className="h-4 w-4 ml-2" />
+        حذف همه فیلترها
+      </Button>
+    </div>
+  ) : null;
 };
