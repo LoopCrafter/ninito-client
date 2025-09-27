@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ProductFilters as Filters } from "@/app/products/page";
 import { cn } from "@/lib/utils";
+import { formatPrice } from "@/utils";
 
 interface ProductFiltersProps {
   filters: Filters;
@@ -77,31 +78,6 @@ export function ProductFilters({
 
   const FilterContent = () => (
     <div className="space-y-6">
-      <div>
-        <h3 className="font-semibold mb-4">محدوده قیمت</h3>
-        <div className="px-2">
-          <Slider
-            value={tempPriceRange}
-            onValueChange={handlePriceRangeChange}
-            max={2000000}
-            min={0}
-            className="mb-4"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground mb-4">
-            <span>{formatPrice(tempPriceRange[1])}</span>
-            <span>{formatPrice(tempPriceRange[0])}</span>
-          </div>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={applyPriceRange}
-            className="w-full"
-          >
-            اعمال محدوده قیمت
-          </Button>
-        </div>
-      </div>
-
       <div>
         <h3 className="font-semibold mb-4">دسته‌بندی</h3>
         <div className="space-y-3">
@@ -200,6 +176,14 @@ export function ProductFilters({
             </Badge>
           )}
         </div>
+        <SliderPriceRange
+          value={tempPriceRange}
+          onChange={handlePriceRangeChange}
+          min={0}
+          max={20000000}
+          step={10000}
+          applyPriceRange={applyPriceRange}
+        />
         <FilterContent />
       </div>
 
@@ -228,6 +212,14 @@ export function ProductFilters({
               <SheetTitle>فیلترها</SheetTitle>
             </SheetHeader>
             <div className="mt-6">
+              <SliderPriceRange
+                value={tempPriceRange}
+                onChange={handlePriceRangeChange}
+                min={0}
+                max={2000000}
+                step={10000}
+                applyPriceRange={applyPriceRange}
+              />
               <FilterContent />
             </div>
           </SheetContent>
@@ -236,3 +228,47 @@ export function ProductFilters({
     </>
   );
 }
+
+type SliderPriceRangeProps = {
+  min: number;
+  max: number;
+  step?: number;
+  value: number[];
+  onChange: (value: number[]) => void;
+  applyPriceRange: () => void;
+};
+const SliderPriceRange: React.FC<SliderPriceRangeProps> = ({
+  min,
+  max,
+  step,
+  value,
+  onChange,
+  applyPriceRange,
+}) => {
+  return (
+    <div>
+      <h3 className="font-semibold mb-4">محدوده قیمت</h3>
+      <div className="px-2">
+        <Slider
+          value={value}
+          onValueChange={onChange}
+          max={max}
+          min={min}
+          className="mb-4"
+        />
+        <div className="flex justify-between text-sm text-muted-foreground mb-4">
+          <span>{formatPrice(value[1])}</span>
+          <span>{formatPrice(value[0])}</span>
+        </div>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={applyPriceRange}
+          className="w-full"
+        >
+          اعمال محدوده قیمت
+        </Button>
+      </div>
+    </div>
+  );
+};

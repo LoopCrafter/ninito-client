@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { formatPrice } from "@/utils";
+import Image from "next/image";
 
 interface ProductCardProps {
   id: string;
@@ -30,19 +32,16 @@ export function ProductCard({
   discount,
 }: ProductCardProps) {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
-  const [isLiked, setIsLiked] = useState(false);
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
-  };
 
   return (
     <div className="product-card group p-3 border border-gray-200 rounded-xl bg-white">
       <div className="relative overflow-hidden rounded-xl mb-4">
         <Link href={`/products/${id}`} className="block w-full h-full">
-          <img
+          <Image
             src={image}
             alt={name}
+            width={200}
+            height={200}
             className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </Link>
@@ -54,18 +53,6 @@ export function ProductCard({
             </Badge>
           )}
         </div>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          className={cn(
-            "absolute top-2 left-2 h-8 w-8 rounded-full bg-white/80 backdrop-blur",
-            isLiked && "text-red-500"
-          )}
-          onClick={() => setIsLiked(!isLiked)}
-        >
-          <Heart className={cn("h-4 w-4", isLiked && "fill-current")} />
-        </Button>
 
         <div className="absolute inset-x-2 bottom-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <Button className="w-full bg-sky-300 text-sm hover:bg-sky-500">

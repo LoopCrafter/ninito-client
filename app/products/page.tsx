@@ -26,7 +26,7 @@ export default function Products() {
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<ProductFilters>({
-    priceRange: [0, 2000000],
+    priceRange: [0, 20000000],
     categories: [],
     inStock: false,
     colors: [],
