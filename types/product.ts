@@ -1,16 +1,54 @@
-export interface Product {
-  id: string;
-  name: string;
+interface ProductVariant {
+  size: "XS" | "S" | "M" | "L" | "XL";
+  color: {
+    name: string;
+    hex: string;
+  };
   price: number;
-  originalPrice?: number;
-  images: string[];
-  rating: number;
-  reviewCount: number;
-  colors: Array<{ name: string; value: string }>;
-  category: string;
-  inStock: boolean;
-  isNew?: boolean;
-  discount?: number;
-  description: string;
+  stock: number;
   sku?: string;
+  finalPrice?: number;
+}
+interface Discount {
+  method: "percentage" | "fixed";
+  value: number;
+}
+
+interface User {
+  _id: string;
+  email: string;
+  name: string;
+}
+
+interface Comment {
+  _id: string;
+  productId: string;
+  userId: User;
+  text: string;
+}
+
+export interface Product {
+  _id: string;
+  title: string;
+  category: {
+    _id: string;
+    title: string;
+    imageUrl?: string;
+  };
+  variants: ProductVariant[];
+  basePrice?: number;
+  discount: Discount;
+  description: string;
+  thumbnail: string;
+  gallery: string[];
+  comments: Comment[];
+  createdAt: string;
+  updatedAt: string;
+
+  variantsWithFinalPrice?: ProductVariant[];
+  thumbnailUrl?: string;
+  galleryUrls?: string[];
+  finalBasePrice?: number;
+  isFeatured?: boolean;
+  isEnabled?: boolean;
 }

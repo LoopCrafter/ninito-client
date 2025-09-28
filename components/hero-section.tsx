@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export function HeroSection() {
   return (
@@ -30,13 +31,14 @@ export function HeroSection() {
                     <ArrowLeft className="mr-2 h-5 w-5" />
                   </a>
                 </Button>
-
-                <Button
-                  variant="outline"
-                  className="text-lg px-8 py-4 btn-secondary"
-                >
-                  درباره نینیتو
-                </Button>
+                <Link href="/about">
+                  <Button
+                    variant="outline"
+                    className="text-lg px-8 py-4 btn-secondary"
+                  >
+                    درباره نینیتو
+                  </Button>
+                </Link>
               </div>
 
               {/* Stats */}

@@ -259,7 +259,6 @@ export default function Checkout() {
                   />
                 )}
 
-                {/* انتخاب روش ارسال */}
                 {selectedAddressId && (
                   <div className="mt-6 pt-6 border-t border-border">
                     <Form {...shippingForm}>
