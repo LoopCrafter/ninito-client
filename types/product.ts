@@ -1,11 +1,11 @@
-interface ProductVariant {
+export interface ProductVariant {
   size: "XS" | "S" | "M" | "L" | "XL";
   color: {
     name: string;
     hex: string;
   };
   price: number;
-  stock: number;
+  stock?: number;
   sku?: string;
   finalPrice?: number;
 }
@@ -28,7 +28,7 @@ interface Comment {
 }
 
 export interface Product {
-  _id: string;
+  id: string;
   title: string;
   category: {
     _id: string;

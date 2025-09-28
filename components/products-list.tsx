@@ -56,11 +56,7 @@ export function ProductsList({
       {viewMode === "grid" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              image={product.images[0]}
-              {...product}
-            />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (
@@ -124,7 +120,9 @@ export function ProductsList({
 }
 
 function ProductListItem({ product }: { product: Product }) {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const [selectedColor, setSelectedColor] = useState(
+    product.variants[0].color.name
+  );
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
@@ -140,22 +138,18 @@ function ProductListItem({ product }: { product: Product }) {
             className="block w-full h-full"
           >
             <img
-              src={product.images[0]}
-              alt={product.name}
+              src={product.thumbnailUrl}
+              alt={product.title}
               className="w-full h-full object-cover rounded-lg"
             />
           </Link>
 
           {/* Badges */}
           <div className="absolute top-2 right-2 flex flex-col gap-1">
-            {product.isNew && (
-              <Badge className="bg-baby-blue text-baby-blue-foreground text-xs">
-                جدید
-              </Badge>
-            )}
-            {product.discount && (
+            {product.discount.value && (
               <Badge className="bg-destructive text-destructive-foreground text-xs">
-                {product.discount}% تخفیف
+                {product.discount.value}
+                {product.discount.method === "fixed" ? "تومان" : "%"} تخفیف
               </Badge>
             )}
           </div>
@@ -166,7 +160,7 @@ function ProductListItem({ product }: { product: Product }) {
             <div className="space-y-3">
               <Link href={`/products/${product.id}`} className="block">
                 <h3 className="font-semibold text-lg leading-tight">
-                  {product.name}
+                  {product.title}
                 </h3>
               </Link>
               <div className="flex items-center gap-2">
@@ -176,7 +170,7 @@ function ProductListItem({ product }: { product: Product }) {
                       key={i}
                       className={cn(
                         "h-4 w-4",
-                        i < Math.floor(product.rating)
+                        i < 4
                           ? "fill-yellow-400 text-yellow-400"
                           : "text-gray-300"
                       )}
@@ -184,46 +178,28 @@ function ProductListItem({ product }: { product: Product }) {
                   ))}
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  ({product.reviewCount})
+                  ({product.comments.length})
                 </span>
               </div>
 
               <div className="flex items-center gap-3">
                 <span className="text-sm text-muted-foreground">رنگ:</span>
                 <div className="flex gap-2">
-                  {product.colors.map((color) => (
+                  {product.variants.map((variant) => (
                     <button
-                      key={color.name}
+                      key={variant.color.name}
                       className={cn(
                         "w-6 h-6 rounded-full border-2 transition-all",
-                        selectedColor.name === color.name
+                        selectedColor === variant.color.name
                           ? "border-primary scale-110"
                           : "border-gray-300"
                       )}
-                      style={{ backgroundColor: color.value }}
-                      onClick={() => setSelectedColor(color)}
-                      title={color.name}
+                      style={{ backgroundColor: variant.color.hex }}
+                      onClick={() => setSelectedColor(variant.color.name)}
+                      title={variant.color.name}
                     />
                   ))}
                 </div>
-              </div>
-
-              {/* Stock Status */}
-              <div className="flex items-center gap-2">
-                <div
-                  className={cn(
-                    "w-2 h-2 rounded-full",
-                    product.inStock ? "bg-green-500" : "bg-red-500"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "text-sm",
-                    product.inStock ? "text-green-600" : "text-red-600"
-                  )}
-                >
-                  {product.inStock ? "موجود" : "ناموجود"}
-                </span>
               </div>
             </div>
 
@@ -231,17 +207,17 @@ function ProductListItem({ product }: { product: Product }) {
               {/* Price */}
               <div className="space-y-1">
                 <div className="font-bold text-xl text-primary">
-                  {formatPrice(product.price)}
+                  {formatPrice(product.variants[0].price)}
                 </div>
-                {product.originalPrice && (
+                {product.variants[0].price && (
                   <div className="text-sm text-muted-foreground line-through">
-                    {formatPrice(product.originalPrice)}
+                    {formatPrice(product.variants[0].price)}
                   </div>
                 )}
               </div>
 
               {/* Add to Cart Button */}
-              <Button className="btn-hero mt-4" disabled={!product.inStock}>
+              <Button className="btn-hero mt-4">
                 <ShoppingCart className="h-4 w-4 ml-2" />
                 افزودن به سبد
               </Button>

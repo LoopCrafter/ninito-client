@@ -4,23 +4,25 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { mockProducts } from "../mock";
 import { ProductCard } from "./product-card";
 import "swiper/css";
 import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Product } from "@/types/product";
 
 interface ProductsSliderProps {
   title: string;
   subtitle: string;
-  rtl?: boolean; // اضافه کردم برای RTL
+  rtl?: boolean;
+  products: Product[];
 }
 
 export function ProductsSlider({
   title,
   subtitle,
   rtl = true,
+  products,
 }: ProductsSliderProps) {
   const swiperRef = useRef<any>(null);
   const [isBeginning, setIsBeginning] = useState(true);
@@ -36,14 +38,12 @@ export function ProductsSlider({
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-2">{title}</h2>
             <p className="text-muted-foreground">{subtitle}</p>
           </div>
 
-          {/* Navigation Controls */}
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
@@ -64,8 +64,6 @@ export function ProductsSlider({
           </div>
         </div>
 
-        {/* Swiper Slider */}
-
         <Swiper
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           onSlideChange={handleSlideChange}
@@ -77,9 +75,9 @@ export function ProductsSlider({
             1024: { slidesPerView: 5, spaceBetween: 25 },
           }}
         >
-          {mockProducts.map((product) => (
+          {products.map((product) => (
             <SwiperSlide key={product.id}>
-              <ProductCard {...product} />
+              <ProductCard product={product} />
             </SwiperSlide>
           ))}
         </Swiper>
