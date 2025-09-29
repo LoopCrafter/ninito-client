@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { formatPrice } from "@/utils";
 import Image from "next/image";
-import { Product, ProductVariant } from "@/types/product";
+import { Product } from "@/types/product";
 import useAddToBasket from "@/hooks/useAddToBasket";
 import { toast } from "sonner";
 interface ProductCardProps {
@@ -46,6 +45,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     }
     if (!selectedVariant) return;
     addToBasket(product, selectedVariant, 1);
+    toast.success("آیتم با موفقیت اضافه شد");
   };
 
   const availableSizes = Array.from(
@@ -53,6 +53,18 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       variants.filter((v) => v.color.name === selectedColor).map((v) => v.size)
     )
   );
+
+  useEffect(() => {
+    if (!selectedColor) return;
+
+    const variantsWithColor = product.variants.find(
+      (v) => v.color.name === selectedColor
+    );
+    console.log("test", variantsWithColor);
+    if (variantsWithColor) {
+      setSelectedSize(variantsWithColor.size);
+    }
+  }, [selectedColor]);
 
   return (
     <div className="product-card group p-3 border border-gray-200 rounded-xl bg-white">
@@ -95,30 +107,30 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">رنگ:</span>
             <div className="flex gap-1">
-              {Array.from(
-                new Set(variants.slice(0, 3).map((v) => v.color.name))
-              ).map((colorName) => {
-                const colorHex =
-                  variants.find((v) => v.color.name === colorName)?.color.hex ??
-                  "#000";
-                return (
-                  <button
-                    key={colorName}
-                    className={cn(
-                      "w-4 h-4 rounded-full border-2 transition-all",
-                      selectedColor === colorName
-                        ? "border-gray-900"
-                        : "border-gray-300"
-                    )}
-                    style={{ backgroundColor: colorHex }}
-                    onClick={() => {
-                      setSelectedColor(colorName);
-                      setSelectedSize(null); // تغییر رنگ → سایز ریست میشه
-                    }}
-                    title={colorName}
-                  />
-                );
-              })}
+              {Array.from(new Set(variants.map((v) => v.color.name))).map(
+                (colorName) => {
+                  const colorHex =
+                    variants.find((v) => v.color.name === colorName)?.color
+                      .hex ?? "#000";
+                  return (
+                    <button
+                      key={colorName}
+                      className={cn(
+                        "w-4 h-4 rounded-full border-2 transition-all",
+                        selectedColor === colorName
+                          ? "border-gray-900"
+                          : "border-gray-300"
+                      )}
+                      style={{ backgroundColor: colorHex }}
+                      onClick={() => {
+                        setSelectedColor(colorName);
+                        setSelectedSize(null);
+                      }}
+                      title={colorName}
+                    />
+                  );
+                }
+              )}
             </div>
           </div>
 
@@ -130,9 +142,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                   <button
                     key={size}
                     className={cn(
-                      "px-2 py-1 border rounded",
+                      " border-1 rounded w-8 h-8",
                       selectedSize === size
-                        ? "border-gray-900 bg-primary text-white"
+                        ? "border-gray-400 bg-rose-100"
                         : "border-gray-300"
                     )}
                     onClick={() => setSelectedSize(size)}

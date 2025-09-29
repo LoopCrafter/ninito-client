@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { X, Minus, Plus, ShoppingBag } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, Minus, Plus, ShoppingBag, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -16,11 +16,14 @@ import { getFinalPrice } from "@/utils";
 import EmptyCart from "./empty-cart";
 
 export function CartSidebar() {
+  const [mounted, setMounted] = useState(false);
   const { incrementQuantity, decrementQuantity, removeItem } = useAddToBasket();
   const { basket } = useBasket();
   const [isOpen, setIsOpen] = useState(false);
-
-  const itemCount = basket.reduce((sum, item) => sum + item.quantity, 0);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
@@ -33,6 +36,7 @@ export function CartSidebar() {
     }, 0);
   };
 
+  const itemCount = basket.reduce((sum, item) => sum + item.quantity, 0);
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
@@ -55,58 +59,79 @@ export function CartSidebar() {
           <div className="mt-6 p-2">
             {basket.map((item) => (
               <div
-                key={item.product.id}
-                className="flex items-center gap-4 border-b pb-4"
+                key={item.variant.id}
+                className="flex items-center gap-4 border-b py-4"
               >
                 <img
                   src={item.product.thumbnailUrl}
                   alt={item.product.title}
                   className="h-16 w-16 rounded-lg object-cover"
                 />
-                <div className="flex-1 space-y-1">
+                <div className="flex flex-col flex-1 gap-2">
                   <h3 className="font-medium text-sm">{item.product.title}</h3>
-                  <p className="text-xs text-muted-foreground">
-                    رنگ: {item.variant.color.name}
-                  </p>
-                  <p className="font-medium text-sm">
-                    {formatPrice(
-                      getFinalPrice(item.product, item.variant) * item.quantity
-                    )}
-                  </p>
+                  <div className="flex justify-start items-center">
+                    <p className="text-xs text-muted-foreground w-1/2">
+                      رنگ: {item.variant.color.name}
+                    </p>
+
+                    <p className="text-xs text-muted-foreground">
+                      سایز: {item.variant.size}
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center flex-1">
+                    <div className="flex-1 space-y-1">
+                      <p className="font-medium text-sm">
+                        {formatPrice(
+                          getFinalPrice(item.product, item.variant) *
+                            item.quantity
+                        )}
+                      </p>
+                    </div>
+                    <div className="flex">
+                      <div className="flex items-center gap-2">
+                        {item.quantity > 1 ? (
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() =>
+                              decrementQuantity(
+                                item.product.id,
+                                item.variant.id
+                              )
+                            }
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() =>
+                              removeItem(item.product.id, item.variant.id)
+                            }
+                          >
+                            <Trash className="h-3 w-3" />
+                          </Button>
+                        )}
+                        <span className="w-8 text-center text-sm">
+                          {item.quantity}
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() =>
+                            incrementQuantity(item.product.id, item.variant.id)
+                          }
+                        >
+                          <Plus className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() =>
-                      decrementQuantity(item.product.id, item.variant.id)
-                    }
-                  >
-                    <Minus className="h-3 w-3" />
-                  </Button>
-                  <span className="w-8 text-center text-sm">
-                    {item.quantity}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() =>
-                      incrementQuantity(item.product.id, item.variant.id)
-                    }
-                  >
-                    <Plus className="h-3 w-3" />
-                  </Button>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => removeItem(item.product.id, item.variant.id)}
-                >
-                  <X className="h-3 w-3" />
-                </Button>
               </div>
             ))}
 
