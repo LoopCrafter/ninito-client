@@ -18,9 +18,11 @@ const useAddToBasket = () => {
       );
 
       if (existingIndex > -1) {
-        const updatedBasket = [...prevBasket];
-        updatedBasket[existingIndex].quantity += quantity;
-        return updatedBasket;
+        return prevBasket.map((item, index) =>
+          index === existingIndex
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
       }
 
       return [
@@ -34,7 +36,37 @@ const useAddToBasket = () => {
     });
   };
 
-  return { addToBasket };
+  const incrementQuantity = (productId: string, variantId: string) => {
+    setBasket((prev) =>
+      prev.map((item) =>
+        item.product.id === productId && item.variant.id === variantId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
+  const decrementQuantity = (productId: string, variantId: string) => {
+    setBasket((prev) =>
+      prev.map((item) =>
+        item.product.id === productId && item.variant.id === variantId
+          ? { ...item, quantity: Math.max(1, item.quantity - 1) }
+          : item
+      )
+    );
+  };
+
+  const removeItem = (productId: string, variantId?: string) => {
+    setBasket((prev) =>
+      prev.filter(
+        (item) =>
+          item.product.id !== productId ||
+          (variantId ? item.variant.id !== variantId : true)
+      )
+    );
+  };
+
+  return { addToBasket, incrementQuantity, decrementQuantity, removeItem };
 };
 
 export default useAddToBasket;

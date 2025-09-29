@@ -1,4 +1,5 @@
 export interface ProductVariant {
+  id: string;
   size: "XS" | "S" | "M" | "L" | "XL";
   color: {
     name: string;

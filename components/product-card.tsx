@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -8,8 +8,6 @@ import Link from "next/link";
 import { formatPrice } from "@/utils";
 import Image from "next/image";
 import { Product, ProductVariant } from "@/types/product";
-import useBasket from "@/hooks/useBasket";
-import { toast } from "sonner";
 import useAddToBasket from "@/hooks/useAddToBasket";
 interface ProductCardProps {
   product: Product;
@@ -122,7 +120,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             </div>
           </div>
 
-          {/* انتخاب سایز */}
           {selectedColor && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground">سایز:</span>
