@@ -8,7 +8,7 @@ type FeaturedProductsProps = {
 
 const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products }) => {
   return (
-    <div className="bg-pink-400/50">
+    <div className="bg-pink-400/50 featured-products">
       <ProductsSlider
         title="محصولات منتخب"
         subtitle="بهترین‌ها را برای فرزند شما انتخاب کردیم"

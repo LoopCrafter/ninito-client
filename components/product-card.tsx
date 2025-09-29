@@ -9,6 +9,7 @@ import { formatPrice } from "@/utils";
 import Image from "next/image";
 import { Product, ProductVariant } from "@/types/product";
 import useAddToBasket from "@/hooks/useAddToBasket";
+import { toast } from "sonner";
 interface ProductCardProps {
   product: Product;
 }
@@ -38,6 +39,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     : product.basePrice ?? 0;
 
   const handleToBasket = () => {
+    if (!selectedColor) {
+      toast.error("لطفا رنگ مورد نظر را انتخاب کنید");
+    } else if (!selectedSize) {
+      toast.error("لطفا سایز مورد نظر را انتخاب کنید");
+    }
     if (!selectedVariant) return;
     addToBasket(product, selectedVariant, 1);
   };
@@ -69,14 +75,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           )}
         </div>
 
-        <div className="absolute inset-x-2 bottom-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button
-            className="w-full bg-sky-300 text-sm hover:bg-sky-500"
-            onClick={handleToBasket}
-          >
-            <ShoppingCart className="h-4 w-4 ml-2" />
-            افزودن به سبد
-          </Button>
+        <div className="absolute left-2 top-2 z-5">
+          <button className="bg-white p-3 rounded-md" onClick={handleToBasket}>
+            <ShoppingCart className="h-4 w-4 text-black" />
+          </button>
         </div>
       </div>
 
@@ -103,9 +105,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                   <button
                     key={colorName}
                     className={cn(
-                      "w-4 h-4 rounded-full border transition-all",
+                      "w-4 h-4 rounded-full border-2 transition-all",
                       selectedColor === colorName
-                        ? "border-primary"
+                        ? "border-gray-900"
                         : "border-gray-300"
                     )}
                     style={{ backgroundColor: colorHex }}
@@ -130,7 +132,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                     className={cn(
                       "px-2 py-1 border rounded",
                       selectedSize === size
-                        ? "border-primary bg-primary text-white"
+                        ? "border-gray-900 bg-primary text-white"
                         : "border-gray-300"
                     )}
                     onClick={() => setSelectedSize(size)}
@@ -143,17 +145,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           )}
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <div className="font-semibold text-primary">
-              {formatPrice(finalPrice)}
-            </div>
-            {selectedVariant?.price && product.discount?.value > 0 && (
-              <div className="text-xs text-muted-foreground line-through">
-                {formatPrice(selectedVariant.price)}
-              </div>
-            )}
+        <div className="flex justify-start items-center gap-2">
+          <div className="font-semibold text-primary">
+            {formatPrice(finalPrice)}
           </div>
+          {selectedVariant?.price && product.discount?.value > 0 && (
+            <div className="text-xs text-muted-foreground">
+              <del>{formatPrice(selectedVariant.price)}</del>
+            </div>
+          )}
         </div>
       </div>
     </div>
