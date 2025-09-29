@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import BasketProvider from "@/providers/basket-provider";
+import { Toaster } from "@/components/ui/sonner";
 const vazirFont = localFont({
   src: [
     {
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
+          <Toaster position="top-right" />
         </BasketProvider>
       </body>
     </html>

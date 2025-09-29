@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { mockCartItems } from "@/mock";
+import useBasket from "@/hooks/useBasket";
 
 export function CartSidebar() {
+  const { basket, setBasket } = useBasket();
   const [cartItems, setCartItems] = useState(mockCartItems);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,6 +39,8 @@ export function CartSidebar() {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
   };
+
+  console.log("basket", basket);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>

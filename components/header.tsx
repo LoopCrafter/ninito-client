@@ -38,16 +38,14 @@ export function Header() {
           >
             <Search className="h-4 w-4" />
           </Button>
-          {/* Theme Toggle */}
+
           <ThemeToggle />
-          {/* Login Button */}
           <Button variant="ghost" className="hidden sm:flex">
             <User className="h-4 w-4 ml-2" />
             ورود / ثبت نام
           </Button>
 
           <CartSidebar />
-          {/* Mobile Menu */}
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-4 w-4" />
           </Button>

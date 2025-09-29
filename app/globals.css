@@ -153,4 +153,7 @@
   .rtl {
     direction: rtl;
   }
+  .toaster li {
+    font-family: var(--font-vazir), sans-serif;
+  }
 }
