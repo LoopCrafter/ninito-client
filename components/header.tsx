@@ -40,10 +40,12 @@ export function Header() {
           </Button>
 
           <ThemeToggle />
-          <Button variant="ghost" className="hidden sm:flex">
-            <User className="h-4 w-4 ml-2" />
-            ورود / ثبت نام
-          </Button>
+          <Link href="/auth">
+            <Button variant="ghost" className="hidden sm:flex">
+              <User className="h-4 w-4 ml-2" />
+              ورود / ثبت نام
+            </Button>
+          </Link>
 
           <CartSidebar />
           <Button variant="ghost" size="icon" className="md:hidden">

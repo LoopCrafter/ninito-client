@@ -5,24 +5,23 @@ import { HeroSection } from "@/components/hero-section";
 import PopulateProducts from "@/components/populate-products";
 import ReviewSection from "@/components/review-section";
 import { WhyNinito } from "@/components/why-ninito";
+import { apiFetch } from "@/lib/apiClient";
+import { Category } from "@/types/categories";
+import { Product } from "@/types/product";
+
+type ProductsResponse = {
+  products: Product[];
+  featured: Product[];
+};
+
+type CategoriesResponse = {
+  categories: Category[];
+};
 
 export default async function Home() {
-  const [productsRes, categoriesRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/products`, {
-      cache: "no-store",
-    }),
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/categories`, {
-      cache: "no-store",
-    }),
-  ]);
-
-  if (!productsRes.ok || !categoriesRes.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
   const [productsData, categoriesData] = await Promise.all([
-    productsRes.json(),
-    categoriesRes.json(),
+    apiFetch<ProductsResponse>("/products", { cache: "no-store" }),
+    apiFetch<CategoriesResponse>("/categories", { cache: "no-store" }),
   ]);
 
   return (
