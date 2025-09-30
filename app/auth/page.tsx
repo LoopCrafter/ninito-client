@@ -14,7 +14,7 @@ const page = async ({ searchParams }: PageProps) => {
   const { tab: activeTab = "login" } = await searchParams;
 
   return (
-    <main className="container mx-auto px-4 py-8 pt-24">
+    <section className="px-4 py-8 pt-24 min-h-screen w-screen bg-[#efefef]">
       <div className="max-w-md mx-auto">
         {activeTab === "login" ? <LoginForm /> : <SignUpForm />}
 
@@ -40,7 +40,7 @@ const page = async ({ searchParams }: PageProps) => {
           )}
         </div>
       </div>
-    </main>
+    </section>
   );
 };
 

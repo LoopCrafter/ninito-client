@@ -168,7 +168,7 @@ export function LoginForm() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               onSubmit={otpForm.handleSubmit(onSendOtp)}
-              className="space-y-4"
+              className="space-y-4 bg-white p-4 rounded-xl"
             >
               <div>
                 <Label htmlFor="otp-email">ایمیل</Label>

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { ArrowLeft, Mail, Check } from "lucide-react";
+import { ArrowLeft, Mail, Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,9 +85,9 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
+      className="space-y-6 bg-white shadow-md rounded-xl  p-3 py-5"
     >
-      <div className="text-center">
+      <div className="text-center ">
         <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
           <Mail className="w-8 h-8 text-blue-600 dark:text-blue-400" />
         </div>
@@ -123,7 +123,7 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
             onClick={onBack}
             className="flex-1 flex items-center gap-2"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4" />
             بازگشت
           </Button>
           <Button
