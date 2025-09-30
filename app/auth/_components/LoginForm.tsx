@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { ForgotPasswordForm } from "./ForgotPassword";
+import { apiFetch } from "@/lib/apiClient";
+import { apiFetchClient } from "@/lib/apiFetch.client";
 
 const emailLoginSchema = z.object({
   email: z.string().email("فرمت ایمیل صحیح نیست"),
@@ -28,8 +30,8 @@ const otpVerifySchema = z.object({
 type EmailLoginForm = z.infer<typeof emailLoginSchema>;
 type OtpLoginForm = z.infer<typeof otpLoginSchema>;
 type OtpVerifyForm = z.infer<typeof otpVerifySchema>;
-
-export function LoginForm() {
+type LoginFormProps = {};
+export function LoginForm({}: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -47,9 +49,19 @@ export function LoginForm() {
     resolver: zodResolver(otpVerifySchema),
   });
 
-  const onEmailLogin = (data: EmailLoginForm) => {
+  const onEmailLogin = async (data: EmailLoginForm) => {
     toast("با موفقیت وارد شدید");
-    console.log("Email login:", data);
+    try {
+      const res = await apiFetchClient<{ accessToken: string }>("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      document.cookie = `accessToken=${res.accessToken}; path=/; max-age=${
+        15 * 60 * 1000
+      }`;
+
+      console.log("data response: ", res.accessToken);
+    } catch (error) {}
   };
 
   const onSendOtp = (data: OtpLoginForm) => {

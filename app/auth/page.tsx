@@ -14,7 +14,7 @@ const page = async ({ searchParams }: PageProps) => {
   const { tab: activeTab = "login" } = await searchParams;
 
   return (
-    <section className="px-4 py-8 pt-24 min-h-screen w-screen bg-[#efefef]">
+    <section className="px-4 py-8 pt-10 min-h-screen w-screen bg-gradient-to-r from-sky-200 to-rose-200 dark:from-sky-700 dark:to-rose-700">
       <div className="max-w-md mx-auto">
         {activeTab === "login" ? <LoginForm /> : <SignUpForm />}
 
@@ -23,7 +23,7 @@ const page = async ({ searchParams }: PageProps) => {
             <p className="text-muted-foreground">
               حساب کاربری ندارید؟
               <Link href="?tab=signup">
-                <button className="text-primary hover:underline font-medium">
+                <button className="text-rose-400 mr-1 hover:underline font-medium">
                   ثبت‌نام کنید
                 </button>
               </Link>
@@ -32,7 +32,7 @@ const page = async ({ searchParams }: PageProps) => {
             <p className="text-muted-foreground">
               قبلاً ثبت‌نام کرده‌اید؟
               <Link href="?tab=login">
-                <button className="text-primary hover:underline font-medium">
+                <button className="text-rose-400 mr-1 hover:underline font-medium">
                   وارد شوید
                 </button>
               </Link>
