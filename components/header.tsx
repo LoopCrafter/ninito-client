@@ -6,10 +6,21 @@ import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CartSidebar } from "@/components/cart-sidebar";
 import Link from "next/link";
+import useApp from "@/hooks/useApp";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { getInitials, getRandomColor } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-
+  const { user } = useApp();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -40,12 +51,33 @@ export function Header() {
           </Button>
 
           <ThemeToggle />
-          <Link href="/auth">
-            <Button variant="ghost" className="hidden sm:flex">
-              <User className="h-4 w-4 ml-2" />
-              ورود / ثبت نام
-            </Button>
-          </Link>
+
+          {user ? (
+            <DropdownMenu dir="rtl">
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage src={user.image} />
+                  <AvatarFallback style={{ background: getRandomColor() }}>
+                    {getInitials(user.name)}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>پروفایل کاربری</DropdownMenuItem>
+                <DropdownMenuItem>تنظیمات</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <button className="text-rose-600 ">خروج</button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link href="/auth">
+              <Button variant="ghost" className="hidden sm:flex">
+                <User className="h-4 w-4 ml-2" />
+                ورود / ثبت نام
+              </Button>
+            </Link>
+          )}
 
           <CartSidebar />
           <Button variant="ghost" size="icon" className="md:hidden">

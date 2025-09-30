@@ -10,15 +10,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import useBasket from "@/hooks/useBasket";
 import useAddToBasket from "@/hooks/useAddToBasket";
 import { getFinalPrice } from "@/utils";
 import EmptyCart from "./empty-cart";
+import useApp from "@/hooks/useApp";
 
 export function CartSidebar() {
   const [mounted, setMounted] = useState(false);
   const { incrementQuantity, decrementQuantity, removeItem } = useAddToBasket();
-  const { basket } = useBasket();
+  const { basket } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     setMounted(true);

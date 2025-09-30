@@ -1,8 +1,8 @@
 import { Product, ProductVariant } from "@/types/product";
-import useBasket from "./useBasket";
+import useApp from "./useApp";
 
 const useAddToBasket = () => {
-  const { setBasket } = useBasket();
+  const { setBasket } = useApp();
 
   const addToBasket = (
     product: Product,

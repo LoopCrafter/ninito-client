@@ -13,6 +13,9 @@ import { toast } from "sonner";
 import { ForgotPasswordForm } from "./ForgotPassword";
 import { apiFetch } from "@/lib/apiClient";
 import { apiFetchClient } from "@/lib/apiFetch.client";
+import useApp from "@/hooks/useApp";
+import { User } from "@/types/user";
+import { useRouter } from "next/navigation";
 
 const emailLoginSchema = z.object({
   email: z.string().email("فرمت ایمیل صحیح نیست"),
@@ -32,6 +35,8 @@ type OtpLoginForm = z.infer<typeof otpLoginSchema>;
 type OtpVerifyForm = z.infer<typeof otpVerifySchema>;
 type LoginFormProps = {};
 export function LoginForm({}: LoginFormProps) {
+  const { setUser } = useApp();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -50,18 +55,23 @@ export function LoginForm({}: LoginFormProps) {
   });
 
   const onEmailLogin = async (data: EmailLoginForm) => {
-    toast("با موفقیت وارد شدید");
     try {
-      const res = await apiFetchClient<{ accessToken: string }>("/auth/login", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
+      const res = await apiFetchClient<{ accessToken: string; user: User }>(
+        "/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+        }
+      );
+      toast("با موفقیت وارد شدید");
       document.cookie = `accessToken=${res.accessToken}; path=/; max-age=${
         15 * 60 * 1000
       }`;
-
-      console.log("data response: ", res.accessToken);
-    } catch (error) {}
+      setUser(res.user);
+      router.replace("/");
+    } catch (error) {
+      toast.error("رمز عبور یا ایمیل اشتباه است");
+    }
   };
 
   const onSendOtp = (data: OtpLoginForm) => {
@@ -133,7 +143,7 @@ export function LoginForm({}: LoginFormProps) {
                   type={showPassword ? "text" : "password"}
                   placeholder="رمز عبور خود را وارد کنید"
                   {...emailForm.register("password")}
-                  className="pl-10"
+                  className="pl-10 text-right ltr"
                 />
                 <button
                   type="button"

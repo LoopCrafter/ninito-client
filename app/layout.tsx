@@ -3,8 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import BasketProvider from "@/providers/basket-provider";
 import { Toaster } from "@/components/ui/sonner";
+import AppProvider from "@/providers/context-provider";
 const vazirFont = localFont({
   src: [
     {
@@ -34,12 +34,12 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body className={`${vazirFont.variable} antialiased`}>
-        <BasketProvider>
+        <AppProvider>
           <Header />
           <main>{children}</main>
           <Footer />
           <Toaster position="top-right" />
-        </BasketProvider>
+        </AppProvider>
       </body>
     </html>
   );
