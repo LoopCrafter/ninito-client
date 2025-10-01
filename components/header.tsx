@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, User, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,19 +8,28 @@ import { CartSidebar } from "@/components/cart-sidebar";
 import Link from "next/link";
 import useApp from "@/hooks/useApp";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { getInitials, getRandomColor } from "@/lib/utils";
+import { getInitials } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useUser } from "@/hooks/useUser";
 
 export function Header() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { user } = useApp();
+
+  const { logout } = useUser();
+  const [mounted, setMounted] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
+
+  const userName = getInitials(user?.name);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -52,13 +61,13 @@ export function Header() {
 
           <ThemeToggle />
 
-          {user ? (
+          {user?.name ? (
             <DropdownMenu dir="rtl">
               <DropdownMenuTrigger>
                 <Avatar>
                   <AvatarImage src={user.image} />
-                  <AvatarFallback style={{ background: getRandomColor() }}>
-                    {getInitials(user.name)}
+                  <AvatarFallback className="bg-rose-300 text-white">
+                    {userName}
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
@@ -66,7 +75,9 @@ export function Header() {
                 <DropdownMenuItem>پروفایل کاربری</DropdownMenuItem>
                 <DropdownMenuItem>تنظیمات</DropdownMenuItem>
                 <DropdownMenuItem>
-                  <button className="text-rose-600 ">خروج</button>
+                  <button onClick={logout} className="text-rose-600 ">
+                    خروج
+                  </button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

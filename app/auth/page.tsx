@@ -1,9 +1,6 @@
 import Link from "next/link";
-import React, { useEffect } from "react";
 import { LoginForm } from "./_components/LoginForm";
 import { SignUpForm } from "./_components/SignupForm";
-import useApp from "@/hooks/useApp";
-import { useRouter } from "next/navigation";
 
 interface PageProps {
   searchParams: {

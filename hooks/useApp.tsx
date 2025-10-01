@@ -1,8 +1,8 @@
 import { AppContext } from "@/providers/context-provider";
-import { useContext } from "react";
+import { use, useContext } from "react";
 
 const useApp = () => {
-  const context = useContext(AppContext);
+  const context = use(AppContext);
   if (!context) {
     throw new Error("useApp must be used within an AppProvider");
   }

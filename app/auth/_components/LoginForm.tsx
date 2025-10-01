@@ -64,9 +64,6 @@ export function LoginForm({}: LoginFormProps) {
         }
       );
       toast("با موفقیت وارد شدید");
-      document.cookie = `accessToken=${res.accessToken}; path=/; max-age=${
-        15 * 60 * 1000
-      }`;
       setUser(res.user);
       router.replace("/");
     } catch (error) {

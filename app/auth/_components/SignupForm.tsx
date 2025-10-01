@@ -157,39 +157,6 @@ export function SignUpForm() {
         onSubmit={signupForm.handleSubmit(onSignup)}
         className="space-y-4"
       >
-        {/* Profile Image Upload */}
-        <div className="flex flex-col items-center mb-6">
-          <div className="relative">
-            <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-              {profileImage ? (
-                <img
-                  src={profileImage}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <User className="w-8 h-8 text-muted-foreground" />
-              )}
-            </div>
-            <label
-              htmlFor="profile-image"
-              className="absolute -bottom-1 -right-1 w-8 h-8 bg-primary rounded-full flex items-center justify-center cursor-pointer hover:bg-primary/90 transition-colors"
-            >
-              <Upload className="w-4 h-4 text-primary-foreground" />
-            </label>
-            <input
-              id="profile-image"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-            />
-          </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            تصویر پروفایل (اختیاری)
-          </p>
-        </div>
-
         <div className="grid grid-cols-2 gap-4">
           <div>
             <Label htmlFor="firstName">نام</Label>
