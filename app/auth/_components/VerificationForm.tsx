@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { apiFetchClient } from "@/lib/apiFetch.client";
 import { verifySchema } from "@/schema/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { motion } from "framer-motion";
 import { User, Mail, Phone, Upload, Check } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -19,21 +21,36 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
   signupEmail,
   hideVerification,
 }) => {
+  const router = useRouter();
   const verifyForm = useForm<VerifyForm>({
     resolver: zodResolver(verifySchema),
   });
 
-  const onVerify = (data: VerifyForm) => {
-    toast("حساب کاربری شما با موفقیت ایجاد شد");
-    console.log("Verification code:", data.code, "for:", signupEmail);
-    hideVerification();
+  const onVerify = async (data: VerifyForm) => {
+    try {
+      const res = apiFetchClient("/auth/verify-email", {
+        method: "POSt",
+        body: JSON.stringify(data),
+      });
+      toast("حساب کاربری شما با موفقیت ایجاد شد");
+      console.log("Verification code:", data.code, "for:", signupEmail);
+      hideVerification();
+      router.replace("/");
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error: ", error);
+        toast.error(error.message);
+      } else {
+        toast.error("خطای غیرمنتظره ای رخ داده است. لطفا مجددا تلاش کنید!");
+      }
+    }
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
+      className="space-y-6 p-5 bg-white"
     >
       <div className="text-center">
         <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">

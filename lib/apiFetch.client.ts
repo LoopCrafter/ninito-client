@@ -22,7 +22,7 @@ export async function apiFetchClient<T>(
     },
     credentials: "include",
   });
-
-  if (!res.ok) throw new Error(`API failed: ${res.status}`);
+  console.log("++++", res);
+  if (!res.ok) throw new Error(`${res.statusText}`);
   return res.json() as Promise<T>;
 }

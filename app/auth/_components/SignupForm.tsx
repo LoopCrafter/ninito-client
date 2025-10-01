@@ -17,6 +17,7 @@ import {
 import { toast } from "sonner";
 import { signupSchema } from "@/schema/user";
 import VerificationForm from "./VerificationForm";
+import { apiFetchClient } from "@/lib/apiFetch.client";
 
 type SignupForm = z.infer<typeof signupSchema>;
 
@@ -28,10 +29,24 @@ export function SignUpForm() {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSignup = (data: SignupForm) => {
-    setSignupEmail(data.email);
-    setShowVerification(true);
-    toast("کد تأیید به ایمیل شما ارسال شد");
+  const onSignup = async (data: SignupForm) => {
+    try {
+      const res = await apiFetchClient("/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      console.log(res);
+      setShowVerification(true);
+      toast("کد تأیید به ایمیل شما ارسال شد");
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error: ", error);
+        toast.error(error.message);
+      } else {
+        toast.error("خطای غیرمنتظره ای رخ داده است. لطفا مجددا تلاش کنید!");
+      }
+    }
     console.log("Signup data:", data);
   };
 
@@ -40,10 +55,12 @@ export function SignUpForm() {
   };
 
   if (showVerification) {
-    <VerificationForm
-      signupEmail={signupEmail}
-      hideVerification={hideVerification}
-    />;
+    return (
+      <VerificationForm
+        signupEmail={signupEmail}
+        hideVerification={hideVerification}
+      />
+    );
   }
 
   return (

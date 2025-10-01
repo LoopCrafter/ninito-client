@@ -20,3 +20,22 @@ export const signupSchema = z
 export const verifySchema = z.object({
   code: z.string().length(6, "کد باید ۶ رقم باشد"),
 });
+
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "رمز عبور باید حداقل ۸ کاراکتر باشد")
+      .regex(/[A-Z]/, "رمز عبور باید حداقل یک حرف بزرگ (A-Z) داشته باشد")
+      .regex(/[a-z]/, "رمز عبور باید حداقل یک حرف کوچک (a-z) داشته باشد")
+      .regex(/[0-9]/, "رمز عبور باید حداقل یک عدد داشته باشد")
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "رمز عبور باید حداقل یک کاراکتر خاص داشته باشد"
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "تکرار رمز عبور مطابقت ندارد",
+    path: ["confirmPassword"],
+  });

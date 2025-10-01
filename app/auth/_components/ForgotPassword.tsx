@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { apiFetchClient } from "@/lib/apiFetch.client";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("فرمت ایمیل صحیح نیست"),
@@ -29,10 +30,23 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = (data: ForgotPasswordForm) => {
-    setResetEmail(data.email);
-    setEmailSent(true);
-    toast("لینک بازیابی رمز عبور به ایمیل شما ارسال شد");
+  const onSubmit = async (data: ForgotPasswordForm) => {
+    try {
+      const res = await apiFetchClient("/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      setResetEmail(data.email);
+      setEmailSent(true);
+      toast("لینک بازیابی رمز عبور به ایمیل شما ارسال شد");
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error: ", error);
+        toast.error(error.message);
+      } else {
+        toast.error("خطای غیرمنتظره ای رخ داده است. لطفا مجددا تلاش کنید!");
+      }
+    }
     console.log("Send reset link to:", data.email);
   };
 
@@ -41,7 +55,7 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-6"
+        className="space-y-6 p-5 bg-white rounded-lg"
       >
         <div className="text-center">
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
