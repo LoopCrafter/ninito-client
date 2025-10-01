@@ -55,7 +55,7 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-6 p-5 bg-white rounded-lg"
+        className="space-y-6 p-5 bg-muted rounded-lg"
       >
         <div className="text-center">
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -99,7 +99,7 @@ export function ForgotPasswordForm({ onBack }: ForgotPasswordFormProps) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6 bg-white shadow-md rounded-xl  p-3 py-5"
+      className="space-y-6 bg-muted shadow-md rounded-xl  p-3 py-5"
     >
       <div className="text-center ">
         <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">

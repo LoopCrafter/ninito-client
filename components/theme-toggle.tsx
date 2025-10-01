@@ -1,20 +1,14 @@
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useCallback } from "react";
-import { useTheme } from "./theme-provider";
+import { useTheme } from "@/hooks/useTheme";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
-  // Sync the theme with the body class
-  useEffect(() => {
-    document.body.classList.toggle("dark", theme === "dark");
-  }, [theme]);
-
-  // Toggle theme handler
   const toggleTheme = useCallback(() => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
+    console.log("++", theme);
+    setTheme(theme === "dark" ? "light" : "dark");
   }, [theme, setTheme]);
 
   return (

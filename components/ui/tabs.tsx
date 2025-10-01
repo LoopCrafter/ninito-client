@@ -60,7 +60,7 @@ function TabsContent({
       data-slot="tabs-content"
       dir="rtl"
       className={cn(
-        "flex-1 outline-none bg-white shadow-md p-4 rounded-md ",
+        "flex-1 outline-none bg-muted shadow-md p-4 rounded-md ",
         className
       )}
       {...props}

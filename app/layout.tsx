@@ -5,6 +5,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import AppProvider from "@/providers/context-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 const vazirFont = localFont({
   src: [
     {
@@ -35,10 +36,12 @@ export default function RootLayout({
     <html lang="fa" dir="rtl">
       <body className={`${vazirFont.variable} antialiased`}>
         <AppProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <Toaster position="top-right" />
+          <ThemeProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <Toaster position="top-right" />
+          </ThemeProvider>
         </AppProvider>
       </body>
     </html>
