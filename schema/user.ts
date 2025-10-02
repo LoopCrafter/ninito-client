@@ -39,3 +39,10 @@ export const resetPasswordSchema = z
     message: "تکرار رمز عبور مطابقت ندارد",
     path: ["confirmPassword"],
   });
+
+export const profileSchema = z.object({
+  firstName: z.string().min(2, "نام باید حداقل ۲ کاراکتر باشد"),
+  lastName: z.string().min(2, "نام خانوادگی باید حداقل ۲ کاراکتر باشد"),
+  phone: z.string().regex(/^09\d{9}$/, "شماره موبایل معتبر نیست"),
+  gender: z.string().optional(),
+});
