@@ -10,6 +10,6 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   image?: string;
-  mobile: string;
+  phone: string;
   gender: string;
 }

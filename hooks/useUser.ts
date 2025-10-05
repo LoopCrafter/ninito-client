@@ -14,5 +14,5 @@ export const useUser = () => {
       console.log(error);
     }
   };
-  return { logout };
+  return { logout, user };
 };
