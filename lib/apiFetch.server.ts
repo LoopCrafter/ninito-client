@@ -14,10 +14,6 @@ export async function apiFetchServer<T>(
   const accessToken = accessTokenCookie?.value;
   const refreshToken = refreshTokenCookie?.value;
 
-  if (!accessToken) {
-    redirect("/auth?logout=true");
-  }
-
   const cookieHeader = [
     accessToken ? `accessToken=${accessToken}` : "",
     refreshToken ? `refreshToken=${refreshToken}` : "",

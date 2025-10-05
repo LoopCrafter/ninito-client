@@ -25,11 +25,6 @@ export interface ProductFilters {
   searchQuery: string;
 }
 
-type ProductResponse = PaginationProps & {
-  products: Product[];
-  nextPage: null | number;
-  prevPage: null | number;
-};
 export default function Products() {
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [products, setProducts] = useState<Product[]>([]);
@@ -39,7 +34,7 @@ export default function Products() {
     hasNextPage: false,
     hasPrevPage: false,
     lastPage: 1,
-    limit: 8,
+    limit: 5,
   });
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,28 +47,10 @@ export default function Products() {
   });
 
   const getProducts = async () => {
+    console.log("+++++___");
     try {
-      const productsData = await apiFetchClient<ProductResponse>(
-        `/products?limit=${pagination.limit}`
-      );
-      const {
-        products,
-        hasNextPage,
-        hasPrevPage,
-        page: currentPage,
-        totalPages,
-        lastPage,
-        limit: currentLimit,
-      } = productsData;
-      setProducts(products);
-      setPagination({
-        hasNextPage,
-        hasPrevPage,
-        page: currentPage,
-        totalPages,
-        lastPage,
-        limit: currentLimit,
-      });
+      const products = await apiFetchClient("/products");
+      console.log("+++++", products);
     } catch (error) {
       toast.error("There is an error, please try again later");
     }
@@ -83,48 +60,48 @@ export default function Products() {
   }, []);
 
   // Filter and sort products
-  const filteredProducts = products.filter((product) => {
-    const priceInRange =
-      product.price >= filters.priceRange[0] &&
-      product.price <= filters.priceRange[1];
-    const categoryMatch =
-      filters.categories.length === 0 ||
-      filters.categories.includes(product.category);
-    const stockMatch = !filters.inStock || product.inStock;
-    const colorMatch =
-      filters.colors.length === 0 ||
-      product.colors.some((color) => filters.colors.includes(color.name));
-    const searchMatch =
-      !filters.searchQuery ||
-      product.title.toLowerCase().includes(filters.searchQuery.toLowerCase());
+  // const filteredProducts = sampleProducts.filter((product) => {
+  //   const priceInRange =
+  //     product.price >= filters.priceRange[0] &&
+  //     product.price <= filters.priceRange[1];
+  //   const categoryMatch =
+  //     filters.categories.length === 0 ||
+  //     filters.categories.includes(product.category);
+  //   const stockMatch = !filters.inStock || product.inStock;
+  //   const colorMatch =
+  //     filters.colors.length === 0 ||
+  //     product.colors.some((color) => filters.colors.includes(color.name));
+  //   const searchMatch =
+  //     !filters.searchQuery ||
+  //     product.name.toLowerCase().includes(filters.searchQuery.toLowerCase());
 
-    return (
-      priceInRange && categoryMatch && stockMatch && colorMatch && searchMatch
-    );
-  });
+  //   return (
+  //     priceInRange && categoryMatch && stockMatch && colorMatch && searchMatch
+  //   );
+  // });
 
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
-      case "rating":
-        return b.rating - a.rating;
-      case "popular":
-        return b.reviewCount - a.reviewCount;
-      case "newest":
-      default:
-        return a.isNew ? -1 : 1;
-    }
-  });
-  const itemsPerPage = viewMode === "grid" ? 12 : 10;
-  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProducts = sortedProducts.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  // const sortedProducts = [...filteredProducts].sort((a, b) => {
+  //   switch (sortBy) {
+  //     case "price-low":
+  //       return a.price - b.price;
+  //     case "price-high":
+  //       return b.price - a.price;
+  //     case "rating":
+  //       return b.rating - a.rating;
+  //     case "popular":
+  //       return b.reviewCount - a.reviewCount;
+  //     case "newest":
+  //     default:
+  //       return a.isNew ? -1 : 1;
+  //   }
+  // });
+  // const itemsPerPage = viewMode === "grid" ? 12 : 10;
+  // const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+  // const startIndex = (currentPage - 1) * itemsPerPage;
+  // const currentProducts = sortedProducts.slice(
+  //   startIndex,
+  //   startIndex + itemsPerPage
+  // );
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -134,7 +111,7 @@ export default function Products() {
 
         {/* Main Content */}
         <div className="flex-1">
-          <ProductsHeader
+          {/* <ProductsHeader
             viewMode={viewMode}
             sortBy={sortBy}
             onViewModeChange={setViewMode}
@@ -147,12 +124,12 @@ export default function Products() {
           />
 
           <ProductsList
-            products={products}
+            products={currentProducts}
             viewMode={viewMode}
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={setCurrentPage}
-          />
+          /> */}
         </div>
       </div>
     </div>
