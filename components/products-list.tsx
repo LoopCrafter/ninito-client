@@ -1,7 +1,4 @@
-import { useState } from "react";
-import { ShoppingCart, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { ShoppingCart } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -15,7 +12,6 @@ import { ProductCard } from "@/components/product-card";
 import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { ViewMode } from "@/app/products/page";
-import Link from "next/link";
 
 interface ProductsListProps {
   products: Product[];
@@ -32,10 +28,6 @@ export function ProductsList({
   totalPages,
   onPageChange,
 }: ProductsListProps) {
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
-  };
-
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
@@ -52,20 +44,11 @@ export function ProductsList({
 
   return (
     <div className="space-y-8">
-      {/* Products Grid/List */}
-      {viewMode === "grid" ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {products.map((product) => (
-            <ProductListItem key={product.id} product={product} />
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
 
       {/* Pagination */}
       {totalPages > 1 && (
@@ -115,116 +98,6 @@ export function ProductsList({
           </Pagination>
         </div>
       )}
-    </div>
-  );
-}
-
-function ProductListItem({ product }: { product: Product }) {
-  const [selectedColor, setSelectedColor] = useState(
-    product.variants[0].color.name
-  );
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("fa-IR").format(price) + " تومان";
-  };
-
-  return (
-    <div className="bg-card border border-border rounded-xl p-6 card-shadow hover:shadow-soft transition-all duration-300">
-      <div className="flex items-center gap-6">
-        {/* Product Image */}
-        <div className="relative w-32 h-32 flex-shrink-0">
-          <Link
-            href={`/products/${product.id}`}
-            className="block w-full h-full"
-          >
-            <img
-              src={product.thumbnailUrl}
-              alt={product.title}
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </Link>
-
-          {/* Badges */}
-          <div className="absolute top-2 right-2 flex flex-col gap-1">
-            {product.discount.value && (
-              <Badge className="bg-destructive text-destructive-foreground text-xs">
-                {product.discount.value}
-                {product.discount.method === "fixed" ? "تومان" : "%"} تخفیف
-              </Badge>
-            )}
-          </div>
-        </div>
-
-        <div className="flex-1">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <Link href={`/products/${product.id}`} className="block">
-                <h3 className="font-semibold text-lg leading-tight">
-                  {product.title}
-                </h3>
-              </Link>
-              <div className="flex items-center gap-2">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={cn(
-                        "h-4 w-4",
-                        i < 4
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-gray-300"
-                      )}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm text-muted-foreground">
-                  ({product.comments.length})
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-muted-foreground">رنگ:</span>
-                <div className="flex gap-2">
-                  {product.variants.map((variant) => (
-                    <button
-                      key={variant.color.name}
-                      className={cn(
-                        "w-6 h-6 rounded-full border-2 transition-all",
-                        selectedColor === variant.color.name
-                          ? "border-primary scale-110"
-                          : "border-gray-300"
-                      )}
-                      style={{ backgroundColor: variant.color.hex }}
-                      onClick={() => setSelectedColor(variant.color.name)}
-                      title={variant.color.name}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col justify-between">
-              {/* Price */}
-              <div className="space-y-1">
-                <div className="font-bold text-xl text-primary">
-                  {formatPrice(product.variants[0].price)}
-                </div>
-                {product.variants[0].price && (
-                  <div className="text-sm text-muted-foreground line-through">
-                    {formatPrice(product.variants[0].price)}
-                  </div>
-                )}
-              </div>
-
-              {/* Add to Cart Button */}
-              <Button className="btn-hero mt-4">
-                <ShoppingCart className="h-4 w-4 ml-2" />
-                افزودن به سبد
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

@@ -77,36 +77,6 @@ export function ProductsHeader({
             </Select>
           </div>
         </div>
-
-        {/* View Mode Toggle */}
-        <div className="flex items-center bg-muted rounded-lg p-1">
-          <Button
-            variant={viewMode === "grid" ? "default" : "ghost"}
-            size="sm"
-            onClick={() => onViewModeChange("grid")}
-            className={cn(
-              "px-3 py-2 rounded-md transition-all",
-              viewMode === "grid"
-                ? "bg-selected shadow-sm"
-                : "hover:bg-selected/50"
-            )}
-          >
-            <Grid3X3 className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "list" ? "default" : "ghost"}
-            size="sm"
-            onClick={() => onViewModeChange("list")}
-            className={cn(
-              "px-3 py-2 rounded-md transition-all",
-              viewMode === "list"
-                ? "bg-selected shadow-sm"
-                : "hover:bg-selected/50"
-            )}
-          >
-            <List className="h-4 w-4" />
-          </Button>
-        </div>
       </div>
 
       {/* Mobile Search Bar */}
