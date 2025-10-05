@@ -1,21 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Mail, Lock, Smartphone } from "lucide-react";
+import { Eye, EyeOff, Mail, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { ForgotPasswordForm } from "./ForgotPassword";
-import { apiFetch } from "@/lib/apiClient";
 import { apiFetchClient } from "@/lib/apiFetch.client";
 import useApp from "@/hooks/useApp";
 import { User } from "@/types/user";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
 
 const emailLoginSchema = z.object({
   email: z.string().email("فرمت ایمیل صحیح نیست"),
@@ -36,6 +36,8 @@ type OtpVerifyForm = z.infer<typeof otpVerifySchema>;
 type LoginFormProps = {};
 export function LoginForm({}: LoginFormProps) {
   const { setUser } = useApp();
+  const { logout } = useUser();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -53,6 +55,13 @@ export function LoginForm({}: LoginFormProps) {
   const otpVerifyForm = useForm<OtpVerifyForm>({
     resolver: zodResolver(otpVerifySchema),
   });
+
+  useEffect(() => {
+    const shouldLogout = searchParams.get("logout") === "true";
+    if (shouldLogout) {
+      logout();
+    }
+  }, [searchParams, router]);
 
   const onEmailLogin = async (data: EmailLoginForm) => {
     try {

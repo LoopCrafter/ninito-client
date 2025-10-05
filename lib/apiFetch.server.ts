@@ -15,7 +15,7 @@ export async function apiFetchServer<T>(
   const refreshToken = refreshTokenCookie?.value;
 
   if (!accessToken) {
-    redirect("/auth");
+    redirect("/auth?logout=true");
   }
 
   const cookieHeader = [
@@ -60,7 +60,7 @@ export async function apiFetchServer<T>(
     if (refreshRes.ok) {
       res = await doFetch();
     } else {
-      redirect("/auth");
+      redirect("/auth?logout=true'");
     }
   }
 

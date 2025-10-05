@@ -16,10 +16,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
 
 export function Header() {
   const { user } = useApp();
-
+  const router = useRouter();
   const { logout } = useUser();
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -72,7 +73,12 @@ export function Header() {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>پروفایل کاربری</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router.push("/dashboard/profile")}
+                  className="cursor-pointer"
+                >
+                  پروفایل کاربری
+                </DropdownMenuItem>
                 <DropdownMenuItem>تنظیمات</DropdownMenuItem>
                 <DropdownMenuItem>
                   <button onClick={logout} className="text-rose-600 ">
