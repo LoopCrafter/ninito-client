@@ -31,7 +31,6 @@ type ProductResponse = PaginationProps & {
   prevPage: null | number;
 };
 export default function Products() {
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [products, setProducts] = useState<Product[]>([]);
   const [pagination, setPagination] = useState<PaginationProps>({
     page: 1,
@@ -51,10 +50,10 @@ export default function Products() {
     searchQuery: "",
   });
 
-  const getProducts = async () => {
+  const getProducts = async (page: number) => {
     try {
       const productsData = await apiFetchClient<ProductResponse>(
-        `/products?limit=${pagination.limit}`
+        `/products?page=${page}&limit=${pagination.limit}`
       );
       const {
         products,
@@ -79,7 +78,7 @@ export default function Products() {
     }
   };
   useEffect(() => {
-    getProducts();
+    getProducts(1);
   }, []);
 
   // Filter and sort products
@@ -118,13 +117,6 @@ export default function Products() {
         return a.isNew ? -1 : 1;
     }
   });
-  const itemsPerPage = viewMode === "grid" ? 12 : 10;
-  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProducts = sortedProducts.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -135,9 +127,7 @@ export default function Products() {
         {/* Main Content */}
         <div className="flex-1">
           <ProductsHeader
-            viewMode={viewMode}
             sortBy={sortBy}
-            onViewModeChange={setViewMode}
             onSortChange={setSortBy}
             totalProducts={filteredProducts.length}
             searchQuery={filters.searchQuery}
@@ -148,10 +138,8 @@ export default function Products() {
 
           <ProductsList
             products={products}
-            viewMode={viewMode}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            pagination={pagination}
+            onPageChange={getProducts}
           />
         </div>
       </div>

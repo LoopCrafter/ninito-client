@@ -14,9 +14,7 @@ import { cn } from "@/lib/utils";
 import { SortOption, ViewMode } from "@/app/products/page";
 
 interface ProductsHeaderProps {
-  viewMode: ViewMode;
   sortBy: SortOption;
-  onViewModeChange: (mode: ViewMode) => void;
   onSortChange: (sort: SortOption) => void;
   totalProducts: number;
   searchQuery: string;
@@ -32,11 +30,8 @@ const sortOptions = [
 ];
 
 export function ProductsHeader({
-  viewMode,
   sortBy,
-  onViewModeChange,
   onSortChange,
-  totalProducts,
   searchQuery,
   onSearchChange,
 }: ProductsHeaderProps) {

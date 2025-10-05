@@ -1,31 +1,18 @@
 import { ShoppingCart } from "lucide-react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-
 import { ProductCard } from "@/components/product-card";
-import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
-import { ViewMode } from "@/app/products/page";
+import Pagination from "./ui/pagination";
+import { PaginationProps } from "@/types/pagination";
 
 interface ProductsListProps {
   products: Product[];
-  viewMode: ViewMode;
-  currentPage: number;
-  totalPages: number;
+  pagination: PaginationProps;
   onPageChange: (page: number) => void;
 }
 
 export function ProductsList({
   products,
-  viewMode,
-  currentPage,
-  totalPages,
+  pagination,
   onPageChange,
 }: ProductsListProps) {
   if (products.length === 0) {
@@ -51,51 +38,16 @@ export function ProductsList({
       </div>
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() =>
-                    currentPage > 1 && onPageChange(currentPage - 1)
-                  }
-                  className={cn(
-                    currentPage === 1 && "pointer-events-none opacity-50"
-                  )}
-                >
-                  قبلی
-                </PaginationPrevious>
-              </PaginationItem>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      onClick={() => onPageChange(page)}
-                      isActive={currentPage === page}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              )}
-
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() =>
-                    currentPage < totalPages && onPageChange(currentPage + 1)
-                  }
-                  className={cn(
-                    currentPage === totalPages &&
-                      "pointer-events-none opacity-50"
-                  )}
-                >
-                  بعدی
-                </PaginationNext>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+      {products.length > 0 && (
+        <div className="mt-6">
+          <Pagination
+            page={+pagination.page}
+            totalPages={+pagination.totalPages}
+            hasNextPage={pagination.hasNextPage}
+            hasPrevPage={pagination.hasPrevPage}
+            onPageChange={(p) => onPageChange(p)}
+            limit={+pagination.limit}
+          />
         </div>
       )}
     </div>

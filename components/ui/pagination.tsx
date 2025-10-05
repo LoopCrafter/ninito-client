@@ -1,127 +1,111 @@
-import * as React from "react"
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MoreHorizontalIcon,
-} from "lucide-react"
+import React from "react";
 
-import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
+type PaginationProps = {
+  page: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  limit: number;
+  onPageChange: (page: number) => void;
+};
 
-function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
+const Pagination: React.FC<PaginationProps> = ({
+  page,
+  totalPages,
+  hasNextPage,
+  hasPrevPage,
+  limit,
+  onPageChange,
+}) => {
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  const getVisiblePages = () => {
+    if (totalPages <= 5) return pages;
+
+    const visiblePages = [];
+    const start = Math.max(1, page - 2);
+    const end = Math.min(totalPages, page + 2);
+
+    if (start > 1) {
+      visiblePages.push(1);
+      if (start > 2) visiblePages.push("...");
+    }
+
+    for (let i = start; i <= end; i++) {
+      visiblePages.push(i);
+    }
+
+    if (end < totalPages) {
+      if (end < totalPages - 1) visiblePages.push("...");
+      visiblePages.push(totalPages);
+    }
+
+    return visiblePages;
+  };
+
+  const visiblePages = getVisiblePages();
+
   return (
-    <nav
-      role="navigation"
-      aria-label="pagination"
-      data-slot="pagination"
-      className={cn("mx-auto flex w-full justify-center", className)}
-      {...props}
-    />
-  )
-}
+    <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6 py-4">
+      <div className="flex items-center gap-1 sm:gap-2">
+        <button
+          onClick={() => onPageChange(page - 1)}
+          disabled={!hasPrevPage}
+          className={`px-2 sm:px-4 py-2 rounded-lg sm:rounded-2xl font-medium transition text-xs sm:text-sm ${
+            hasPrevPage
+              ? "bg-pink-200 text-pink-800 hover:bg-pink-300 dark:bg-pink-800 dark:text-pink-200 dark:hover:bg-pink-700"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
+          }`}
+        >
+          <span className="hidden sm:inline">صفحه قبل</span>
+          <span className="sm:hidden">قبل</span>
+        </button>
 
-function PaginationContent({
-  className,
-  ...props
-}: React.ComponentProps<"ul">) {
-  return (
-    <ul
-      data-slot="pagination-content"
-      className={cn("flex flex-row items-center gap-1", className)}
-      {...props}
-    />
-  )
-}
+        <div className="flex items-center gap-1">
+          {visiblePages.map((p, index) =>
+            p === "..." ? (
+              <span
+                key={`ellipsis-${index}`}
+                className="px-2 py-1 text-gray-500 dark:text-gray-400"
+              >
+                ...
+              </span>
+            ) : (
+              <button
+                key={p}
+                onClick={() => onPageChange(p as number)}
+                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-full font-medium transition text-xs sm:text-sm w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center ${
+                  p === page
+                    ? "bg-blue-500 text-white shadow-md dark:bg-blue-600"
+                    : "bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                }`}
+              >
+                {(p as number).toLocaleString("fa-IR")}
+              </button>
+            )
+          )}
+        </div>
 
-function PaginationItem({ ...props }: React.ComponentProps<"li">) {
-  return <li data-slot="pagination-item" {...props} />
-}
+        <button
+          onClick={() => onPageChange(page + 1)}
+          disabled={!hasNextPage}
+          className={`px-2 sm:px-4 py-2 rounded-lg sm:rounded-2xl font-medium transition text-xs sm:text-sm ${
+            hasNextPage
+              ? "bg-pink-200 text-pink-800 hover:bg-pink-300 dark:bg-pink-800 dark:text-pink-200 dark:hover:bg-pink-700"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
+          }`}
+        >
+          <span className="hidden sm:inline">صفحه بعد</span>
+          <span className="sm:hidden">بعد</span>
+        </button>
+      </div>
 
-type PaginationLinkProps = {
-  isActive?: boolean
-} & Pick<React.ComponentProps<typeof Button>, "size"> &
-  React.ComponentProps<"a">
+      <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 sm:hidden">
+        صفحه {page.toLocaleString("fa-IR")} از{" "}
+        {totalPages.toLocaleString("fa-IR")}
+      </div>
+    </div>
+  );
+};
 
-function PaginationLink({
-  className,
-  isActive,
-  size = "icon",
-  ...props
-}: PaginationLinkProps) {
-  return (
-    <a
-      aria-current={isActive ? "page" : undefined}
-      data-slot="pagination-link"
-      data-active={isActive}
-      className={cn(
-        buttonVariants({
-          variant: isActive ? "outline" : "ghost",
-          size,
-        }),
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function PaginationPrevious({
-  className,
-  ...props
-}: React.ComponentProps<typeof PaginationLink>) {
-  return (
-    <PaginationLink
-      aria-label="Go to previous page"
-      size="default"
-      className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
-      {...props}
-    >
-      <ChevronLeftIcon />
-      <span className="hidden sm:block">Previous</span>
-    </PaginationLink>
-  )
-}
-
-function PaginationNext({
-  className,
-  ...props
-}: React.ComponentProps<typeof PaginationLink>) {
-  return (
-    <PaginationLink
-      aria-label="Go to next page"
-      size="default"
-      className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
-      {...props}
-    >
-      <span className="hidden sm:block">Next</span>
-      <ChevronRightIcon />
-    </PaginationLink>
-  )
-}
-
-function PaginationEllipsis({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
-  return (
-    <span
-      aria-hidden
-      data-slot="pagination-ellipsis"
-      className={cn("flex size-9 items-center justify-center", className)}
-      {...props}
-    >
-      <MoreHorizontalIcon className="size-4" />
-      <span className="sr-only">More pages</span>
-    </span>
-  )
-}
-
-export {
-  Pagination,
-  PaginationContent,
-  PaginationLink,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
-}
+export default Pagination;
