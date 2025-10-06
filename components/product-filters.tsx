@@ -16,23 +16,18 @@ import { cn } from "@/lib/utils";
 import { formatPrice } from "@/utils";
 import { Category } from "@/types/categories";
 import { apiFetchClient } from "@/lib/apiFetch.client";
+import { Color } from "@/types/product";
 
 interface ProductFiltersProps {
   filters: Filters;
   onFiltersChange: (filters: Filters) => void;
+  colors: Color[];
 }
-
-const colors = [
-  { name: "آبی پاستیلی", value: "#B3D9F2" },
-  { name: "صورتی پاستیلی", value: "#F2B3D9" },
-  { name: "سفید", value: "#FFFFFF" },
-  { name: "کرم", value: "#F5F5DC" },
-  { name: "زرد", value: "#FFEB3B" },
-];
 
 export function ProductFilters({
   filters,
   onFiltersChange,
+  colors,
 }: ProductFiltersProps) {
   const [tempPriceRange, setTempPriceRange] = useState(filters.priceRange);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -120,6 +115,7 @@ export function ProductFilters({
           <ColorFilters
             filters={filters}
             handleColorChange={handleColorChange}
+            colors={colors}
           />
           <ClearFiltersButton onClick={clearFilters} filters={filters} />
         </div>
@@ -167,6 +163,7 @@ export function ProductFilters({
               <ColorFilters
                 filters={filters}
                 handleColorChange={handleColorChange}
+                colors={colors}
               />
               <ClearFiltersButton
                 onClick={() => clearFilters()}
@@ -280,11 +277,13 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
 type ColorFiltersProps = {
   filters: Filters;
   handleColorChange: (color: string, checked: boolean) => void;
+  colors: Color[];
 };
 
 const ColorFilters: React.FC<ColorFiltersProps> = ({
   filters,
   handleColorChange,
+  colors,
 }) => {
   return (
     <div>
@@ -299,7 +298,7 @@ const ColorFilters: React.FC<ColorFiltersProps> = ({
                   ? "border-primary scale-110"
                   : "border-gray-300"
               )}
-              style={{ backgroundColor: color.value }}
+              style={{ backgroundColor: color.hex }}
               onClick={() =>
                 handleColorChange(
                   color.name,

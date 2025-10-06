@@ -6,8 +6,8 @@ import { ProductCardSkeleton } from "@/components/skeleton-loaders/product-skele
 import { apiFetchClient } from "@/lib/apiFetch.client";
 import { buildQueryString } from "@/lib/utils";
 import { PaginationProps } from "@/types/pagination";
-import { Product } from "@/types/product";
-import { useEffect, useState } from "react";
+import { Color, Product, ProductVariant } from "@/types/product";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 export type ViewMode = "grid" | "list";
@@ -80,7 +80,7 @@ export default function Products() {
         lastPage,
         limit: currentLimit,
       } = productsData;
-      console.log("++++++", products);
+
       setProducts(products);
       setPagination({
         hasNextPage,
@@ -99,14 +99,38 @@ export default function Products() {
 
   useEffect(() => {
     getProducts(1, filters);
-    console.log("filters,", filters);
   }, [filters]);
 
+  const colors = useMemo(() => {
+    const allColors: Color[] = [];
+
+    products.forEach((product) => {
+      product.variants.forEach((variant) => {
+        if (variant.color && variant.color.name && variant.color.hex) {
+          allColors.push({
+            name: variant.color.name,
+            hex: variant.color.hex,
+          });
+        }
+      });
+    });
+
+    const uniqueColors = Array.from(
+      new Map(allColors.map((color) => [color.hex, color])).values()
+    );
+
+    return uniqueColors;
+  }, [products]);
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex gap-6">
         {/* Filters Sidebar */}
-        <ProductFilters filters={filters} onFiltersChange={setFilters} />
+
+        <ProductFilters
+          filters={filters}
+          onFiltersChange={setFilters}
+          colors={colors}
+        />
 
         {/* Main Content */}
         <div className="flex-1">
