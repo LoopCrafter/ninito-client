@@ -2,8 +2,9 @@
 import { ProductFilters } from "@/components/product-filters";
 import { ProductsHeader } from "@/components/products-header";
 import { ProductsList } from "@/components/products-list";
+import { ProductCardSkeleton } from "@/components/skeleton-loaders/product-skeleton";
 import { apiFetchClient } from "@/lib/apiFetch.client";
-import { sampleProducts } from "@/mock";
+import { buildQueryString } from "@/lib/utils";
 import { PaginationProps } from "@/types/pagination";
 import { Product } from "@/types/product";
 import { useEffect, useState } from "react";
@@ -18,11 +19,20 @@ export type SortOption =
   | "rating";
 
 export interface ProductFilters {
-  priceRange: [number, number];
-  categories: string[];
-  inStock: boolean;
-  colors: string[];
   searchQuery: string;
+  categories: string[];
+  colors: string[];
+  inStock: boolean;
+  isEnabled?: boolean;
+  priceRange: [number, number];
+  sort?:
+    | "newest"
+    | "oldest"
+    | "cheapest"
+    | "expensive"
+    | "mostViewed"
+    | "bestSelling";
+  order?: "asc" | "desc";
 }
 
 type ProductResponse = PaginationProps & {
@@ -32,6 +42,7 @@ type ProductResponse = PaginationProps & {
 };
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState<PaginationProps>({
     page: 1,
     totalPages: 1,
@@ -41,7 +52,6 @@ export default function Products() {
     limit: 8,
   });
   const [sortBy, setSortBy] = useState<SortOption>("newest");
-  const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<ProductFilters>({
     priceRange: [0, 20000000],
     categories: [],
@@ -50,11 +60,17 @@ export default function Products() {
     searchQuery: "",
   });
 
-  const getProducts = async (page: number) => {
+  const getProducts = async (page: number, filters: ProductFilters) => {
+    setIsLoading(true);
     try {
-      const productsData = await apiFetchClient<ProductResponse>(
-        `/products?page=${page}&limit=${pagination.limit}`
+      const query = buildQueryString(
+        filters,
+        pagination.page,
+        pagination.limit
       );
+      const url = `/products?${query}`;
+
+      const productsData = await apiFetchClient<ProductResponse>(url);
       const {
         products,
         hasNextPage,
@@ -64,6 +80,7 @@ export default function Products() {
         lastPage,
         limit: currentLimit,
       } = productsData;
+      console.log("++++++", products);
       setProducts(products);
       setPagination({
         hasNextPage,
@@ -75,48 +92,15 @@ export default function Products() {
       });
     } catch (error) {
       toast.error("There is an error, please try again later");
+    } finally {
+      setIsLoading(false);
     }
   };
+
   useEffect(() => {
-    getProducts(1);
-  }, []);
-
-  // Filter and sort products
-  const filteredProducts = products.filter((product) => {
-    const priceInRange =
-      product.price >= filters.priceRange[0] &&
-      product.price <= filters.priceRange[1];
-    const categoryMatch =
-      filters.categories.length === 0 ||
-      filters.categories.includes(product.category);
-    const stockMatch = !filters.inStock || product.inStock;
-    const colorMatch =
-      filters.colors.length === 0 ||
-      product.colors.some((color) => filters.colors.includes(color.name));
-    const searchMatch =
-      !filters.searchQuery ||
-      product.title.toLowerCase().includes(filters.searchQuery.toLowerCase());
-
-    return (
-      priceInRange && categoryMatch && stockMatch && colorMatch && searchMatch
-    );
-  });
-
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
-      case "rating":
-        return b.rating - a.rating;
-      case "popular":
-        return b.reviewCount - a.reviewCount;
-      case "newest":
-      default:
-        return a.isNew ? -1 : 1;
-    }
-  });
+    getProducts(1, filters);
+    console.log("filters,", filters);
+  }, [filters]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -129,18 +113,22 @@ export default function Products() {
           <ProductsHeader
             sortBy={sortBy}
             onSortChange={setSortBy}
-            totalProducts={filteredProducts.length}
+            totalProducts={products.length}
             searchQuery={filters.searchQuery}
             onSearchChange={(query) =>
               setFilters((prev) => ({ ...prev, searchQuery: query }))
             }
           />
 
-          <ProductsList
-            products={products}
-            pagination={pagination}
-            onPageChange={getProducts}
-          />
+          {isLoading ? (
+            <ProductCardSkeleton count={8} cols={4} />
+          ) : (
+            <ProductsList
+              products={products}
+              pagination={pagination}
+              onPageChange={(page) => getProducts(page, filters)}
+            />
+          )}
         </div>
       </div>
     </div>

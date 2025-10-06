@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,13 +14,13 @@ import { Badge } from "@/components/ui/badge";
 import { ProductFilters as Filters } from "@/app/products/page";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/utils";
+import { Category } from "@/types/categories";
+import { apiFetchClient } from "@/lib/apiFetch.client";
 
 interface ProductFiltersProps {
   filters: Filters;
   onFiltersChange: (filters: Filters) => void;
 }
-
-const categories = ["آغوشی", "قنداق", "پتو", "بالش", "تشک"];
 
 const colors = [
   { name: "آبی پاستیلی", value: "#B3D9F2" },
@@ -35,12 +35,26 @@ export function ProductFilters({
   onFiltersChange,
 }: ProductFiltersProps) {
   const [tempPriceRange, setTempPriceRange] = useState(filters.priceRange);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const { categories } = await apiFetchClient<{ categories: Category[] }>(
+          "/categories"
+        );
+        setCategories(categories);
+      } catch (error) {}
+    };
+
+    getCategories();
+  }, []);
 
   const handleCategoryChange = (category: string, checked: boolean) => {
     const newCategories = checked
       ? [...filters.categories, category]
       : filters.categories.filter((c) => c !== category);
-
+    console.log("Asdd", newCategories);
     onFiltersChange({ ...filters, categories: newCategories });
   };
 
@@ -101,6 +115,7 @@ export function ProductFilters({
             filters={filters}
             handleCategoryChange={handleCategoryChange}
             onFiltersChange={onFiltersChange}
+            categories={categories}
           />
           <ColorFilters
             filters={filters}
@@ -147,6 +162,7 @@ export function ProductFilters({
                 filters={filters}
                 handleCategoryChange={handleCategoryChange}
                 onFiltersChange={onFiltersChange}
+                categories={categories}
               />
               <ColorFilters
                 filters={filters}
@@ -212,30 +228,32 @@ type CategoryFiltersProps = {
   filters: Filters;
   handleCategoryChange: (category: string, checked: boolean) => void;
   onFiltersChange: (filters: Filters) => void;
+  categories: Category[];
 };
 const CategoryFilters: React.FC<CategoryFiltersProps> = ({
   filters,
   handleCategoryChange,
   onFiltersChange,
+  categories,
 }) => {
   return (
     <div>
       <h3 className="font-semibold mb-4">دسته‌بندی</h3>
       <div className="space-y-3">
         {categories.map((category) => (
-          <div key={category} className="flex items-center gap-2 ">
+          <div key={category.id} className="flex items-center gap-2 ">
             <Checkbox
-              id={category}
-              checked={filters.categories.includes(category)}
+              id={category.id}
+              checked={filters.categories.includes(category.id)}
               onCheckedChange={(checked) =>
-                handleCategoryChange(category, checked as boolean)
+                handleCategoryChange(category.id, checked as boolean)
               }
             />
             <label
-              htmlFor={category}
+              htmlFor={category.id}
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
             >
-              {category}
+              {category.title}
             </label>
           </div>
         ))}

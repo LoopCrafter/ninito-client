@@ -10,7 +10,6 @@ export async function apiFetchClient<T>(
     },
     credentials: "include",
   });
-  console.log("++++", res);
   if (!res.ok) throw new Error(`${res.statusText}`);
   return res.json() as Promise<T>;
 }

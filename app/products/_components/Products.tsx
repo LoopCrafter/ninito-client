@@ -47,7 +47,6 @@ export default function Products() {
   });
 
   const getProducts = async () => {
-    console.log("+++++___");
     try {
       const products = await apiFetchClient("/products");
       console.log("+++++", products);
