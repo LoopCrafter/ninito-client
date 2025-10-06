@@ -1,3 +1,5 @@
+import { PaginationProps } from "./pagination";
+
 export type Color = {
   hex: string;
   name: string;
@@ -54,3 +56,29 @@ export interface Product {
   isFeatured?: boolean;
   isEnabled?: boolean;
 }
+
+export type SortOption =
+  | "newest"
+  | "oldest"
+  | "cheapest"
+  | "expensive"
+  | "mostViewed"
+  | "bestSelling";
+
+export interface ProductFilters {
+  searchQuery: string;
+  categories: string[];
+  colors: string[];
+  inStock: boolean;
+  isEnabled?: boolean;
+  priceRange: [number, number];
+  sort?: SortOption;
+
+  order?: "asc" | "desc";
+}
+
+export type ProductResponse = PaginationProps & {
+  products: Product[];
+  nextPage: null | number;
+  prevPage: null | number;
+};

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Grid3X3, List, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,25 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-import { cn } from "@/lib/utils";
-import { SortOption, ViewMode } from "@/app/products/page";
+import { SortOption } from "@/types/product";
+import { sortOptions } from "@/constants";
 
 interface ProductsHeaderProps {
-  sortBy: SortOption;
+  sortBy?: SortOption;
   onSortChange: (sort: SortOption) => void;
   totalProducts: number;
   searchQuery: string;
   onSearchChange: (query: string) => void;
 }
-
-const sortOptions = [
-  { value: "newest", label: "جدیدترین" },
-  { value: "popular", label: "محبوب‌ترین" },
-  { value: "price-low", label: "ارزان‌ترین" },
-  { value: "price-high", label: "گران‌ترین" },
-  { value: "rating", label: "پرامتیازترین" },
-];
 
 export function ProductsHeader({
   sortBy,
@@ -39,7 +30,6 @@ export function ProductsHeader({
 
   return (
     <div className="space-y-4 mb-8">
-      {/* Controls Bar */}
       <div className="flex items-center justify-between bg-card p-4 rounded-xl card-shadow">
         <div className="flex items-center gap-4">
           {/* Mobile Search Toggle */}
@@ -52,11 +42,10 @@ export function ProductsHeader({
             <Search className="h-4 w-4" />
           </Button>
 
-          {/* Sort Dropdown */}
           <div className="flex items-center gap-2">
             <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
             <Select
-              value={sortBy}
+              value={sortBy ?? ""}
               onValueChange={(value) => onSortChange(value as SortOption)}
             >
               <SelectTrigger className="w-[160px]">

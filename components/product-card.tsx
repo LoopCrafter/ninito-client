@@ -60,7 +60,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     const variantsWithColor = product.variants.find(
       (v) => v.color.name === selectedColor
     );
-    console.log("test", variantsWithColor);
     if (variantsWithColor) {
       setSelectedSize(variantsWithColor.size);
     }
