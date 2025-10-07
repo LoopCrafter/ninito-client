@@ -1,6 +1,6 @@
 "use server";
 
-import { LoginSchema } from "@/schema/auth";
+import { LoginSchema, SignupSchema } from "@/schema/auth";
 import { apiFetchServer } from "../apiFetch.server";
 import { User } from "@/types/user";
 
@@ -50,4 +50,32 @@ const loginAction = async (Prev: any, formData: FormData) => {
   }
 };
 
-export { loginAction };
+const signupAction = async (Prev: any, formData: FormData) => {
+  const signupData = {
+    firstName: (formData.get("firstName") ?? "") as string,
+    lastName: (formData.get("lastName") ?? "") as string,
+    email: (formData.get("email") ?? "") as string,
+    phone: (formData.get("phone") ?? "") as string,
+    password: (formData.get("password") ?? "") as string,
+    confirmPassword: (formData.get("confirmPassword") ?? "") as string,
+    gender: (formData.get("gender") ?? "") as string,
+  };
+  console.log("++++", signupData);
+  const result = SignupSchema.safeParse(signupData);
+  if (!result.success) {
+    const errors: Record<string, string> = {};
+
+    result.error.issues.forEach((issue) => {
+      const field = issue.path?.[0] || "form"; // اگر path نداشت، بندازش در "form"
+      errors[field as string] = issue.message;
+    });
+
+    return {
+      success: false,
+      errors,
+      signup: signupData,
+    };
+  }
+  return {};
+};
+export { loginAction, signupAction };

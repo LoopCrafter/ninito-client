@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { LoginForm } from "./_components/LoginForm";
 import { SignUpForm } from "./_components/SignupForm";
 import Login from "./_components/Login";
+import Signup from "./_components/Signup";
 
 interface PageProps {
   searchParams: {
@@ -15,7 +15,7 @@ const page = async ({ searchParams }: PageProps) => {
   return (
     <section className="px-4 py-8 pt-10 min-h-screen w-screen bg-gradient-to-r from-sky-200 to-rose-200 dark:from-sky-700 dark:to-rose-700">
       <div className="max-w-md mx-auto">
-        {activeTab === "login" ? <Login /> : <SignUpForm />}
+        {activeTab === "login" ? <Login /> : <Signup />}
 
         <div className="text-center mt-6">
           {activeTab === "login" ? (
