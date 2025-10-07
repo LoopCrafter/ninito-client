@@ -7,31 +7,34 @@ import useApp from "@/hooks/useApp";
 import { loginAction } from "@/lib/actions/auth";
 import { User } from "@/types/user";
 import { Eye, EyeOff, Mail, Smartphone } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
-import { success } from "zod";
+import { ForgotPasswordForm } from "./ForgotPassword";
+import { toast } from "sonner";
 
 type LoginState = {
   success: boolean;
-  message: string;
+  message?: string;
   user?: User;
-  errors?: string[];
-  login?: {
-    email: string;
-    password: string;
+  errors?: Record<string, string>;
+  login: {
+    email: FormDataEntryValue | null;
+    password: FormDataEntryValue | null;
   };
 };
-const initialState: any = {
+
+const initialState: LoginState = {
   success: false,
   message: "",
   user: undefined,
-  errors: [],
+  errors: {},
   login: {
     email: "",
     password: "",
   },
 };
 const Login = () => {
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [data, action, isPending] = useActionState(loginAction, initialState);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
@@ -39,9 +42,14 @@ const Login = () => {
   useEffect(() => {
     if (data.user) {
       setUser(data.user);
+      toast.success("شما با موفقیت وارد شدید");
       router.replace("/");
     }
   }, [data]);
+
+  if (showForgotPassword) {
+    return <ForgotPasswordForm onBack={() => setShowForgotPassword(false)} />;
+  }
 
   return (
     <div className="space-y-6">
@@ -88,9 +96,9 @@ const Login = () => {
               <div className="relative mt-1">
                 <Input
                   id="password"
-                  type="password"
                   name="password"
                   defaultValue={String(data.login?.password ?? "")}
+                  type={showPassword ? "text" : "password"}
                   placeholder="رمز عبور خود را وارد کنید"
                   className={`pl-10 text-right ltr ${
                     data.errors?.password ? "border border-red-600" : ""
@@ -101,29 +109,29 @@ const Login = () => {
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
-                  {showPassword ? (
+                  {!showPassword ? (
                     <EyeOff className="w-4 h-4" />
                   ) : (
                     <Eye className="w-4 h-4" />
                   )}
                 </button>
-                {data.errors?.password && (
-                  <span className="text-red-600 text-sm mt-2 block">
-                    {data.errors.password}
-                  </span>
-                )}
               </div>
+              {data.errors?.password && (
+                <span className="text-red-600 text-sm mt-2 block">
+                  {data.errors.password}
+                </span>
+              )}
             </div>
 
             <div className="text-left">
               <button
                 type="button"
+                onClick={() => setShowForgotPassword(true)}
                 className="text-sm text-primary hover:underline"
               >
                 فراموشی رمز عبور؟
               </button>
             </div>
-
             <Button
               type="submit"
               className="w-full bg-sky-400 hover:bg-sky-500 text-white"
