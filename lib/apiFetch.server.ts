@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { handleApiError } from "./errorHandler";
 
 export async function apiFetchServer<T>(
   path: string,
@@ -8,11 +9,8 @@ export async function apiFetchServer<T>(
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const cookieStore = await cookies();
-  const accessTokenCookie = cookieStore.get("accessToken");
-  const refreshTokenCookie = cookieStore.get("refreshToken");
-
-  const accessToken = accessTokenCookie?.value;
-  const refreshToken = refreshTokenCookie?.value;
+  const accessToken = cookieStore.get("accessToken")?.value;
+  const refreshToken = cookieStore.get("refreshToken")?.value;
 
   const cookieHeader = [
     accessToken ? `accessToken=${accessToken}` : "",
@@ -21,8 +19,8 @@ export async function apiFetchServer<T>(
     .filter(Boolean)
     .join("; ");
 
-  const doFetch = async () => {
-    return fetch(`${baseUrl}${path}`, {
+  const doFetch = async () =>
+    fetch(`${baseUrl}${path}`, {
       ...options,
       headers: {
         "Content-Type": "application/json",
@@ -31,38 +29,37 @@ export async function apiFetchServer<T>(
       },
       cache: "no-store",
     });
-  };
 
-  let res = await doFetch();
+  try {
+    let res = await doFetch();
 
-  if (res.status === 401) {
-    const refreshCookieHeader = refreshToken
-      ? `refreshToken=${refreshToken}`
-      : "";
+    if (res.status === 401 && refreshToken) {
+      const refreshRes = await fetch(`${baseUrl}/auth/refresh-token`, {
+        method: "POST",
+        headers: {
+          ...(refreshToken ? { Cookie: `refreshToken=${refreshToken}` } : {}),
+        },
+        cache: "no-store",
+      });
 
-    const refreshRes = await fetch(`${baseUrl}/auth/refresh-token`, {
-      method: "POST",
-      headers: {
-        ...(refreshCookieHeader ? { Cookie: refreshCookieHeader } : {}),
-      },
-      cache: "no-store",
-    });
-
-    const refreshSetCookies = refreshRes.headers.getSetCookie
-      ? refreshRes.headers.getSetCookie()
-      : [];
-
-    console.log("refreshRes", refreshRes);
-    if (refreshRes.ok) {
-      res = await doFetch();
-    } else {
-      redirect("/auth?logout=true'");
+      if (refreshRes.ok) {
+        res = await doFetch();
+      } else {
+        redirect("/auth?logout=true");
+      }
     }
-  }
 
-  if (!res.ok) {
-    throw new Error(`API failed: ${res.status} ${res.statusText}`);
-  }
+    let responseData: any = null;
+    try {
+      responseData = await res.json();
+    } catch (_) {}
 
-  return res.json() as Promise<T>;
+    if (!res.ok) {
+      handleApiError(res, responseData);
+    }
+
+    return responseData as T;
+  } catch (err) {
+    throw err;
+  }
 }

@@ -2,30 +2,28 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { signupAction } from "@/lib/actions/auth";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { GenderSelect } from "./GenderSelect";
+import { toast } from "sonner";
 
 type InitialState = {
   success: boolean;
   errors: Record<string, string>;
   message?: string;
   signup: {
-    firstName: FormDataEntryValue | null;
-    lastName: FormDataEntryValue | null;
-    email: FormDataEntryValue | null;
-    phone: FormDataEntryValue | null;
-    password: FormDataEntryValue | null;
-    confirmPassword: FormDataEntryValue | null;
-    gender: FormDataEntryValue | null;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    password: string;
+    confirmPassword: string;
+    gender: string;
+    apiError: string;
   };
 };
+
 const initialState: InitialState = {
   success: false,
   message: "",
@@ -38,10 +36,20 @@ const initialState: InitialState = {
     password: "",
     confirmPassword: "",
     gender: "",
+    apiError: "",
   },
 };
+
 const Signup = () => {
   const [data, action, isPending] = useActionState(signupAction, initialState);
+
+  useEffect(() => {
+    console.log("ASDASd", data);
+    if (data.errors?.apiError) {
+      toast.error(data.errors.apiError);
+    }
+  }, [data]);
+
   return (
     <div className="space-y-6 bg-muted shadow-md p-5 rounded-md">
       <div className="text-center">
@@ -172,21 +180,10 @@ const Signup = () => {
 
         <div>
           <Label htmlFor="gender">جنسیت (اختیاری)</Label>
-          <Select name="">
-            <SelectTrigger
-              className={`mt-1 w-full ${
-                data.errors?.gender ? "border border-red-600" : ""
-              }`}
-              defaultValue={String(data.signup?.gender)}
-            >
-              <SelectValue placeholder="انتخاب کنید" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="male">مرد</SelectItem>
-              <SelectItem value="female">زن</SelectItem>
-              <SelectItem value="prefer_not_to_say">ترجیح نمی‌دهم</SelectItem>
-            </SelectContent>
-          </Select>
+          <GenderSelect
+            defaultValue={data.signup?.gender}
+            error={data.errors?.gender}
+          />
           {data.errors?.gender && (
             <span className="text-red-600 text-sm mt-2 block">
               {data.errors.gender}
@@ -196,10 +193,16 @@ const Signup = () => {
 
         <Button
           type="submit"
+          disabled={isPending}
           className="w-full bg-sky-400 hover:bg-sky-500 text-white"
         >
-          ثبت‌ نام
+          {isPending ? "در حال ثبت نام..." : "ثبت‌ نام"}
         </Button>
+        {data.errors?.apiError && (
+          <span className="text-red-600 text-sm mt-2 block">
+            {data.errors?.apiError}
+          </span>
+        )}
       </form>
     </div>
   );

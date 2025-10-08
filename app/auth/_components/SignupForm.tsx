@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { signupSchema } from "@/schema/user";
-import VerificationForm from "./VerificationForm";
 import { apiFetchClient } from "@/lib/apiFetch.client";
 
 type SignupForm = z.infer<typeof signupSchema>;
@@ -53,15 +52,6 @@ export function SignUpForm() {
   const hideVerification = () => {
     setShowVerification(false);
   };
-
-  if (showVerification) {
-    return (
-      <VerificationForm
-        signupEmail={signupEmail}
-        hideVerification={hideVerification}
-      />
-    );
-  }
 
   return (
     <div className="space-y-6 bg-muted shadow-md p-5 rounded-md">
