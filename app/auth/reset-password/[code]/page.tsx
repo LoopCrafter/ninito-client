@@ -70,7 +70,7 @@ export default function ResetPassword() {
                   جدید وارد شوید
                 </p>
               </div>
-              <Link href="/auth">
+              <Link href="/auth?tab=login">
                 <Button className="w-full bg-sky-400 hover:bg-sky-500 text-white">
                   رفتن به صفحه ورود
                 </Button>

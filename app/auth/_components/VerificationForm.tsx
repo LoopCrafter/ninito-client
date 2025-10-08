@@ -1,20 +1,30 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { apiFetchClient } from "@/lib/apiFetch.client";
-import { verifySchema } from "@/schema/user";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { verifyAction } from "@/lib/actions/auth";
 import { Label } from "@radix-ui/react-label";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import z from "zod";
 
-type VerifyForm = z.infer<typeof verifySchema>;
 type VerificationFormProps = {
   signupEmail: string;
   hideVerification: () => void;
+};
+
+type InitialState = {
+  success: boolean;
+  code: FormDataEntryValue;
+  errors: Record<string, string>;
+  message: string;
+};
+
+const initialState: InitialState = {
+  success: false,
+  errors: {},
+  code: "",
+  message: "",
 };
 
 const VerificationForm: React.FC<VerificationFormProps> = ({
@@ -22,29 +32,16 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
   hideVerification,
 }) => {
   const router = useRouter();
-  const verifyForm = useForm<VerifyForm>({
-    resolver: zodResolver(verifySchema),
-  });
-
-  const onVerify = async (data: VerifyForm) => {
-    try {
-      const res = apiFetchClient("/auth/verify-email", {
-        method: "POSt",
-        body: JSON.stringify(data),
-      });
-      toast("حساب کاربری شما با موفقیت ایجاد شد");
-      console.log("Verification code:", data.code, "for:", signupEmail);
-      hideVerification();
-      router.replace("/");
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("Error: ", error);
-        toast.error(error.message);
-      } else {
-        toast.error("خطای غیرمنتظره ای رخ داده است. لطفا مجددا تلاش کنید!");
-      }
+  const [data, action, isPending] = useActionState(verifyAction, initialState);
+  useEffect(() => {
+    if (data.success) {
+      toast.success(data.message);
+      router.replace("/auth?tab=login");
     }
-  };
+    if (data.errors.apiError) {
+      toast.error(data.errors.apiError);
+    }
+  }, [data]);
 
   return (
     <div className="space-y-6 p-5 bg-white">
@@ -61,21 +58,23 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
         </p>
       </div>
 
-      <form onSubmit={verifyForm.handleSubmit(onVerify)} className="space-y-4">
+      <form action={action} className="space-y-4">
         <div>
           <Label htmlFor="verify-code">کد تأیید</Label>
           <Input
             id="verify-code"
             type="text"
+            name="code"
             placeholder="123456"
             maxLength={6}
-            {...verifyForm.register("code")}
-            className="mt-1 text-center text-lg tracking-widest"
+            className={`mt-1 text-center text-lg tracking-widest ${
+              data?.errors?.code ? "border border-red-600" : ""
+            }`}
           />
-          {verifyForm.formState.errors.code && (
-            <p className="text-sm text-destructive mt-1">
-              {verifyForm.formState.errors.code.message}
-            </p>
+          {data?.errors?.code && (
+            <span className="text-red-600 text-sm mt-2 block">
+              {data.errors.code}
+            </span>
           )}
         </div>
 
@@ -85,7 +84,6 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
             variant="outline"
             onClick={() => {
               hideVerification();
-              verifyForm.reset();
             }}
             className="flex-1"
           >
@@ -94,9 +92,9 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
           <Button
             type="submit"
             className="flex-1 bg-rose-400 hover:bg-rose-500 text-white"
-            disabled={verifyForm.formState.isSubmitting}
+            disabled={isPending}
           >
-            {verifyForm.formState.isSubmitting ? "در حال تأیید..." : "تأیید کد"}
+            {isPending ? "در حال تایید..." : "تأیید کد"}
           </Button>
         </div>
       </form>

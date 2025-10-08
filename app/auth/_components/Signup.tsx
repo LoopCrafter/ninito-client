@@ -69,7 +69,7 @@ const Signup = () => {
   }
 
   return (
-    <div className="space-y-6 bg-muted shadow-md p-5 rounded-md">
+    <div className="space-y-6 bg-white  shadow-md p-5 rounded-md">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-foreground mb-2">
           ایجاد حساب کاربری

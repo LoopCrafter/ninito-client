@@ -1,9 +1,10 @@
 "use server";
 
-import { LoginSchema, SignupSchema } from "@/schema/auth";
+import { LoginSchema, SignupSchema, VerifyCodeSchema } from "@/schema/auth";
 import { apiFetchServer } from "../apiFetch.server";
 import { User } from "@/types/user";
 import { redirect } from "next/navigation";
+import { success } from "zod";
 
 const loginAction = async (Prev: any, formData: FormData) => {
   const loginData = {
@@ -85,7 +86,6 @@ const signupAction = async (Prev: any, formData: FormData) => {
       method: "POST",
       body: JSON.stringify(signupData),
     });
-    console.log("++++, ", res);
   } catch (error) {
     let errorMsg = "";
     if (error instanceof Error) {
@@ -104,6 +104,51 @@ const signupAction = async (Prev: any, formData: FormData) => {
   return {
     success: true,
   };
-  redirect("/auth/verify");
 };
-export { loginAction, signupAction };
+
+const verifyAction = async (prev: any, formData: FormData) => {
+  const code = formData.get("code") ?? "";
+  const result = VerifyCodeSchema.safeParse(code ?? "");
+  if (!result.success) {
+    const errors: Record<string, string> = {};
+
+    result.error.issues.forEach((issue) => {
+      const field = "code";
+      if (!errors[field as string]) {
+        errors[field as string] = issue.message;
+      }
+    });
+
+    return {
+      errors,
+      success: false,
+    };
+  }
+
+  try {
+    await apiFetchServer("/auth/verify-email", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    });
+    return {
+      success: true,
+      code,
+      errors: {},
+      message: " حساب کاربری شما با موفقیت تایید شد",
+    };
+  } catch (error) {
+    let errorMsg = "";
+    if (error instanceof Error) {
+      errorMsg = error.message;
+    } else {
+      errorMsg = "لطفاً بعداً دوباره تلاش کنید";
+    }
+
+    return {
+      success: false,
+      code,
+      errors: { apiError: errorMsg, code: "" },
+    };
+  }
+};
+export { loginAction, signupAction, verifyAction };

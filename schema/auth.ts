@@ -28,10 +28,8 @@ const SignupSchema = z.object({
 export type SignupData = z.infer<typeof SignupSchema>;
 export { SignupSchema };
 
-const VerifyCodeSchema = z.object({
-  code: z
-    .string()
-    .regex(/^\d{6}$/, { message: "کد باید شامل ۶ رقم عددی باشد" }),
-});
+const VerifyCodeSchema = z
+  .string()
+  .regex(/^\d{6}$/, { message: "کد باید شامل ۶ رقم عددی باشد" });
 
 export { VerifyCodeSchema };

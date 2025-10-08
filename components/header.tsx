@@ -91,7 +91,7 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link href="/auth">
+            <Link href="/auth?tab=login">
               <Button variant="ghost" className="hidden sm:flex">
                 <User className="h-4 w-4 ml-2" />
                 ورود / ثبت نام
