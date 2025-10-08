@@ -100,6 +100,10 @@ const signupAction = async (Prev: any, formData: FormData) => {
       signup: signupData,
     };
   }
+
+  return {
+    success: true,
+  };
   redirect("/auth/verify");
 };
 export { loginAction, signupAction };

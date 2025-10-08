@@ -7,6 +7,8 @@ import { signupAction } from "@/lib/actions/auth";
 import { useActionState, useEffect, useState } from "react";
 import { GenderSelect } from "./GenderSelect";
 import { toast } from "sonner";
+import VerificationForm from "./VerificationForm";
+import { useRouter } from "next/navigation";
 
 type InitialState = {
   success: boolean;
@@ -42,13 +44,29 @@ const initialState: InitialState = {
 
 const Signup = () => {
   const [data, action, isPending] = useActionState(signupAction, initialState);
-
+  const [showVerification, setShowVerification] = useState(false);
+  const router = useRouter();
   useEffect(() => {
-    console.log("ASDASd", data);
     if (data.errors?.apiError) {
       toast.error(data.errors.apiError);
     }
+    if (data?.success) {
+      setShowVerification(true);
+    }
   }, [data]);
+
+  const hideVerification = () => {
+    setShowVerification(false);
+    router.refresh();
+  };
+  if (showVerification) {
+    return (
+      <VerificationForm
+        signupEmail={data.signup?.email ?? ""}
+        hideVerification={hideVerification}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6 bg-muted shadow-md p-5 rounded-md">
@@ -69,7 +87,7 @@ const Signup = () => {
               id="firstName"
               name="firstName"
               type="text"
-              defaultValue={String(data.signup?.firstName)}
+              defaultValue={String(data.signup?.firstName ?? "")}
               placeholder="علی"
               className={`mt-1 ${
                 data.errors?.firstName ? "border border-red-600" : ""
@@ -88,7 +106,7 @@ const Signup = () => {
               id="lastName"
               name="lastName"
               type="text"
-              defaultValue={String(data.signup?.lastName)}
+              defaultValue={String(data.signup?.lastName ?? "")}
               placeholder="احمدی"
               className={`mt-1 ${
                 data.errors?.lastName ? "border border-red-600" : ""
@@ -108,7 +126,7 @@ const Signup = () => {
             id="signup-email"
             type="email"
             name="email"
-            defaultValue={String(data.signup?.email)}
+            defaultValue={String(data.signup?.email ?? "")}
             placeholder="your@email.com"
             className={`mt-1 ${
               data.errors?.email ? "border border-red-600" : ""
@@ -127,7 +145,7 @@ const Signup = () => {
             id="phone"
             name="phone"
             type="tel"
-            defaultValue={String(data.signup?.phone)}
+            defaultValue={String(data.signup?.phone ?? "")}
             placeholder="09123456789"
             className={`mt-1 ${
               data.errors?.phone ? "border border-red-600" : ""
@@ -146,7 +164,7 @@ const Signup = () => {
             id="password"
             name="password"
             type="password"
-            defaultValue={String(data.signup?.password)}
+            defaultValue={String(data.signup?.password ?? "")}
             placeholder="حداقل ۸ کاراکتر"
             className={`mt-1 ${
               data.errors?.password ? "border border-red-600" : ""
@@ -165,7 +183,7 @@ const Signup = () => {
             id="confirmPassword"
             name="confirmPassword"
             type="password"
-            defaultValue={String(data.signup?.confirmPassword)}
+            defaultValue={String(data.signup?.confirmPassword ?? "")}
             placeholder="رمز عبور را تکرار کنید"
             className={`mt-1 ${
               data.errors?.confirmPassword ? "border border-red-600" : ""
@@ -181,7 +199,7 @@ const Signup = () => {
         <div>
           <Label htmlFor="gender">جنسیت (اختیاری)</Label>
           <GenderSelect
-            defaultValue={data.signup?.gender}
+            defaultValue={data.signup?.gender ?? ""}
             error={data.errors?.gender}
           />
           {data.errors?.gender && (

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { SignUpForm } from "./_components/SignupForm";
 import Login from "./_components/Login";
 import Signup from "./_components/Signup";
 
