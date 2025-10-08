@@ -1,6 +1,11 @@
 "use server";
 
-import { LoginSchema, SignupSchema, VerifyCodeSchema } from "@/schema/auth";
+import {
+  LoginSchema,
+  ResetPasswordSchema,
+  SignupSchema,
+  VerifyCodeSchema,
+} from "@/schema/auth";
 import { apiFetchServer } from "../apiFetch.server";
 import { User } from "@/types/user";
 import { redirect } from "next/navigation";
@@ -36,7 +41,7 @@ const loginAction = async (Prev: any, formData: FormData) => {
         body: JSON.stringify(loginData),
       }
     );
-    console.log("res", res);
+
     return {
       success: true,
       message: "ورود موفق",
@@ -151,4 +156,54 @@ const verifyAction = async (prev: any, formData: FormData) => {
     };
   }
 };
-export { loginAction, signupAction, verifyAction };
+
+const resetPasswordAction = async (prev: any, formData: FormData) => {
+  const email = (formData.get("email") as string) ?? "";
+  const result = ResetPasswordSchema.safeParse(email);
+
+  if (!result.success) {
+    const errors: Record<string, string> = {};
+
+    result.error.issues.forEach((issue) => {
+      const field = "email";
+      if (!errors[field as string]) {
+        errors[field as string] = issue.message;
+      }
+    });
+
+    return {
+      success: false,
+      errors,
+      email,
+    };
+  }
+
+  try {
+    const res = await apiFetchServer("/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+
+    return {
+      success: true,
+      email,
+      errors: {},
+      message: "لینک بازیابی رمز عبور به ایمیل شما ارسال شد",
+    };
+  } catch (error) {
+    let errorMsg = "";
+    if (error instanceof Error) {
+      errorMsg = error.message;
+    } else {
+      errorMsg = "لطفاً بعداً دوباره تلاش کنید";
+    }
+
+    return {
+      success: false,
+      email,
+      errors: { apiError: errorMsg, email: "" },
+      message: "",
+    };
+  }
+};
+export { loginAction, signupAction, verifyAction, resetPasswordAction };
