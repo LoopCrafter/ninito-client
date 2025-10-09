@@ -5,11 +5,10 @@ import {
   ResetPasswordSchema,
   SignupSchema,
   VerifyCodeSchema,
+  SetResetPasswordSchema,
 } from "@/schema/auth";
 import { apiFetchServer } from "../apiFetch.server";
 import { User } from "@/types/user";
-import { redirect } from "next/navigation";
-import { success } from "zod";
 
 const loginAction = async (Prev: any, formData: FormData) => {
   const loginData = {
@@ -206,4 +205,65 @@ const resetPasswordAction = async (prev: any, formData: FormData) => {
     };
   }
 };
-export { loginAction, signupAction, verifyAction, resetPasswordAction };
+
+const setResetPasswordAction = async (prev: any, formData: FormData) => {
+  const reset = {
+    password: formData.get("password") ?? "",
+    confirmPassword: formData.get("confirmPassword") ?? "",
+    code: formData.get("code") ?? "",
+  };
+
+  const result = SetResetPasswordSchema.safeParse(reset);
+  if (!result.success) {
+    const errors: Record<string, string> = {};
+
+    result.error.issues.forEach((issue) => {
+      const field = issue.path[0];
+      if (!errors[field as string]) {
+        errors[field as string] = issue.message;
+      }
+    });
+    console.log("++++", errors);
+    return {
+      errors,
+      success: false,
+      reset,
+      message: "",
+    };
+  }
+
+  try {
+    const res = await apiFetchServer(`/auth/reset-password/${reset.code}`, {
+      method: "POST",
+      body: JSON.stringify({ password: reset.password }),
+    });
+
+    return {
+      success: true,
+      reset,
+      errors: {},
+      message: "رمز عبور با موفقیت تغییر یافت!",
+    };
+  } catch (error) {
+    let errorMsg = "";
+    if (error instanceof Error) {
+      errorMsg = error.message;
+    } else {
+      errorMsg = "لطفاً بعداً دوباره تلاش کنید";
+    }
+
+    return {
+      success: false,
+      reset,
+      errors: { apiError: errorMsg, email: "" },
+      message: "",
+    };
+  }
+};
+export {
+  loginAction,
+  signupAction,
+  verifyAction,
+  resetPasswordAction,
+  setResetPasswordAction,
+};

@@ -1,88 +1,65 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Lock, Check } from "lucide-react";
-import { useState } from "react";
+import { Eye, EyeOff, Lock } from "lucide-react";
+import { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { toast } from "sonner";
-import { resetPasswordSchema } from "@/schema/user";
-import { apiFetchClient } from "@/lib/apiFetch.client";
 import { useParams } from "next/navigation";
+import SuccessReset from "../_components/SuccessReset";
+import { setResetPasswordAction } from "@/lib/actions/auth";
+import { toast } from "sonner";
 
-type ResetPasswordForm = z.infer<typeof resetPasswordSchema>;
+type InitialState = {
+  success: boolean;
+  errors: Record<string, string>;
+  reset: {
+    password: string;
+    confirmPassword: string;
+    code: string;
+  };
+  message: string;
+};
+
+const initialState: InitialState = {
+  success: false,
+  errors: {},
+  reset: {
+    password: "",
+    confirmPassword: "",
+    code: "",
+  },
+  message: "",
+};
 
 export default function ResetPassword() {
   const { code } = useParams();
+  const [data, action, isPending] = useActionState(
+    setResetPasswordAction,
+    initialState
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<ResetPasswordForm>({
-    resolver: zodResolver(resetPasswordSchema),
-  });
 
-  const onSubmit = async (data: ResetPasswordForm) => {
-    setIsLoading(true);
-    try {
-      const response = await apiFetchClient(`/auth/reset-password/${code}`, {
-        method: "POST",
-        body: JSON.stringify({ password: data.password }),
-      });
+  useEffect(() => {
+    if (data.success) {
+      toast.success(data.message);
       setIsSuccess(true);
-      toast("رمز عبور شما با موفقیت تغییر یافت");
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("Error: ", error);
-        toast.error(error.message);
-      } else {
-        toast.error("خطای غیرمنتظره ای رخ داده است. لطفا مجددا تلاش کنید!");
-      }
-    } finally {
-      setIsLoading(false);
     }
-  };
+    if (data.errors?.apiError) {
+      toast.error(data.errors.apiError);
+    }
+  }, [data]);
 
   if (isSuccess) {
-    return (
-      <section className=" bg-gradient-to-r from-sky-200 to-rose-200 dark:from-sky-700 dark:to-rose-700 min-h-[85vh]">
-        <div className="container mx-auto px-4 py-8 pt-24">
-          <motion.div className="max-w-md mx-auto">
-            <div className="bg-card rounded-xl p-6 shadow-md">
-              <div className="text-center space-y-6">
-                <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto">
-                  <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-2">
-                    رمز عبور تغییر یافت
-                  </h2>
-                  <p className="text-muted-foreground">
-                    رمز عبور شما با موفقیت تغییر یافت. اکنون می‌توانید با رمز
-                    عبور جدید وارد شوید
-                  </p>
-                </div>
-                <Link href="/auth?tab=login">
-                  <Button className="w-full bg-sky-400 hover:bg-sky-500 text-white">
-                    رفتن به صفحه ورود
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    );
+    return <SuccessReset />;
   }
 
   return (
     <section className=" bg-gradient-to-r from-sky-200 to-rose-200 dark:from-sky-700 dark:to-rose-700 min-h-[85vh]">
       <div className="container mx-auto px-4 py-8 pt-24">
-        ≈
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -102,16 +79,20 @@ export default function ResetPassword() {
               </p>
             </div>
 
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form action={action} className="space-y-4">
               <div>
+                <input type="hidden" value={code} name="code" />
                 <Label htmlFor="password">رمز عبور جدید</Label>
                 <div className="relative mt-1">
                   <Input
                     id="password"
+                    name="password"
+                    defaultValue={(data?.reset?.password ?? "") as string}
                     type={showPassword ? "text" : "password"}
                     placeholder="رمز عبور جدید خود را وارد کنید"
-                    {...form.register("password")}
-                    className="pl-10"
+                    className={`pl-10 ltr text-right ${
+                      data?.errors?.password ? "border-red-600" : ""
+                    }`}
                   />
                   <button
                     type="button"
@@ -119,16 +100,16 @@ export default function ResetPassword() {
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
                     {showPassword ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
                       <Eye className="w-4 h-4" />
+                    ) : (
+                      <EyeOff className="w-4 h-4" />
                     )}
                   </button>
                 </div>
-                {form.formState.errors.password && (
-                  <p className="text-sm text-destructive mt-1">
-                    {form.formState.errors.password.message}
-                  </p>
+                {!!data?.errors?.password && (
+                  <span className="text-sm text-red-600">
+                    {data?.errors?.password}
+                  </span>
                 )}
               </div>
 
@@ -137,10 +118,15 @@ export default function ResetPassword() {
                 <div className="relative mt-1">
                   <Input
                     id="confirmPassword"
+                    name="confirmPassword"
+                    defaultValue={
+                      (data?.reset?.confirmPassword ?? "") as string
+                    }
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="رمز عبور را مجدداً وارد کنید"
-                    {...form.register("confirmPassword")}
-                    className="pl-10"
+                    className={`pl-10 ltr text-right ${
+                      data?.errors?.confirmPassword ? "border-red-600" : ""
+                    }`}
                   />
                   <button
                     type="button"
@@ -148,25 +134,25 @@ export default function ResetPassword() {
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
                       <Eye className="w-4 h-4" />
+                    ) : (
+                      <EyeOff className="w-4 h-4" />
                     )}
                   </button>
                 </div>
-                {form.formState.errors.confirmPassword && (
-                  <p className="text-sm text-destructive mt-1">
-                    {form.formState.errors.confirmPassword.message}
-                  </p>
+                {!!data?.errors?.confirmPassword && (
+                  <span className="text-sm text-red-600">
+                    {data?.errors?.confirmPassword}
+                  </span>
                 )}
               </div>
 
               <Button
                 type="submit"
                 className="w-full bg-rose-400 hover:bg-rose-500 text-white"
-                disabled={isLoading}
+                disabled={isPending}
               >
-                {isLoading ? "در حال ذخیره..." : "ذخیره رمز عبور"}
+                {isPending ? "در حال ذخیره..." : "ذخیره رمز عبور"}
               </Button>
             </form>
           </div>

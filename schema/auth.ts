@@ -34,3 +34,23 @@ export const ResetPasswordSchema = z
   .trim()
   .min(1, { message: "لطفاً ایمیل خود را وارد کنید" })
   .email({ message: "فرمت ایمیل واردشده معتبر نیست" });
+
+export const SetResetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "رمز عبور باید حداقل ۸ کاراکتر باشد")
+      .regex(/[A-Z]/, "رمز عبور باید حداقل یک حرف بزرگ (A-Z) داشته باشد")
+      .regex(/[a-z]/, "رمز عبور باید حداقل یک حرف کوچک (a-z) داشته باشد")
+      .regex(/[0-9]/, "رمز عبور باید حداقل یک عدد داشته باشد")
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "رمز عبور باید حداقل یک کاراکتر خاص داشته باشد"
+      ),
+    confirmPassword: z.string().min(1, "تأیید رمز عبور الزامی است"),
+    code: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "تکرار رمز عبور مطابقت ندارد",
+    path: ["confirmPassword"],
+  });
