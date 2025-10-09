@@ -26,10 +26,10 @@ export function HeroSection() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Button className="btn-hero text-lg px-8 py-4" asChild>
-                  <a href="/products">
+                  <Link href="/products">
                     مشاهده محصولات
                     <ArrowLeft className="mr-2 h-5 w-5" />
-                  </a>
+                  </Link>
                 </Button>
                 <Link href="/about">
                   <Button

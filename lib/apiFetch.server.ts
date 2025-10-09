@@ -11,7 +11,6 @@ export async function apiFetchServer<T>(
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
-
   const cookieHeader = [
     accessToken ? `accessToken=${accessToken}` : "",
     refreshToken ? `refreshToken=${refreshToken}` : "",
