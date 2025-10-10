@@ -38,6 +38,8 @@ const Login = () => {
   const [data, action, isPending] = useActionState(loginAction, initialState);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpEmail, setOtpEmail] = useState("");
   const { setUser } = useApp();
   useEffect(() => {
     if (data.user) {
@@ -140,6 +142,67 @@ const Login = () => {
               {isPending ? "در حال ورود..." : "ورود"}
             </Button>
           </form>
+        </TabsContent>
+        <TabsContent value="otp" className="space-y-4 mt-6">
+          {!otpSent ? (
+            <form className="space-y-4">
+              <div>
+                <Label htmlFor="otp-email">ایمیل</Label>
+                <Input
+                  id="otp-email"
+                  type="email"
+                  placeholder="your@email.com"
+                  className="mt-1"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-sky-400 hover:bg-sky-500 text-white"
+              >
+                ارسال کد
+              </Button>
+            </form>
+          ) : (
+            <form className="space-y-4">
+              <div className="text-center mb-4">
+                <p className="text-muted-foreground">
+                  کد تأیید به ایمیل{" "}
+                  <span className="font-medium">{otpEmail}</span> ارسال شد
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="otp-code">کد تأیید</Label>
+                <Input
+                  id="otp-code"
+                  type="text"
+                  placeholder="123456"
+                  maxLength={6}
+                  className="mt-1 text-center text-lg tracking-widest"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setOtpSent(false);
+                  }}
+                  className="flex-1"
+                >
+                  بازگشت
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-rose-400 hover:bg-rose-500 text-white"
+                >
+                  تأیید کد
+                </Button>
+              </div>
+            </form>
+          )}
         </TabsContent>
       </Tabs>
     </div>

@@ -13,8 +13,6 @@ interface PageProps {
 
 const page = async ({ searchParams }: PageProps) => {
   const { tab: activeTab = "login" } = await searchParams;
-  const cookieStore = await cookies();
-  const token = cookieStore.get("accessToken")?.value;
 
   // const user = await checkUser();
 
