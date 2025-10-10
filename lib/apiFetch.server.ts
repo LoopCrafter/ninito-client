@@ -5,7 +5,7 @@ import { handleApiError } from "./errorHandler";
 export async function apiFetchServer<T>(
   path: string,
   options: RequestInit = {}
-): Promise<T> {
+): Promise<T | null> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const cookieStore = await cookies();
@@ -59,6 +59,7 @@ export async function apiFetchServer<T>(
 
     return responseData as T;
   } catch (err) {
-    throw err;
+    //throw err;
+    return null;
   }
 }

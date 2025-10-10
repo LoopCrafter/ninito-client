@@ -1,30 +1,71 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/useToast";
+import useAddToBasket from "@/hooks/useAddToBasket";
+import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/utils";
-import { Link, ShoppingCart, Star } from "lucide-react";
-import { useState } from "react";
+import { ShoppingCart, Star } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type ProductInfoProps = {
   product: Product;
 };
 
 const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const handleAddToCart = () => {
-    toast({
-      title: "محصول به سبد خرید اضافه شد",
-      description: `${product.name} - رنگ ${selectedColor.name}`,
-    });
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const { addToBasket } = useAddToBasket();
+  const variants = product.variants ?? [];
+
+  useEffect(() => {
+    if (variants.length > 0) {
+      setSelectedColor(variants[0].color.name);
+      setSelectedSize(variants[0].size);
+    }
+  }, [variants]);
+  const selectedVariant = variants.find(
+    (v) => v.color.name === selectedColor && v.size === selectedSize
+  );
+
+  console.log("HAMED", variants, selectedColor, selectedSize);
+
+  const finalPrice = selectedVariant
+    ? product.discount?.method === "percentage"
+      ? selectedVariant.price -
+        (selectedVariant.price * product.discount.value) / 100
+      : selectedVariant.price - product.discount.value
+    : product.basePrice ?? 0;
+
+  useEffect(() => {
+    if (!selectedColor) return;
+
+    const variantsWithColor = product.variants.find(
+      (v) => v.color.name === selectedColor
+    );
+    if (variantsWithColor) {
+      setSelectedSize(variantsWithColor.size);
+    }
+  }, [selectedColor]);
+
+  const handleToBasket = () => {
+    if (!selectedColor) {
+      toast.error("لطفا رنگ مورد نظر را انتخاب کنید");
+    } else if (!selectedSize) {
+      toast.error("لطفا سایز مورد نظر را انتخاب کنید");
+    }
+    if (!selectedVariant) return;
+    addToBasket(product, selectedVariant, 1);
+    toast.success("آیتم با موفقیت اضافه شد");
   };
 
   return (
     <div className="order-1 lg:order-2 space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-4">
-          {product.name}
+          {product.title}
         </h1>
 
         {/* Rating */}
@@ -34,23 +75,19 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
               <Star
                 key={i}
                 className={`h-5 w-5 ${
-                  i < Math.floor(product.rating)
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-300"
+                  i < 4 ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
                 }`}
               />
             ))}
-            <span className="text-sm text-muted-foreground mr-2">
-              {product.rating}
-            </span>
+            <span className="text-sm text-muted-foreground mr-2">{4}</span>
           </div>
           <span className="text-sm text-muted-foreground">
-            ({product.reviewCount} نظر)
+            ({product?.comments?.length} نظر)
           </span>
         </div>
 
         {/* Stock Status */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           {product.inStock ? (
             <Badge
               variant="secondary"
@@ -61,45 +98,51 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           ) : (
             <Badge variant="destructive">ناموجود</Badge>
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* Price */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          <span className="text-3xl font-bold text-primary">
-            {formatPrice(product.price)}
-          </span>
-          {product.originalPrice && (
-            <span className="text-lg text-muted-foreground line-through">
-              {formatPrice(product.originalPrice)}
-            </span>
-          )}
+      <div className="flex justify-start items-center gap-2">
+        <div className="font-semibold text-primary">
+          {formatPrice(finalPrice)}
         </div>
-        {product.originalPrice && (
-          <div className="text-sm text-green-600 dark:text-green-400">
-            شما {formatPrice(product.originalPrice - product.price)} صرفه‌جویی
-            می‌کنید
+        {selectedVariant?.price && product.discount?.value > 0 && (
+          <div className="text-xs text-muted-foreground">
+            <del>{formatPrice(selectedVariant.price)}</del>
           </div>
         )}
       </div>
 
       {/* Color Selection */}
       <div className="space-y-3">
-        <h3 className="text-lg font-semibold">رنگ: {selectedColor.name}</h3>
-        <div className="flex gap-3">
-          {product.colors.map((color) => (
-            <button
-              key={color.value}
-              onClick={() => setSelectedColor(color)}
-              className={`w-12 h-12 rounded-full border-2 transition-all ${
-                selectedColor.value === color.value
-                  ? "border-primary scale-110 shadow-lg"
-                  : "border-gray-300 hover:border-gray-400"
-              }`}
-              title={color.name}
-            />
-          ))}
+        <h3 className="text-lg font-semibold">رنگ: {selectedColor}</h3>
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1">
+            {Array.from(new Set(variants.map((v) => v.color.name))).map(
+              (colorName) => {
+                const colorHex =
+                  variants.find((v) => v.color.name === colorName)?.color.hex ??
+                  "#000";
+                return (
+                  <button
+                    key={colorName}
+                    className={cn(
+                      "w-12 h-12 rounded-full border-2 transition-all",
+                      selectedColor === colorName
+                        ? "border-primary scale-110 shadow-lg"
+                        : "border-gray-300 hover:border-gray-400"
+                    )}
+                    style={{ backgroundColor: colorHex }}
+                    onClick={() => {
+                      setSelectedColor(colorName);
+                      setSelectedSize(null);
+                    }}
+                    title={colorName}
+                  />
+                );
+              }
+            )}
+          </div>
         </div>
       </div>
 
@@ -114,31 +157,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       {/* Action Buttons */}
       <div className="space-y-4">
         <Button
-          onClick={handleAddToCart}
-          disabled={!product.inStock}
+          onClick={handleToBasket}
+          // disabled={!product.inStock}
           className="w-full h-12 text-lg font-semibold"
           size="lg"
         >
           <ShoppingCart className="h-5 w-5 ml-2" />
           افزودن به سبد خرید
         </Button>
-      </div>
-
-      {/* Product Info */}
-      <div className="border-t pt-6 space-y-3 text-sm">
-        <div className="flex justify-between">
-          <span className="text-muted-foreground">کد محصول:</span>
-          <span className="font-medium">{product.sku}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-muted-foreground">دسته‌بندی:</span>
-          <Link
-            href={`/products?category=${product.category}`}
-            className="font-medium text-primary hover:underline"
-          >
-            {product.category}
-          </Link>
-        </div>
       </div>
     </div>
   );
