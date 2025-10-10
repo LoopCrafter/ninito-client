@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import Image from "next/image";
 
 interface ProductGalleryProps {
   images: string[];
@@ -26,12 +27,14 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   return (
     <div className="space-y-4">
-      <div className="relative group bg-muted rounded-lg overflow-hidden aspect-square">
-        <img
+      <div className="relative group bg-muted rounded-lg overflow-hidden">
+        <Image
           src={images[currentImageIndex]}
           alt={`${productName} - تصویر ${currentImageIndex + 1}`}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-[60vh] object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
+          width={400}
+          height={400}
         />
 
         <Dialog>
@@ -101,10 +104,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
           ))}
         </div>
       )}
-
-      <div className="text-center text-sm text-muted-foreground">
-        تصاویر محصول در رنگ انتخابی نمایش داده می‌شود
-      </div>
     </div>
   );
 }

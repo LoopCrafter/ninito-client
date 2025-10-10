@@ -33,18 +33,15 @@ export default async function ProductDetail({
           />
 
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div className="order-2 lg:order-1">
-              <ProductGallery
-                images={product.galleryUrls!}
-                productName={product.title}
-              />
-            </div>
-
             <ProductInfo product={product} />
+            <ProductGallery
+              images={product.galleryUrls!}
+              productName={product.title}
+            />
           </div>
 
           {/* Product Details Tabs */}
-          <Tabs defaultValue="description" className="w-full rtl">
+          {/* <Tabs defaultValue="description" className="w-full rtl">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="description">توضیحات کامل</TabsTrigger>
               <TabsTrigger value="specifications">مشخصات فنی</TabsTrigger>
@@ -99,7 +96,7 @@ export default async function ProductDetail({
                 <ReviewForm productId={mockProduct.id} />
               </div>
             </TabsContent>
-          </Tabs>
+          </Tabs> */}
         </>
       ) : (
         <h1>THERE IS NO PRODUCT</h1>

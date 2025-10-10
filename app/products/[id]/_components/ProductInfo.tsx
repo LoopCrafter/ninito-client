@@ -30,8 +30,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     (v) => v.color.name === selectedColor && v.size === selectedSize
   );
 
-  console.log("HAMED", variants, selectedColor, selectedSize);
-
   const finalPrice = selectedVariant
     ? product.discount?.method === "percentage"
       ? selectedVariant.price -
@@ -61,8 +59,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     toast.success("آیتم با موفقیت اضافه شد");
   };
 
+  const availableSizes = Array.from(
+    new Set(
+      variants.filter((v) => v.color.name === selectedColor).map((v) => v.size)
+    )
+  );
+
   return (
-    <div className="order-1 lg:order-2 space-y-6">
+    <div className="order-2 lg:order-1 space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-4">
           {product.title}
@@ -145,6 +149,28 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           </div>
         </div>
       </div>
+
+      {selectedColor && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">سایز:</span>
+          <div className="flex gap-1">
+            {availableSizes.slice(0, 3).map((size) => (
+              <button
+                key={size}
+                className={cn(
+                  " border-1 rounded w-8 h-8",
+                  selectedSize === size
+                    ? "border-gray-400 bg-rose-100"
+                    : "border-gray-300"
+                )}
+                onClick={() => setSelectedSize(size)}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Description */}
       <div className="space-y-2">
