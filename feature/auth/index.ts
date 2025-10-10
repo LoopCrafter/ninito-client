@@ -1,12 +1,20 @@
 import { apiFetchServer } from "@/lib/apiFetch.server";
 import { User } from "@/types/user";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-export const checkUser = async () => {
+export async function checkUser(): Promise<User | null> {
   try {
-    const userData = await apiFetchServer<{ user: User }>("/auth/check-user");
-    return userData.user;
+    const cookieStore = await cookies();
+    const token = cookieStore.get("accessToken")?.value;
+
+    if (!token) return null;
+
+    const { user } = await apiFetchServer<{ user: User }>("/auth/check-user", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return user;
   } catch (error) {
-    throw error;
+    return null;
   }
-};
+}
