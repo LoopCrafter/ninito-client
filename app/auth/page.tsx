@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Login from "./_components/Login";
 import Signup from "./_components/Signup";
-import { checkUser } from "@/feature/auth";
+import { checkUser } from "@/src/auth";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 

@@ -1,10 +1,10 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import useAddToBasket from "@/hooks/useAddToBasket";
-import { cn } from "@/lib/utils";
-import { Product } from "@/types/product";
-import { formatPrice } from "@/utils";
+import { Badge } from "@/src/components/ui/badge";
+import { Button } from "@/src/components/ui/button";
+import useAddToBasket from "@/src/hooks/useAddToBasket";
+import { cn } from "@/src/lib/utils";
+import { Product } from "@/src/types/product";
+import { formatPrice } from "@/src/utils";
 import { ShoppingCart, Star } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";

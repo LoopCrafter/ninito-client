@@ -3,11 +3,11 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 
 import { Mail, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
 import ForgetPasswordResetInfo from "./ForgetPasswordResetInfo";
-import { resetPasswordAction } from "@/lib/actions/auth";
+import { resetPasswordAction } from "@/src/lib/actions/auth";
 import { toast } from "sonner";
 
 interface ForgotPasswordFormProps {

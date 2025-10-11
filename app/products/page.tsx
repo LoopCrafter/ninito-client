@@ -1,18 +1,18 @@
 "use client";
-import { ProductFilters } from "@/components/product-filters";
-import { ProductsHeader } from "@/components/products-header";
-import { ProductsList } from "@/components/products-list";
-import { ProductCardSkeleton } from "@/components/skeleton-loaders/product-skeleton";
-import { apiFetchClient } from "@/lib/apiFetch.client";
-import { buildQueryString } from "@/lib/utils";
-import { PaginationProps } from "@/types/pagination";
+import { ProductFilters } from "@/src/components/product-filters";
+import { ProductsHeader } from "@/src/components/products-header";
+import { ProductsList } from "@/src/components/products-list";
+import { ProductCardSkeleton } from "@/src/components/skeleton-loaders/product-skeleton";
+import { apiFetchClient } from "@/src/lib/apiFetch.client";
+import { buildQueryString } from "@/src/lib/utils";
+import { PaginationProps } from "@/src/types/pagination";
 import {
   Color,
   Product,
   ProductFilters as ProductFiltersType,
   ProductResponse,
   SortOption,
-} from "@/types/product";
+} from "@/src/types/product";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 

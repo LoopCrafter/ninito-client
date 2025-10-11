@@ -1,11 +1,11 @@
 "use client";
-import { ProductFilters } from "@/components/product-filters";
-import { ProductsHeader } from "@/components/products-header";
-import { ProductsList } from "@/components/products-list";
-import { apiFetchClient } from "@/lib/apiFetch.client";
-import { sampleProducts } from "@/mock";
-import { PaginationProps } from "@/types/pagination";
-import { Product } from "@/types/product";
+import { ProductFilters } from "@/src/components/product-filters";
+import { ProductsHeader } from "@/src/components/products-header";
+import { ProductsList } from "@/src/components/products-list";
+import { apiFetchClient } from "@/src/lib/apiFetch.client";
+import { sampleProducts } from "@/src/mock";
+import { PaginationProps } from "@/src/types/pagination";
+import { Product } from "@/src/types/product";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 

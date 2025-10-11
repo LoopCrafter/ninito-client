@@ -11,18 +11,23 @@ import {
   Lock,
   ArrowRight,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button } from "@/src/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/src/components/ui/select";
 import {
   Form,
   FormControl,
@@ -30,16 +35,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/src/components/ui/form";
 
 import { CartItem, type CartItemData } from "./_components/cart-item";
-import { AddressList } from "@/components/address-list";
-import { AddressForm } from "@/components/address-form";
-import type { SavedAddress } from "@/components/address-card";
-import { useToast } from "@/hooks/useToast";
+import { AddressList } from "@/src/components/address-list";
+import { AddressForm } from "@/src/components/address-form";
+import type { SavedAddress } from "@/src/components/address-card";
+import { useToast } from "@/src/hooks/useToast";
 import { CheckoutStepper } from "./_components/checkout-stepper";
 import { CheckoutSummary } from "./_components/checkout-summary";
-import { paymentSchema } from "@/schema";
+import { paymentSchema } from "@/src/schema";
 import EmptyCart from "./_components/empty-cart";
 import Link from "next/link";
 

@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/src/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
+import { Input } from "@/src/components/ui/input";
+import { Separator } from "@/src/components/ui/separator";
 import type { CartItemData } from "./cart-item";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/src/hooks/useToast";
 
 interface CheckoutSummaryProps {
   items: CartItemData[];

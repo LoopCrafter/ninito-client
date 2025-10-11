@@ -1,7 +1,7 @@
-import { apiFetchClient } from "@/lib/apiFetch.client";
+import { apiFetchClient } from "@/src/lib/apiFetch.client";
 import UserData from "./_components/userData";
-import { apiFetchServer } from "@/lib/apiFetch.server";
-import { User } from "@/types/user";
+import { apiFetchServer } from "@/src/lib/apiFetch.server";
+import { User } from "@/src/types/user";
 const ProfilePage = async () => {
   const userProfile = await apiFetchServer<{ user: User }>("/users/profile");
   const userData = userProfile.user;

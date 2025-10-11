@@ -1,12 +1,17 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProductGallery } from "@/components/product-gallery";
-import { ProductReviews } from "@/components/product-reviews";
-import { ReviewForm } from "@/components/review-form";
-import { mockProduct } from "@/mock";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/src/components/ui/tabs";
+import { ProductGallery } from "@/src/components/product-gallery";
+import { ProductReviews } from "@/src/components/product-reviews";
+import { ReviewForm } from "@/src/components/review-form";
+import { mockProduct } from "@/src/mock";
 import BreadCrumb from "./_components/BreadCrumb";
 import ProductInfo from "./_components/ProductInfo";
-import { apiFetchServer } from "@/lib/apiFetch.server";
-import { Product } from "@/types/product";
+import { apiFetchServer } from "@/src/lib/apiFetch.server";
+import { Product } from "@/src/types/product";
 import { redirect } from "next/navigation";
 
 export default async function ProductDetail({

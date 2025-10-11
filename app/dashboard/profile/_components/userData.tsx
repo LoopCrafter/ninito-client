@@ -1,7 +1,11 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar";
 import { Mail, Phone, User, UserCircle } from "lucide-react";
-import { User as UserType } from "@/types/user";
-import { getInitials } from "@/lib/utils";
+import { User as UserType } from "@/src/types/user";
+import { getInitials } from "@/src/lib/utils";
 
 type UserDataProps = {
   user: UserType;

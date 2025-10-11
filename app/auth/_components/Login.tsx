@@ -1,11 +1,16 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import useApp from "@/hooks/useApp";
-import { loginAction } from "@/lib/actions/auth";
-import { User } from "@/types/user";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/src/components/ui/tabs";
+import useApp from "@/src/hooks/useApp";
+import { loginAction } from "@/src/lib/actions/auth";
+import { User } from "@/src/types/user";
 import { Eye, EyeOff, Mail, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";

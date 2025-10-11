@@ -1,9 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
 
-import { signupAction } from "@/lib/actions/auth";
+import { signupAction } from "@/src/lib/actions/auth";
 import { useActionState, useEffect, useState } from "react";
 import { GenderSelect } from "./GenderSelect";
 import { toast } from "sonner";

@@ -12,19 +12,19 @@ import {
   MessageSquare,
   Send,
 } from "lucide-react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Header } from "@/src/components/header";
+import { Footer } from "@/src/components/footer";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Textarea } from "@/src/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
+} from "@/src/components/ui/select";
+import { Card, CardContent } from "@/src/components/ui/card";
 import {
   Form,
   FormControl,
@@ -32,8 +32,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { toast } from "@/hooks/useToast";
+} from "@/src/components/ui/form";
+import { toast } from "@/src/hooks/useToast";
 
 const contactSchema = z.object({
   name: z

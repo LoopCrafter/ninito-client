@@ -1,14 +1,14 @@
-import { CategoriesSection } from "@/components/categories-section";
-import { FeaturesSection } from "@/components/feature-section";
-import FeaturedProducts from "@/components/featured-products";
-import { HeroSection } from "@/components/hero-section";
-import PopulateProducts from "@/components/populate-products";
-import ReviewSection from "@/components/review-section";
-import { ThemeProvider } from "@/components/theme-provider";
-import { WhyNinito } from "@/components/why-ninito";
-import { apiFetch } from "@/lib/apiClient";
-import { Category } from "@/types/categories";
-import { Product } from "@/types/product";
+import { CategoriesSection } from "@/src/components/categories-section";
+import { FeaturesSection } from "@/src/components/feature-section";
+import FeaturedProducts from "@/src/components/featured-products";
+import { HeroSection } from "@/src/components/hero-section";
+import PopulateProducts from "@/src/components/populate-products";
+import ReviewSection from "@/src/components/review-section";
+import { ThemeProvider } from "@/src/components/theme-provider";
+import { WhyNinito } from "@/src/components/why-ninito";
+import { apiFetch } from "@/src/lib/apiClient";
+import { Category } from "@/src/types/categories";
+import { Product } from "@/src/types/product";
 
 type ProductsResponse = {
   products: Product[];

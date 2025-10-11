@@ -1,0 +1,82 @@
+import { useState } from "react";
+import { Search, SlidersHorizontal } from "lucide-react";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/src/components/ui/select";
+import { SortOption } from "@/src/types/product";
+import { sortOptions } from "@/src/constants";
+
+interface ProductsHeaderProps {
+  sortBy?: SortOption;
+  onSortChange: (sort: SortOption) => void;
+  totalProducts: number;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+}
+
+export function ProductsHeader({
+  sortBy,
+  onSortChange,
+  searchQuery,
+  onSearchChange,
+}: ProductsHeaderProps) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  return (
+    <div className="space-y-4 mb-8">
+      <div className="flex items-center justify-between bg-card p-4 rounded-xl card-shadow">
+        <div className="flex items-center gap-4">
+          {/* Mobile Search Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+          >
+            <Search className="h-4 w-4" />
+          </Button>
+
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
+            <Select
+              value={sortBy ?? ""}
+              onValueChange={(value) => onSortChange(value as SortOption)}
+            >
+              <SelectTrigger className="w-[160px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {sortOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Search Bar */}
+      {isSearchOpen && (
+        <div className="md:hidden">
+          <div className="relative">
+            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="جستجو در محصولات..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="pl-4 pr-10 rounded-full"
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

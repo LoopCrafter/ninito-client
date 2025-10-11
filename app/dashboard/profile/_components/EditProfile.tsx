@@ -1,19 +1,19 @@
 import z from "zod";
 import { motion } from "framer-motion";
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/src/hooks/useUser";
 import { useForm } from "react-hook-form";
-import { profileSchema } from "@/schema/user";
+import { profileSchema } from "@/src/schema/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { Input } from "@/src/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+} from "@/src/components/ui/select";
+import { Button } from "@/src/components/ui/button";
 import { useState } from "react";
 
 type ProfileFormData = z.infer<typeof profileSchema>;

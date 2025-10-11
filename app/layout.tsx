@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { Toaster } from "@/components/ui/sonner";
-import AppProvider from "@/providers/context-provider";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Header } from "@/src/components/header";
+import { Footer } from "@/src/components/footer";
+import { Toaster } from "@/src/components/ui/sonner";
+import AppProvider from "@/src/providers/context-provider";
+import { ThemeProvider } from "@/src/components/theme-provider";
 const vazirFont = localFont({
   src: [
     {

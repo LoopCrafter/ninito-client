@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { verifyAction } from "@/lib/actions/auth";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { verifyAction } from "@/src/lib/actions/auth";
 import { Label } from "@radix-ui/react-label";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
