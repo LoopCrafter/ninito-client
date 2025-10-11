@@ -11,7 +11,7 @@ import {
 import useApp from "@/src/hooks/useApp";
 import { User } from "@/src/types/user";
 import { Eye, EyeOff, Mail, Smartphone } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { ForgotPasswordForm } from "./ForgotPassword";
 import { toast } from "sonner";
@@ -93,19 +93,23 @@ const loginAction = async (Prev: any, formData: FormData) => {
     };
   }
 };
+
 const Login = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [data, action, isPending] = useActionState(loginAction, initialState);
   const [showPassword, setShowPassword] = useState(false);
+  const params = useSearchParams();
   const router = useRouter();
   const [otpSent, setOtpSent] = useState(false);
   const [otpEmail, setOtpEmail] = useState("");
   const { setUser } = useApp();
+  const redirect = params.get("redirect") || "/";
+
   useEffect(() => {
     if (data.user) {
       setUser(data.user);
       toast.success("شما با موفقیت وارد شدید");
-      router.replace("/");
+      router.replace(redirect);
     }
   }, [data]);
 

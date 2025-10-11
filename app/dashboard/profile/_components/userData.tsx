@@ -3,9 +3,10 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar";
-import { Mail, Phone, User, UserCircle } from "lucide-react";
+import { Mail, Pencil, Phone, User, UserCircle } from "lucide-react";
 import { User as UserType } from "@/src/types/user";
 import { getInitials } from "@/src/lib/utils";
+import { Button } from "@/src/components/ui/button";
 
 type UserDataProps = {
   user: UserType;
@@ -15,10 +16,6 @@ const UserData: React.FC<UserDataProps> = ({ user }) => {
   return (
     <div>
       <div className="max-w-4xl mx-auto">
-        {/* Decorative clouds */}
-        <div className="absolute top-20 left-10 w-20 h-10 bg-sky-200/30 dark:bg-sky-800/20 rounded-full blur-xl animate-pulse" />
-        <div className="absolute top-40 right-10 w-16 h-8 bg-rose-200/30 dark:bg-rose-800/20 rounded-full blur-xl animate-pulse" />
-
         {/* Profile Header */}
         <div className="relative bg-card rounded-3xl shadow-lg p-8 mb-6 overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-sky-400/20 to-rose-400/20 rounded-full blur-3xl" />
@@ -52,18 +49,25 @@ const UserData: React.FC<UserDataProps> = ({ user }) => {
             </div>
 
             {/* User Info */}
-            <div className="flex-1 text-center md:text-right">
+            <div className="flex-1 flex justify-between items-center text-center md:text-right">
               <h1 className="text-3xl font-bold bg-gradient-to-l from-sky-600 to-rose-600 bg-clip-text text-transparent mb-2">
                 {user?.firstName} {user?.lastName}
               </h1>
-              <p className="text-muted-foreground flex items-center justify-center md:justify-end gap-2">
-                <Mail className="w-4 h-4" />
-                {user?.email}
-              </p>
-              <p className="text-muted-foreground flex items-center justify-center md:justify-end gap-2 mt-1">
-                <Phone className="w-4 h-4" />
-                {user?.phone}
-              </p>
+              <div className="flex flex-col gap-3">
+                <p className="text-muted-foreground flex items-center justify-center md:justify-end gap-2">
+                  <Mail className="w-4 h-4" />
+                  {user?.email}
+                </p>
+                <p className="text-muted-foreground flex items-center justify-center md:justify-end gap-2 mt-1">
+                  <Phone className="w-4 h-4" />
+                  {user?.phone}
+                </p>
+                <div className="text-left">
+                  <Button className="">
+                    <Pencil className="w-4 h-4" /> ویرایش پروفایل
+                  </Button>
+                </div>
+              </div>
             </div>
 
             {/* Edit Button */}

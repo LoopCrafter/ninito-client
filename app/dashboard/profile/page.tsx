@@ -8,9 +8,13 @@ const ProfilePage = async () => {
   const userData = userProfile?.user;
   console.log("userData:", userProfile);
   if (!userData) {
-    //redirect("/auth?tab=login&redirect=/dashboard/profile");
+    redirect("/auth?tab=login&redirect=/dashboard/profile");
   }
-  return <div className="py-10">{/* <UserData user={userData} /> */}</div>;
+  return (
+    <div className="py-10">
+      <UserData user={userData} />
+    </div>
+  );
 };
 
 export default ProfilePage;
