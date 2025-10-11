@@ -9,13 +9,14 @@ import {
   TabsTrigger,
 } from "@/src/components/ui/tabs";
 import useApp from "@/src/hooks/useApp";
-import { loginAction } from "@/src/lib/actions/auth";
 import { User } from "@/src/types/user";
 import { Eye, EyeOff, Mail, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { ForgotPasswordForm } from "./ForgotPassword";
 import { toast } from "sonner";
+import { LoginSchema } from "@/src/schema/auth";
+import { apiFetchClient } from "@/src/lib/apiFetch.client";
 
 type LoginState = {
   success: boolean;
@@ -37,6 +38,60 @@ const initialState: LoginState = {
     email: "",
     password: "",
   },
+};
+
+const loginAction = async (Prev: any, formData: FormData) => {
+  const loginData = {
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
+
+  const result = LoginSchema.safeParse(loginData);
+  if (!result.success) {
+    const errors: Record<string, string> = {};
+
+    result.error.issues.forEach((issue) => {
+      const field = issue.path[0];
+      if (!errors[field as string]) {
+        errors[field as string] = issue.message;
+      }
+    });
+    return {
+      success: false,
+      errors,
+      login: loginData,
+    };
+  }
+  try {
+    const data = await apiFetchClient<{
+      accessToken: string;
+      refreshToken: string;
+      user: User;
+    }>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify(loginData),
+    });
+
+    if (!data?.user) {
+      return {
+        success: false,
+        message: "لطفاً بعداً دوباره تلاش کنید",
+        login: loginData,
+      };
+    }
+    return {
+      success: true,
+      message: "ورود موفق",
+      login: loginData,
+      user: data.user,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "لطفاً بعداً دوباره تلاش کنید",
+      login: loginData,
+    };
+  }
 };
 const Login = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);

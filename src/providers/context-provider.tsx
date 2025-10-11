@@ -12,6 +12,7 @@ interface BasketItem {
 
 type AppProviderProps = {
   children: React.ReactNode;
+  defaultUser: User | null;
 };
 
 type AppContextType = {
@@ -23,7 +24,7 @@ type AppContextType = {
 
 export const AppContext = createContext<AppContextType | null>(null);
 
-const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+const AppProvider: React.FC<AppProviderProps> = ({ children, defaultUser }) => {
   const [basket, setBasket] = useState<BasketItem[]>(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("basket");
@@ -36,13 +37,13 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     localStorage.setItem("basket", JSON.stringify(basket));
   }, [basket]);
 
-  const [user, setUser] = useState<User | null>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("user");
-      return stored ? JSON.parse(stored) : [];
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    if (defaultUser) {
+      setUser(defaultUser);
     }
-    return [];
-  });
+  }, [defaultUser]);
 
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(user));

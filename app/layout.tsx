@@ -6,6 +6,8 @@ import { Footer } from "@/src/components/footer";
 import { Toaster } from "@/src/components/ui/sonner";
 import AppProvider from "@/src/providers/context-provider";
 import { ThemeProvider } from "@/src/components/theme-provider";
+import { apiFetchServer } from "@/src/lib/apiFetch.server";
+import { User } from "@/src/types/user";
 const vazirFont = localFont({
   src: [
     {
@@ -27,15 +29,18 @@ export const metadata: Metadata = {
     "فروشگاه اینترنتی نینیتو، بهترین محصولات نوزاد و کودک با کیفیت بالا و قیمت مناسب. از پوشاک و اسباب‌بازی تا لوازم بهداشتی و تغذیه، همه چیز برای مراقبت از فرزندتان.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userProfile = await apiFetchServer<{ user: User }>("/users/profile");
+  const userData = userProfile?.user;
+  console.log("userData:", userProfile);
   return (
     <html lang="fa" dir="rtl">
       <body className={`${vazirFont.variable} antialiased`}>
-        <AppProvider>
+        <AppProvider defaultUser={userData ?? null}>
           <ThemeProvider>
             <Header />
             <main>{children}</main>

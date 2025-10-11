@@ -11,66 +11,6 @@ import { apiFetchServer } from "../apiFetch.server";
 import { User } from "@/src/types/user";
 import { cookies } from "next/headers";
 
-const loginAction = async (Prev: any, formData: FormData) => {
-  const loginData = {
-    email: formData.get("email"),
-    password: formData.get("password"),
-  };
-
-  const result = LoginSchema.safeParse(loginData);
-  if (!result.success) {
-    const errors: Record<string, string> = {};
-
-    result.error.issues.forEach((issue) => {
-      const field = issue.path[0];
-      if (!errors[field as string]) {
-        errors[field as string] = issue.message;
-      }
-    });
-    return {
-      success: false,
-      errors,
-      login: loginData,
-    };
-  }
-  try {
-    const data = await apiFetchServer<{
-      accessToken: string;
-      refreshToken: string;
-      user: User;
-    }>("/auth/login", {
-      method: "POST",
-      body: JSON.stringify(loginData),
-    });
-
-    const cookieStore = await cookies();
-    cookieStore.set("accessToken", data.accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
-      path: "/",
-    });
-    cookieStore.set("refreshToken", data.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
-      path: "/",
-    });
-    return {
-      success: true,
-      message: "ورود موفق",
-      login: loginData,
-      user: data.user,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      message: "لطفاً بعداً دوباره تلاش کنید",
-      login: loginData,
-    };
-  }
-};
-
 const signupAction = async (Prev: any, formData: FormData) => {
   const signupData = {
     firstName: (formData.get("firstName") ?? "") as string,
@@ -238,7 +178,6 @@ const setResetPasswordAction = async (prev: any, formData: FormData) => {
         errors[field as string] = issue.message;
       }
     });
-    console.log("++++", errors);
     return {
       errors,
       success: false,
@@ -276,7 +215,6 @@ const setResetPasswordAction = async (prev: any, formData: FormData) => {
   }
 };
 export {
-  loginAction,
   signupAction,
   verifyAction,
   resetPasswordAction,

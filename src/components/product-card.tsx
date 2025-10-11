@@ -106,8 +106,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">رنگ:</span>
             <div className="flex gap-1">
-              {Array.from(new Set(variants.map((v) => v.color.name))).map(
-                (colorName) => {
+              {Array.from(new Set(variants.map((v) => v.color.name)))
+                .slice(0, 3)
+                .map((colorName) => {
                   const colorHex =
                     variants.find((v) => v.color.name === colorName)?.color
                       .hex ?? "#000";
@@ -128,8 +129,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                       title={colorName}
                     />
                   );
-                }
-              )}
+                })}
             </div>
           </div>
 
