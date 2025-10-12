@@ -17,6 +17,7 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { useUser } from "@/src/hooks/useUser";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export function Header() {
   const { user } = useApp();
@@ -36,7 +37,13 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center">
           <h1 className="text-2xl font-bold text-rose-400 tracking-tighter">
-            نی نی تو
+            <Image
+              src="/images/logo.png"
+              alt="Ninito"
+              width={120}
+              height={40}
+              className="h-[40px] object-cover"
+            />
           </h1>
         </Link>
 

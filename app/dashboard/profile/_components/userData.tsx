@@ -18,7 +18,7 @@ const UserData: React.FC<UserDataProps> = ({ user }) => {
     router.refresh();
   };
   return (
-    <div className="max-w-4xl mx-auto bg-card rounded-2xl shadow-lg p-6 md:p-8">
+    <div className="">
       {isEditing ? (
         <EditProfile user={user} goBack={handleGoBack} />
       ) : (
