@@ -82,7 +82,7 @@ export function Header() {
                 <DropdownMenuItem>تنظیمات</DropdownMenuItem>
                 <DropdownMenuItem>
                   <button
-                    onClick={logout}
+                    onClick={() => logout()}
                     className="text-rose-600 flex-1 w-full text-right "
                   >
                     خروج

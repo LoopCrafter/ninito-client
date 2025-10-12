@@ -1,15 +1,16 @@
 import { apiFetchClient } from "@/src/lib/apiFetch.client";
-import React from "react";
+
 import useApp from "./useApp";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export const useUser = () => {
+  const router = useRouter();
   const { user, setUser } = useApp();
   const logout = async () => {
     try {
       await apiFetchClient("/auth/logout", { method: "POST" });
       setUser(null);
-      redirect("/");
+      router.replace("/");
     } catch (error) {
       console.log(error);
     }
