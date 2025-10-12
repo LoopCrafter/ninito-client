@@ -4,15 +4,8 @@ import {
   AvatarImage,
 } from "@/src/components/ui/avatar";
 import { getInitials } from "@/src/lib/utils";
+import { User } from "@/src/types/user";
 import Image from "next/image";
-
-type User = {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  gender: string;
-  image?: string;
-};
 
 export default function UserProfileView({ user }: { user: User }) {
   return (
@@ -24,7 +17,7 @@ export default function UserProfileView({ user }: { user: User }) {
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           <Avatar className="w-20 h-20 border-4 border-sky-200 dark:border-sky-800 shadow-lg">
-            <AvatarImage src={user?.image} />
+            <AvatarImage src={user?.userImage} />
             <AvatarFallback className="bg-gradient-to-br from-sky-400 to-rose-400 text-white text-4xl">
               {getInitials(user?.firstName ?? "")}
             </AvatarFallback>

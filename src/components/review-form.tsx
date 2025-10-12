@@ -59,9 +59,6 @@ export function ReviewForm({ productId }: ReviewFormProps) {
 
   const onSubmit = async (data: ReviewFormData) => {
     try {
-      // Here you would submit to your API
-      console.log("Submitting review:", { ...data, productId });
-
       toast({
         title: "نظر شما ثبت شد",
         description: "نظر شما پس از بررسی نمایش داده خواهد شد.",

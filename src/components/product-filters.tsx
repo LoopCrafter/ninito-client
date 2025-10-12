@@ -49,7 +49,6 @@ export function ProductFilters({
     const newCategories = checked
       ? [...filters.categories, category]
       : filters.categories.filter((c) => c !== category);
-    console.log("Asdd", newCategories);
     onFiltersChange({ ...filters, categories: newCategories });
   };
 

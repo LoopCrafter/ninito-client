@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const editProfileSchema = z.object({
+export const EditProfileSchema = z.object({
   firstName: z.string().min(2, "نام باید حداقل ۲ کاراکتر باشد"),
   lastName: z.string().min(2, "نام خانوادگی باید حداقل ۲ کاراکتر باشد"),
   phone: z.string().regex(/^(?:\+98|0)?9\d{9}$/, "شماره موبایل معتبر نیست"),
@@ -10,3 +10,5 @@ export const editProfileSchema = z.object({
     .refine((file) => file.size > 0, "فایل معتبر نیست")
     .optional(),
 });
+
+export type EditProfileType = z.infer<typeof EditProfileSchema>;

@@ -49,7 +49,6 @@ export default function Products() {
   const getProducts = async () => {
     try {
       const products = await apiFetchClient("/products");
-      console.log("+++++", products);
     } catch (error) {
       toast.error("There is an error, please try again later");
     }

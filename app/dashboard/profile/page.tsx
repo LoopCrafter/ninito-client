@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 const ProfilePage = async () => {
   const userProfile = await apiFetchServer<{ user: User }>("/users/profile");
   const userData = userProfile?.user;
-  console.log("userData:", userProfile);
   if (!userData) {
     redirect("/auth?tab=login&redirect=/dashboard/profile");
   }

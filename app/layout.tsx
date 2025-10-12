@@ -36,7 +36,6 @@ export default async function RootLayout({
 }>) {
   const userProfile = await apiFetchServer<{ user: User }>("/users/profile");
   const userData = userProfile?.user;
-  console.log("userData:", userProfile);
   return (
     <html lang="fa" dir="rtl">
       <body className={`${vazirFont.variable} antialiased`}>
