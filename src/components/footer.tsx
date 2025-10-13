@@ -1,6 +1,7 @@
 import { Instagram, MessageSquare, Phone, Mail, MapPin } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -9,7 +10,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div className="lg:col-span-1">
             <h3 className="text-2xl font-bold bg-gradient-to-r from-baby-blue to-baby-pink bg-clip-text text-transparent mb-4">
-              نینیتو
+              <Image
+                src="/images/logo.png"
+                alt="Ninito"
+                width={120}
+                height={40}
+                className="h-[40px] object-cover"
+              />
             </h3>
             <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
               فروشگاه تخصصی محصولات خواب نوزاد با کیفیت بالا و قیمت مناسب. آسایش

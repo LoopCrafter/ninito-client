@@ -96,37 +96,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ contactInfo }) => {
         </Card>
       </div>
 
-      <div>
-        <h3 className="font-semibold text-lg mb-4">شبکه‌های اجتماعی</h3>
-        <div className="flex gap-4">
-          <a
-            href={
-              contactInfo?.socials?.instagram ?? "https://instagram.com/ninito"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary/20 smooth-transition"
-          >
-            <Instagram className="h-6 w-6 text-primary" />
-          </a>
-          <a
-            href={contactInfo?.socials?.whatsapp ?? "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center hover:bg-secondary/20 smooth-transition"
-          >
-            <MessageSquare className="h-6 w-6 text-secondary" />
-          </a>
-          <a
-            href={contactInfo?.socials?.telegram ?? "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary/20 smooth-transition"
-          >
-            <Send className="h-6 w-6 text-primary" />
-          </a>
-        </div>
-      </div>
+      <div></div>
     </div>
   );
 };

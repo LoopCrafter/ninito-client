@@ -1,4 +1,4 @@
-import { MapPin, Send } from "lucide-react";
+import { Instagram, MapPin, MessageSquare, Send } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { apiFetchServer } from "@/src/lib/apiFetch.server";
 import ContactInfo from "./_components/ContactInfo";
@@ -6,7 +6,7 @@ import { ContactInfoType } from "@/src/types";
 import ContactForm from "./_components/ContactForm";
 
 export default async function Contact() {
-  const settingsRes = await apiFetchServer<{ settings: ContactInfoType }>(
+  const contactRes = await apiFetchServer<{ settings: ContactInfoType }>(
     "/settings"
   );
 
@@ -33,13 +33,45 @@ export default async function Contact() {
       <section className="py-16 lg:py-24">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-            <ContactInfo contactInfo={settingsRes?.settings} />
+            <ContactInfo contactInfo={contactRes?.settings} />
             <ContactForm />
           </div>
         </div>
       </section>
+      <section className="flex w-full justify-center items-center">
+        <h3 className="font-semibold text-lg mb-4">شبکه‌های اجتماعی</h3>
+        <div className="flex gap-4">
+          <a
+            href={
+              contactRes?.settings?.socials?.instagram ??
+              "https://instagram.com/ninito"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary/20 smooth-transition"
+          >
+            <Instagram className="h-6 w-6 text-primary" />
+          </a>
+          <a
+            href={contactRes?.settings?.socials?.whatsapp ?? "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center hover:bg-secondary/20 smooth-transition"
+          >
+            <MessageSquare className="h-6 w-6 text-secondary" />
+          </a>
+          <a
+            href={contactRes?.settings?.socials?.telegram ?? "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary/20 smooth-transition"
+          >
+            <Send className="h-6 w-6 text-primary" />
+          </a>
+        </div>
+      </section>
 
-      <section className="py-16 bg-muted/50">
+      {/* <section className="py-16 bg-muted/50">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">موقعیت فروشگاه</h2>
@@ -60,7 +92,7 @@ export default async function Contact() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }
