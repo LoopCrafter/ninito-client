@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   MapPin,
@@ -12,8 +10,6 @@ import {
   MessageSquare,
   Send,
 } from "lucide-react";
-import { Header } from "@/src/components/header";
-import { Footer } from "@/src/components/footer";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
@@ -25,15 +21,6 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Card, CardContent } from "@/src/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/src/components/ui/form";
-import { toast } from "@/src/hooks/useToast";
 
 const contactSchema = z.object({
   name: z
@@ -59,42 +46,6 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const form = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
-    },
-  });
-
-  const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      console.log("Contact form data:", data);
-
-      toast({
-        title: "پیام شما با موفقیت ارسال شد",
-        description: "ما در اسرع وقت با شما تماس خواهیم گرفت",
-      });
-
-      form.reset();
-    } catch (error) {
-      toast({
-        title: "خطا در ارسال پیام",
-        description: "لطفاً دوباره تلاش کنید",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const scrollToForm = () => {
     document
@@ -248,151 +199,103 @@ export default function Contact() {
                 <CardContent className="p-8">
                   <h2 className="text-3xl font-bold mb-6">ارسال پیام</h2>
 
-                  <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className="space-y-6"
-                    >
-                      <FormField
-                        control={form.control}
+                  <form className="space-y-6">
+                    <div>
+                      <label htmlFor="name" className="block mb-1 font-medium">
+                        نام و نام خانوادگی *
+                      </label>
+                      <Input
+                        id="name"
                         name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>نام و نام خانوادگی *</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="نام کامل خود را وارد کنید"
-                                {...field}
-                                className="rounded-xl"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        placeholder="نام کامل خود را وارد کنید"
+                        defaultValue=""
+                        className="rounded-xl w-full"
                       />
+                    </div>
 
-                      <FormField
-                        control={form.control}
+                    <div>
+                      <label htmlFor="email" className="block mb-1 font-medium">
+                        ایمیل *
+                      </label>
+                      <Input
+                        id="email"
                         name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>ایمیل *</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="email"
-                                placeholder="example@email.com"
-                                {...field}
-                                className="rounded-xl"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        type="email"
+                        placeholder="example@email.com"
+                        defaultValue=""
+                        className="rounded-xl w-full"
                       />
+                    </div>
 
-                      <FormField
-                        control={form.control}
+                    <div>
+                      <label htmlFor="phone" className="block mb-1 font-medium">
+                        شماره تلفن
+                      </label>
+                      <Input
+                        id="phone"
                         name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>شماره تلفن</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="tel"
-                                placeholder="09123456789"
-                                {...field}
-                                className="rounded-xl"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        type="tel"
+                        placeholder="09123456789"
+                        defaultValue=""
+                        className="rounded-xl w-full"
                       />
+                    </div>
 
-                      <FormField
-                        control={form.control}
-                        name="subject"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>موضوع پیام *</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className="rounded-xl">
-                                  <SelectValue placeholder="موضوع پیام خود را انتخاب کنید" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="product-question">
-                                  سؤال درباره محصول
-                                </SelectItem>
-                                <SelectItem value="order-support">
-                                  پشتیبانی سفارش
-                                </SelectItem>
-                                <SelectItem value="complaint">
-                                  شکایات
-                                </SelectItem>
-                                <SelectItem value="suggestion">
-                                  پیشنهاد
-                                </SelectItem>
-                                <SelectItem value="collaboration">
-                                  همکاری
-                                </SelectItem>
-                                <SelectItem value="other">
-                                  سایر موارد
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="message"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>متن پیام *</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="پیام خود را بنویسید..."
-                                className="rounded-xl min-h-32 resize-none"
-                                maxLength={1000}
-                                {...field}
-                              />
-                            </FormControl>
-                            <div className="flex justify-between items-center mt-2">
-                              <FormMessage />
-                              <span className="text-sm text-muted-foreground">
-                                {field.value?.length || 0}/1000
-                              </span>
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="btn-hero w-full"
+                    <div>
+                      <label
+                        htmlFor="subject"
+                        className="block mb-1 font-medium"
                       >
-                        {isSubmitting ? (
-                          <div className="flex items-center">
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2"></div>
-                            در حال ارسال...
-                          </div>
-                        ) : (
-                          <>
-                            <Send className="ml-2 h-5 w-5" />
-                            ارسال پیام
-                          </>
-                        )}
-                      </Button>
-                    </form>
-                  </Form>
+                        موضوع پیام *
+                      </label>
+                      <Select>
+                        <SelectTrigger
+                          name="subject"
+                          defaultValue=""
+                          className="rounded-xl w-full"
+                        >
+                          <SelectValue placeholder="موضوع پیام خود را انتخاب کنید" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="product-question">
+                            سؤال درباره محصول
+                          </SelectItem>
+                          <SelectItem value="order-support">
+                            پشتیبانی سفارش
+                          </SelectItem>
+                          <SelectItem value="complaint">شکایات</SelectItem>
+                          <SelectItem value="suggestion">پیشنهاد</SelectItem>
+                          <SelectItem value="collaboration">همکاری</SelectItem>
+                          <SelectItem value="other">سایر موارد</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="message"
+                        className="block mb-1 font-medium"
+                      >
+                        متن پیام *
+                      </label>
+                      <Textarea
+                        id="message"
+                        name="message"
+                        placeholder="پیام خود را بنویسید..."
+                        defaultValue=""
+                        className="rounded-xl min-h-32 resize-none w-full"
+                        maxLength={1000}
+                      />
+                      <div className="text-sm text-muted-foreground mt-1 text-right">
+                        0/1000
+                      </div>
+                    </div>
+
+                    <Button type="submit" className="btn-hero w-full">
+                      <Send className="ml-2 h-5 w-5" />
+                      ارسال پیام
+                    </Button>
+                  </form>
                 </CardContent>
               </Card>
             </div>
