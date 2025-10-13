@@ -1,15 +1,4 @@
-"use client";
-import { useState } from "react";
-import { z } from "zod";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  Instagram,
-  MessageSquare,
-  Send,
-} from "lucide-react";
+import { MapPin, Send } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
@@ -21,37 +10,14 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Card, CardContent } from "@/src/components/ui/card";
+import { apiFetchServer } from "@/src/lib/apiFetch.server";
+import ContactInfo from "./_components/ContactInfo";
+import { ContactInfoType } from "@/src/types";
 
-const contactSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, { message: "نام باید حداقل 2 کاراکتر باشد" })
-    .max(50, { message: "نام نباید بیش از 50 کاراکتر باشد" }),
-  email: z
-    .string()
-    .trim()
-    .email({ message: "آدرس ایمیل معتبر نیست" })
-    .max(100, { message: "ایمیل نباید بیش از 100 کاراکتر باشد" }),
-  phone: z.string().optional(),
-  subject: z.string().min(1, { message: "لطفاً موضوع پیام را انتخاب کنید" }),
-  message: z
-    .string()
-    .trim()
-    .min(10, { message: "پیام باید حداقل 10 کاراکتر باشد" })
-    .max(1000, { message: "پیام نباید بیش از 1000 کاراکتر باشد" }),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
-export default function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const scrollToForm = () => {
-    document
-      .getElementById("contact-form")
-      ?.scrollIntoView({ behavior: "smooth" });
-  };
+export default async function Contact() {
+  const settingsRes = await apiFetchServer<{ settings: ContactInfoType }>(
+    "/settings"
+  );
 
   return (
     <>
@@ -65,7 +31,7 @@ export default function Contact() {
             <p className="text-xl lg:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               ما همیشه آماده پاسخگویی به شما هستیم!
             </p>
-            <Button onClick={scrollToForm} className="btn-hero">
+            <Button className="btn-hero">
               <Send className="ml-2 h-5 w-5" />
               ارسال پیام
             </Button>
@@ -76,124 +42,7 @@ export default function Contact() {
       <section className="py-16 lg:py-24">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl font-bold mb-6">راه‌های ارتباطی</h2>
-                <p className="text-muted-foreground text-lg">
-                  تیم نینیتو همیشه آماده پاسخگویی به سؤالات شما درباره محصولات
-                  کالای خواب نوزاد است.
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                <Card className="product-card border-none shadow-lg">
-                  <CardContent className="p-6 flex gap-4">
-                    <div className="flex gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                        <MapPin className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">
-                          آدرس فروشگاه
-                        </h3>
-                        <p className="text-muted-foreground">
-                          تهران، خیابان ولیعصر، نرسیده به میدان ونک، پلاک 1234
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="product-card border-none shadow-lg">
-                  <CardContent className="p-6">
-                    <div className="flex gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
-                        <Phone className="h-6 w-6 text-secondary" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">
-                          شماره تماس
-                        </h3>
-                        <a
-                          href="tel:+982112345678"
-                          className="text-muted-foreground hover:text-primary smooth-transition"
-                        >
-                          021-12345678
-                        </a>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="product-card border-none shadow-lg">
-                  <CardContent className="p-6">
-                    <div className="flex gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                        <Mail className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">ایمیل</h3>
-                        <a
-                          href="mailto:support@ninito.ir"
-                          className="text-muted-foreground hover:text-primary smooth-transition"
-                        >
-                          support@ninito.ir
-                        </a>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="product-card border-none shadow-lg">
-                  <CardContent className="p-6">
-                    <div className="flex gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
-                        <Clock className="h-6 w-6 text-secondary" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">
-                          ساعات کاری
-                        </h3>
-                        <p className="text-muted-foreground">
-                          شنبه تا پنج‌شنبه، 9 صبح تا 6 عصر
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-lg mb-4">شبکه‌های اجتماعی</h3>
-                <div className="flex gap-4">
-                  <a
-                    href="https://instagram.com/ninito_official"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary/20 smooth-transition"
-                  >
-                    <Instagram className="h-6 w-6 text-primary" />
-                  </a>
-                  <a
-                    href="https://t.me/ninito_support"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center hover:bg-secondary/20 smooth-transition"
-                  >
-                    <MessageSquare className="h-6 w-6 text-secondary" />
-                  </a>
-                  <a
-                    href="https://wa.me/989123456789"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary/20 smooth-transition"
-                  >
-                    <Phone className="h-6 w-6 text-primary" />
-                  </a>
-                </div>
-              </div>
-            </div>
-
+            <ContactInfo contactInfo={settingsRes?.settings} />
             <div id="contact-form">
               <Card className="product-card border-none shadow-xl">
                 <CardContent className="p-8">
