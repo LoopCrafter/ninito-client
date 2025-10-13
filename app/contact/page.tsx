@@ -1,18 +1,9 @@
 import { MapPin, Send } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Textarea } from "@/src/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/select";
-import { Card, CardContent } from "@/src/components/ui/card";
 import { apiFetchServer } from "@/src/lib/apiFetch.server";
 import ContactInfo from "./_components/ContactInfo";
 import { ContactInfoType } from "@/src/types";
+import ContactForm from "./_components/ContactForm";
 
 export default async function Contact() {
   const settingsRes = await apiFetchServer<{ settings: ContactInfoType }>(
@@ -43,111 +34,7 @@ export default async function Contact() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             <ContactInfo contactInfo={settingsRes?.settings} />
-            <div id="contact-form">
-              <Card className="product-card border-none shadow-xl">
-                <CardContent className="p-8">
-                  <h2 className="text-3xl font-bold mb-6">ارسال پیام</h2>
-
-                  <form className="space-y-6">
-                    <div>
-                      <label htmlFor="name" className="block mb-1 font-medium">
-                        نام و نام خانوادگی *
-                      </label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="نام کامل خود را وارد کنید"
-                        defaultValue=""
-                        className="rounded-xl w-full"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="email" className="block mb-1 font-medium">
-                        ایمیل *
-                      </label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="example@email.com"
-                        defaultValue=""
-                        className="rounded-xl w-full"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="phone" className="block mb-1 font-medium">
-                        شماره تلفن
-                      </label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="09123456789"
-                        defaultValue=""
-                        className="rounded-xl w-full"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="subject"
-                        className="block mb-1 font-medium"
-                      >
-                        موضوع پیام *
-                      </label>
-                      <Select>
-                        <SelectTrigger
-                          name="subject"
-                          defaultValue=""
-                          className="rounded-xl w-full"
-                        >
-                          <SelectValue placeholder="موضوع پیام خود را انتخاب کنید" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="product-question">
-                            سؤال درباره محصول
-                          </SelectItem>
-                          <SelectItem value="order-support">
-                            پشتیبانی سفارش
-                          </SelectItem>
-                          <SelectItem value="complaint">شکایات</SelectItem>
-                          <SelectItem value="suggestion">پیشنهاد</SelectItem>
-                          <SelectItem value="collaboration">همکاری</SelectItem>
-                          <SelectItem value="other">سایر موارد</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="message"
-                        className="block mb-1 font-medium"
-                      >
-                        متن پیام *
-                      </label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        placeholder="پیام خود را بنویسید..."
-                        defaultValue=""
-                        className="rounded-xl min-h-32 resize-none w-full"
-                        maxLength={1000}
-                      />
-                      <div className="text-sm text-muted-foreground mt-1 text-right">
-                        0/1000
-                      </div>
-                    </div>
-
-                    <Button type="submit" className="btn-hero w-full">
-                      <Send className="ml-2 h-5 w-5" />
-                      ارسال پیام
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
+            <ContactForm />
           </div>
         </div>
       </section>
