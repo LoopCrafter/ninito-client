@@ -1,4 +1,4 @@
-import { Instagram, MapPin, MessageSquare, Send } from "lucide-react";
+import { Instagram, MessageSquare, Send } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { apiFetchServer } from "@/src/lib/apiFetch.server";
 import ContactInfo from "./_components/ContactInfo";
@@ -70,29 +70,6 @@ export default async function Contact() {
           </a>
         </div>
       </section>
-
-      {/* <section className="py-16 bg-muted/50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">موقعیت فروشگاه</h2>
-            <p className="text-muted-foreground text-lg">
-              به راحتی ما را پیدا کنید
-            </p>
-          </div>
-
-          <div className="bg-card rounded-2xl overflow-hidden soft-shadow">
-            <div className="h-96 bg-muted flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-16 w-16 text-primary mx-auto mb-4" />
-                <p className="text-lg font-medium mb-2">نقشه موقعیت فروشگاه</p>
-                <p className="text-muted-foreground">
-                  تهران، خیابان ولیعصر، نرسیده به میدان ونک
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
     </>
   );
 }

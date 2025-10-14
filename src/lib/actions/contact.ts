@@ -1,4 +1,7 @@
+"use server";
+
 import { contactFormSchema } from "@/src/schema/contact";
+import { apiFetchServer } from "../apiFetch.server";
 
 export const contactAction = async (prev: any, formData: FormData) => {
   const contact = {
@@ -20,6 +23,38 @@ export const contactAction = async (prev: any, formData: FormData) => {
     });
     return { success: false, errors, contact, message: "" };
   }
+  try {
+    const res = await apiFetchServer("/contact", {
+      method: "POST",
+      body: JSON.stringify(contact),
+    });
+    console.log("res:", res);
+    return {
+      success: true,
+      contact: {
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      },
+      errors: {},
+      message: "پیام شما با موفقیت ارسال شد! در اسرع وقت پاسخ داده خواهد شد.",
+    };
+  } catch (error) {
+    let errorMsg = "";
+    if (error instanceof Error) {
+      errorMsg = error.message;
+    } else {
+      errorMsg = "لطفاً بعداً دوباره تلاش کنید";
+    }
 
-  return { success: true, contact, message: "", errors: {} };
+    return {
+      success: false,
+      contact,
+      errors: { email: "" },
+      message: "",
+      apiError: errorMsg,
+    };
+  }
 };

@@ -8,8 +8,6 @@ import {
   SetResetPasswordSchema,
 } from "@/src/schema/auth";
 import { apiFetchServer } from "../apiFetch.server";
-import { User } from "@/src/types/user";
-import { cookies } from "next/headers";
 
 const signupAction = async (Prev: any, formData: FormData) => {
   const signupData = {

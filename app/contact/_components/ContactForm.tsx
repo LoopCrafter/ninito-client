@@ -11,8 +11,9 @@ import {
 } from "@/src/components/ui/select";
 import { Button } from "@/src/components/ui/button";
 import { Send } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { contactAction } from "@/src/lib/actions/contact";
+import { toast } from "sonner";
 
 type ContactFormTypes = {
   success: boolean;
@@ -24,6 +25,7 @@ type ContactFormTypes = {
     subject: FormDataEntryValue | null;
     message: FormDataEntryValue | null;
   };
+  apiError?: string;
   errors: Record<string, string>;
 };
 
@@ -38,6 +40,7 @@ const initialState: ContactFormTypes = {
     subject: "",
     message: "",
   },
+  apiError: "",
 };
 const ContactForm = () => {
   const [state, action, isPending] = useActionState(
@@ -46,6 +49,19 @@ const ContactForm = () => {
   );
 
   const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (state.apiError) {
+      toast.error(state.apiError);
+    }
+    if (state.success && state.message) {
+      toast.success(state.message);
+      setMessage("");
+      setSubject("");
+    }
+  }, [state]);
+
   return (
     <div id="contact-form">
       <Card className="product-card border-none shadow-xl">
@@ -151,9 +167,10 @@ const ContactForm = () => {
                 defaultValue={(state.contact?.message as string) || ""}
                 className="rounded-xl min-h-32 resize-none w-full"
                 maxLength={1000}
+                onChange={(e) => setMessage(e.target.value)}
               />
               <div className="text-sm text-muted-foreground mt-1 text-right">
-                0/1000
+                {message.length}/350
               </div>
               {state.errors.message && (
                 <span className="text-red-600 text-sm">
@@ -162,9 +179,13 @@ const ContactForm = () => {
               )}
             </div>
 
-            <Button type="submit" className="btn-hero w-full">
+            <Button
+              disabled={isPending}
+              type="submit"
+              className="btn-hero w-full"
+            >
               <Send className="ml-2 h-5 w-5" />
-              ارسال پیام
+              {isPending ? "در حال ارسال..." : "ارسال پیام"}
             </Button>
           </form>
         </CardContent>
