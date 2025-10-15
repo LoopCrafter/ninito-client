@@ -1,9 +1,26 @@
-import { Instagram, MessageSquare, Phone, Mail, MapPin } from "lucide-react";
+import {
+  Instagram,
+  MessageSquare,
+  Phone,
+  Mail,
+  MapPin,
+  Send,
+} from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { apiFetchServer } from "../lib/apiFetch.server";
+import { ContactInfoType } from "../types";
 
-export function Footer() {
+export async function Footer() {
+  const contactRes = await apiFetchServer<{ settings: ContactInfoType }>(
+    "/settings",
+    {
+      next: { revalidate: 3600 },
+      cache: "force-cache",
+    }
+  );
+  const settings = contactRes?.settings;
   return (
     <footer className="bg-muted/50 pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -122,18 +139,28 @@ export function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 <span className="text-muted-foreground">
-                  تهران، خیابان ولیعصر، پلاک ۱۲۳۴
+                  {settings?.storeAddress}
                 </span>
               </div>
 
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground">۰۲۱-۱۲۳۴۵۶۷۸</span>
+                <a
+                  href={`tel:${settings?.storePhone}`}
+                  className="text-muted-foreground"
+                >
+                  {settings?.storePhone}
+                </a>
               </div>
 
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground">info@ninito.com</span>
+                <a
+                  href={`mailto:${settings?.email}`}
+                  className="text-muted-foreground"
+                >
+                  {settings?.email}
+                </a>
               </div>
             </div>
 
@@ -141,13 +168,19 @@ export function Footer() {
               <h5 className="font-semibold text-sm mb-3">شبکه‌های اجتماعی</h5>
               <div className="flex gap-3">
                 <Button variant="outline" size="icon" className="h-8 w-8">
-                  <Instagram className="h-4 w-4" />
+                  <a href={settings?.socials.instagram || "#"} target="_blank">
+                    <Instagram className="h-4 w-4" />
+                  </a>
                 </Button>
                 <Button variant="outline" size="icon" className="h-8 w-8">
-                  <MessageSquare className="h-4 w-4" />
+                  <a href={settings?.socials.whatsapp || "#"} target="_blank">
+                    <MessageSquare className="h-4 w-4" />
+                  </a>
                 </Button>
                 <Button variant="outline" size="icon" className="h-8 w-8">
-                  <Phone className="h-4 w-4" />
+                  <a href={settings?.socials.telegram || "#"} target="_blank">
+                    <Send className="h-4 w-4" />
+                  </a>
                 </Button>
               </div>
             </div>

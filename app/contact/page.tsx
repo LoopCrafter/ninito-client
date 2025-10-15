@@ -38,38 +38,6 @@ export default async function Contact() {
           </div>
         </div>
       </section>
-      <section className="flex w-full justify-center items-center">
-        <h3 className="font-semibold text-lg mb-4">شبکه‌های اجتماعی</h3>
-        <div className="flex gap-4">
-          <a
-            href={
-              contactRes?.settings?.socials?.instagram ??
-              "https://instagram.com/ninito"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary/20 smooth-transition"
-          >
-            <Instagram className="h-6 w-6 text-primary" />
-          </a>
-          <a
-            href={contactRes?.settings?.socials?.whatsapp ?? "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center hover:bg-secondary/20 smooth-transition"
-          >
-            <MessageSquare className="h-6 w-6 text-secondary" />
-          </a>
-          <a
-            href={contactRes?.settings?.socials?.telegram ?? "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:bg-primary/20 smooth-transition"
-          >
-            <Send className="h-6 w-6 text-primary" />
-          </a>
-        </div>
-      </section>
     </>
   );
 }
