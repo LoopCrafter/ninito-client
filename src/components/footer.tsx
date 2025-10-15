@@ -91,28 +91,28 @@ export async function Footer() {
             <h4 className="font-semibold mb-4">خدمات مشتریان</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/questions/راهنمای خرید"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   راهنمای خرید
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/questions/شیوه‌های پرداخت"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   شیوه‌های پرداخت
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/questions/سیاست بازگشت"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   سیاست بازگشت
-                </a>
+                </Link>
               </li>
               <li>
                 <Link
@@ -123,12 +123,20 @@ export async function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/questions/حریم خصوصی"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   حریم خصوصی
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/questions/قوانین و مقررات"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  قوانین و مقررات
+                </Link>
               </li>
             </ul>
           </div>
@@ -188,25 +196,10 @@ export async function Footer() {
         </div>
 
         <div className="border-t pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0">
             <p className="text-muted-foreground text-sm">
-              © ۲۰۲۵ نینیتو - تمام حقوق محفوظ است
+              © ۲۰۲۵ نی نی تو - تمام حقوق محفوظ است
             </p>
-
-            <div className="flex items-center gap-6 text-sm">
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                قوانین و مقررات
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                حریم خصوصی
-              </a>
-            </div>
           </div>
         </div>
       </div>
