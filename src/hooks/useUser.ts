@@ -8,7 +8,7 @@ export const useUser = () => {
   const { user, setUser } = useApp();
   const logout = async () => {
     try {
-      await apiFetchClient("/auth/logout", { method: "POST" });
+      const res = await apiFetchClient("/auth/logout", { method: "POST" });
       setUser(null);
       router.replace("/");
     } catch (error) {

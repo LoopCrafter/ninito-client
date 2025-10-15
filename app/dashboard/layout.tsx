@@ -1,10 +1,21 @@
+import { apiFetchServer } from "@/src/lib/apiFetch.server";
 import Sidebar from "./_components/sidebar";
+import { User } from "@/src/types/user";
+import { checkUser } from "@/src/auth";
+import { redirect } from "next/navigation";
 
-export default function DashboardLayout({
+export const revalidate = 0;
+
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const userProfile = await checkUser();
+  console.log("USER PROFILE DASHBOARD", userProfile);
+  if (!userProfile) {
+    redirect("/auth?tab=login&redirect=/dashboard/profile");
+  }
   return (
     <div className="min-h-screen  dark:bg-gray-900 py-10 mx-auto bg-card rounded-2xl shadow-lg p-6 md:p-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

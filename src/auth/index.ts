@@ -10,7 +10,10 @@ export async function checkUser(): Promise<User | null> {
     if (!token) return null;
 
     const { user } = await apiFetchServer<{ user: User }>("/auth/check-user", {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Cache-Control": "no-store",
+      },
     });
 
     return user;
