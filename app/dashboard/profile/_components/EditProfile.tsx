@@ -182,7 +182,7 @@ const EditProfile = ({ user, goBack }: { user: User; goBack: () => void }) => {
               <SelectContent>
                 <SelectItem value="male">مرد</SelectItem>
                 <SelectItem value="female">زن</SelectItem>
-                <SelectItem value="other">ترجیح نمی‌دهم</SelectItem>
+                <SelectItem value="prefer_not_to_say">ترجیح نمی‌دهم</SelectItem>
               </SelectContent>
             </Select>
           </div>

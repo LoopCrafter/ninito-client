@@ -28,7 +28,6 @@ export const contactAction = async (prev: any, formData: FormData) => {
       method: "POST",
       body: JSON.stringify(contact),
     });
-    console.log("res:", res);
     return {
       success: true,
       contact: {

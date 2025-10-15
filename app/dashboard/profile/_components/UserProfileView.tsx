@@ -5,9 +5,20 @@ import {
 } from "@/src/components/ui/avatar";
 import { getInitials } from "@/src/lib/utils";
 import { User } from "@/src/types/user";
-import Image from "next/image";
 
 export default function UserProfileView({ user }: { user: User }) {
+  const genderDetector = () => {
+    switch (user.gender) {
+      case "male":
+        return "مرد";
+      case "female":
+        return "زن";
+      case "prefer_not_to_say":
+        return "ترجیح میدهم نگویم";
+      default:
+        return "نامشخص";
+    }
+  };
   return (
     <div className="">
       <h2 className="text-2xl font-bold mb-6 bg-gradient-to-l from-sky-600 to-rose-600 bg-clip-text text-transparent">
@@ -45,7 +56,7 @@ export default function UserProfileView({ user }: { user: User }) {
           </div>
           <div className="flex justify-between">
             <span className="font-medium">جنسیت</span>
-            <span>{user.gender === "male" ? "مرد" : "زن"}</span>
+            <span>{genderDetector()}</span>
           </div>
         </div>
       </div>
