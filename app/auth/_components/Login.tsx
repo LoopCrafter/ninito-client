@@ -27,6 +27,7 @@ type LoginState = {
     email: FormDataEntryValue | null;
     password: FormDataEntryValue | null;
   };
+  apiError?: string;
 };
 
 const initialState: LoginState = {
@@ -34,6 +35,7 @@ const initialState: LoginState = {
   message: "",
   user: undefined,
   errors: {},
+  apiError: "",
   login: {
     email: "",
     password: "",
@@ -86,10 +88,20 @@ const loginAction = async (Prev: any, formData: FormData) => {
       user: data.user,
     };
   } catch (error) {
+    let errorMsg = "";
+    if (error instanceof Error) {
+      console.log("error", error.message);
+      errorMsg = error.message;
+    } else {
+      errorMsg = "لطفاً بعداً دوباره تلاش کنید";
+    }
+
     return {
       success: false,
-      message: "لطفاً بعداً دوباره تلاش کنید",
       login: loginData,
+      errors: { email: "" },
+      message: "",
+      apiError: errorMsg,
     };
   }
 };
@@ -106,6 +118,10 @@ const Login = () => {
   const redirect = params.get("redirect") || "/";
 
   useEffect(() => {
+    console.log("data", data);
+    if (data.apiError) {
+      toast.error(data.apiError);
+    }
     if (data.user) {
       setUser(data.user);
       toast.success("شما با موفقیت وارد شدید");

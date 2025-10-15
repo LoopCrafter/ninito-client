@@ -1,3 +1,5 @@
+import { handleApiError } from "./errorHandler";
+
 export async function apiFetchClient<T>(
   path: string,
   options: RequestInit = {},
@@ -15,7 +17,7 @@ export async function apiFetchClient<T>(
         },
     credentials: "include",
   });
-
+  let data: any = null;
   if (res.status === 401 && retry) {
     try {
       const refreshRes = await fetch(
@@ -28,7 +30,7 @@ export async function apiFetchClient<T>(
 
       if (!refreshRes.ok) throw new Error("Failed to refresh token");
 
-      const data = await refreshRes.json();
+      data = await refreshRes.json();
 
       document.cookie = `accessToken=${data.accessToken}; path=/; secure; samesite=strict`;
 
@@ -60,7 +62,7 @@ export async function apiFetchClient<T>(
     }
   }
 
-  if (!res.ok) throw new Error(await res.text());
+  if (!res.ok) handleApiError(res, data);
 
   const contentType = res.headers.get("content-type");
   if (contentType && contentType.includes("application/json")) {
