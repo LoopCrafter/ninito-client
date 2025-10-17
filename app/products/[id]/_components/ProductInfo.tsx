@@ -1,14 +1,13 @@
 "use client";
-import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import useAddToBasket from "@/src/hooks/useAddToBasket";
 import { cn } from "@/src/lib/utils";
 import { Product } from "@/src/types/product";
 import { formatPrice } from "@/src/utils";
 import { ShoppingCart, Star } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import ClientSanitizer from "./ClientSanitizer";
 
 type ProductInfoProps = {
   product: Product;
@@ -175,9 +174,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       {/* Description */}
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">توضیحات کوتاه</h3>
-        <p className="text-muted-foreground leading-relaxed">
-          {product.description}
-        </p>
+        <ClientSanitizer html={product.shortDescription} />
+        {/* <p className="text-muted-foreground leading-relaxed" aria-colspan={}>{sanitizedHtml}</p> */}
       </div>
 
       {/* Action Buttons */}

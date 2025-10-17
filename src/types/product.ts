@@ -43,6 +43,7 @@ export interface Product {
   basePrice?: number;
   discount: Discount;
   description: string;
+  shortDescription: string;
   thumbnail: string;
   gallery: string[];
   comments: Comment[];
@@ -55,6 +56,7 @@ export interface Product {
   finalBasePrice?: number;
   isFeatured?: boolean;
   isEnabled?: boolean;
+  specs: { key: string; value: string }[];
 }
 
 export type SortOption =
