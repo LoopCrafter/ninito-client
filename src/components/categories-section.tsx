@@ -27,7 +27,7 @@ export function CategoriesSection({ categories }: CategoriesProps) {
           {categories.slice(0, 8).map((category) => (
             <Link
               key={category.id}
-              href={`/products?category=${category.id}`}
+              href={`/products?filter[category]=${category.id}`}
               className="group block rounded-3xl bg-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden"
             >
               {/* Image */}

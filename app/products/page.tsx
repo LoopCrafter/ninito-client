@@ -13,12 +13,18 @@ import {
   ProductResponse,
   SortOption,
 } from "@/src/types/product";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 export default function Products() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
+
   const [pagination, setPagination] = useState<PaginationProps>({
     page: 1,
     totalPages: 1,
@@ -35,6 +41,24 @@ export default function Products() {
     searchQuery: "",
     sort: "newest",
   });
+
+  useEffect(() => {
+    const params = Object.fromEntries(searchParams.entries());
+    const initialFilters: ProductFiltersType = {
+      priceRange: [0, 20000000],
+      categories: params["filter[category]"]
+        ? [params["filter[category]"]]
+        : [],
+      inStock: params["filter[inStock]"] === "true",
+      colors: params["filter[color]"] ? [params["filter[color]"]] : [],
+      searchQuery: params["search"] || "",
+      sort: (params["sort"] as SortOption) || "newest",
+    };
+
+    setFilters(initialFilters);
+    getProducts(1, initialFilters); // ✅ فقط همین یک بار
+    setInitialized(true);
+  }, []);
 
   const resetPagination = () => {
     setPagination((prev) => ({ ...prev, page: 1 }));
@@ -82,8 +106,14 @@ export default function Products() {
   };
 
   useEffect(() => {
+    if (!initialized) return;
+
+    const query = buildQueryString(filters, pagination.page, pagination.limit);
+    const newUrl = `/products?${query}`;
+    router.replace(newUrl);
+
     getProducts(pagination.page, filters);
-  }, [filters]);
+  }, [filters, pagination.page]);
 
   const colors = useMemo(() => {
     const allColors: Color[] = [];
