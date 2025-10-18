@@ -43,7 +43,7 @@ export interface Product {
   id: string;
   title: string;
   category: {
-    _id: string;
+    id: string;
     title: string;
     imageUrl?: string;
   };

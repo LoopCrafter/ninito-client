@@ -4,9 +4,14 @@ import Link from "next/link";
 type BreadCrumbProps = {
   category: string;
   productName: string;
+  categoryId: string;
 };
 
-const BreadCrumb: React.FC<BreadCrumbProps> = ({ category, productName }) => {
+const BreadCrumb: React.FC<BreadCrumbProps> = ({
+  category,
+  productName,
+  categoryId,
+}) => {
   return (
     <nav className="mb-8">
       <ol className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -31,10 +36,9 @@ const BreadCrumb: React.FC<BreadCrumbProps> = ({ category, productName }) => {
         </li>
         <li>
           <Link
-            href={`/products?category=${category}`}
+            href={`/products?filter[category]=${categoryId}`}
             className="hover:text-primary transition-colors"
           >
-            {category}
             {category}
           </Link>
         </li>

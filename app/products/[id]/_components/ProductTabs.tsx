@@ -12,7 +12,6 @@ type ProductTabProps = {
   product: Product;
 };
 const ProductTabs: React.FC<ProductTabProps> = ({ product }) => {
-  console.log("ProductTabs product:", product.comments);
   return (
     <Tabs defaultValue="description" className="w-full rtl">
       <TabsList className="grid w-full grid-cols-3">

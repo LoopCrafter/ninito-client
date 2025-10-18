@@ -27,6 +27,7 @@ export default async function ProductDetail({
           <BreadCrumb
             productName={product.title}
             category={product.category.title}
+            categoryId={product.category.id}
           />
           <Suspense fallback={<div>loading....</div>}>
             <div className="grid lg:grid-cols-2 gap-12 mb-16">
