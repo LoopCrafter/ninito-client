@@ -1,14 +1,21 @@
-"use client";
-
 import { Category } from "@/src/types/categories";
 import Image from "next/image";
 import Link from "next/link";
+import { apiFetchServer } from "../lib/apiFetch.server";
 
-type CategoriesProps = {
+type CategoriesResponse = {
   categories: Category[];
 };
 
-export function CategoriesSection({ categories }: CategoriesProps) {
+export async function CategoriesSection() {
+  const categoriesData = await apiFetchServer<CategoriesResponse>(
+    "/categories",
+    {
+      cache: "force-cache",
+      next: { revalidate: 3600 },
+    }
+  );
+  const categories = categoriesData?.categories ?? [];
   return (
     <section className="py-16 bg-gradient-to-br from-pink-50 via-white to-blue-50">
       <div className="container mx-auto px-4">

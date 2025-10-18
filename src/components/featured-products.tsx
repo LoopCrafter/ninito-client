@@ -1,12 +1,18 @@
 import React from "react";
 import { ProductsSlider } from "./products-slider";
 import { Product } from "@/src/types/product";
+import { apiFetchServer } from "../lib/apiFetch.server";
 
-type FeaturedProductsProps = {
+type ProductsResponse = {
   products: Product[];
+  featured: Product[];
 };
 
-const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products }) => {
+const FeaturedProducts = async () => {
+  const [productsData] = await Promise.all([
+    apiFetchServer<ProductsResponse>("/products", { cache: "no-store" }),
+  ]);
+  const products = productsData?.featured ?? [];
   return (
     <div className="bg-pink-400/50 featured-products">
       <ProductsSlider

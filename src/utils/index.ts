@@ -26,4 +26,8 @@ const getFinalPrice = (product: Product, variant?: ProductVariant): number => {
   return basePrice;
 };
 
-export { formatPrice, getFinalPrice };
+const fakeApi = async (duration = 3000) => {
+  return new Promise((res) => setTimeout(res, duration));
+};
+
+export { formatPrice, getFinalPrice, fakeApi };
