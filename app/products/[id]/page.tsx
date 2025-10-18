@@ -1,7 +1,4 @@
 import { ProductGallery } from "@/src/components/product-gallery";
-import { ProductReviews } from "@/src/components/product-reviews";
-import { ReviewForm } from "@/src/components/review-form";
-import { mockProduct } from "@/src/mock";
 import BreadCrumb from "./_components/BreadCrumb";
 import ProductInfo from "./_components/ProductInfo";
 import { apiFetchServer } from "@/src/lib/apiFetch.server";
@@ -15,7 +12,7 @@ export default async function ProductDetail({
 }: {
   params: { id: string };
 }) {
-  const { id } = params;
+  const { id } = await params;
   const productDetail = await apiFetchServer<{ product: Product }>(
     `/products/${id}`
   );

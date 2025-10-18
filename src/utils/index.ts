@@ -30,4 +30,18 @@ const fakeApi = async (duration = 3000) => {
   return new Promise((res) => setTimeout(res, duration));
 };
 
-export { formatPrice, getFinalPrice, fakeApi };
+const calculateDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const shamsiDate = date.toLocaleString("fa-IR", {
+    calendar: "persian",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    // hour: "2-digit",
+    // minute: "2-digit",
+    //   second: "2-digit",
+  });
+  return shamsiDate;
+};
+
+export { formatPrice, getFinalPrice, fakeApi, calculateDate };

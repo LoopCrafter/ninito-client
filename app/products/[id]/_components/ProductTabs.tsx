@@ -1,5 +1,3 @@
-import { ProductReviews } from "@/src/components/product-reviews";
-import { ReviewForm } from "@/src/components/review-form";
 import {
   Tabs,
   TabsContent,
@@ -8,11 +6,13 @@ import {
 } from "@/src/components/ui/tabs";
 import { Product } from "@/src/types/product";
 import ClientSanitizer from "./ClientSanitizer";
+import ProductComments from "./ProductComments";
 
 type ProductTabProps = {
   product: Product;
 };
 const ProductTabs: React.FC<ProductTabProps> = ({ product }) => {
+  console.log("ProductTabs product:", product.comments);
   return (
     <Tabs defaultValue="description" className="w-full rtl">
       <TabsList className="grid w-full grid-cols-3">
@@ -51,10 +51,7 @@ const ProductTabs: React.FC<ProductTabProps> = ({ product }) => {
       </TabsContent>
 
       <TabsContent value="reviews" className="mt-8">
-        <div className="space-y-8">
-          <ProductReviews productId={"10"} />
-          <ReviewForm productId={"10"} />
-        </div>
+        <ProductComments product={product} />
       </TabsContent>
     </Tabs>
   );

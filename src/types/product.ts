@@ -19,16 +19,24 @@ interface Discount {
 }
 
 interface User {
-  _id: string;
+  id: string;
   email: string;
   name: string;
 }
 
-interface Comment {
-  _id: string;
+export interface Comment {
+  id: string;
   productId: string;
-  userId: User;
+  user: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+  };
   text: string;
+  title: string;
+  rating: number;
+  createdAt: string;
 }
 
 export interface Product {

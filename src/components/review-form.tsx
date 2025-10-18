@@ -21,7 +21,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/src/components/ui/form";
-import { useToast } from "@/src/hooks/useToast";
+import useApp from "../hooks/useApp";
+import Link from "next/link";
+import { apiFetchClient } from "../lib/apiFetch.client";
+import { useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const reviewSchema = z.object({
   rating: z.number().min(1, "لطفاً امتیاز خود را انتخاب کنید").max(5),
@@ -37,21 +41,18 @@ const reviewSchema = z.object({
 
 type ReviewFormData = z.infer<typeof reviewSchema>;
 
-interface ReviewFormProps {
-  productId: string;
-}
-
-export function ReviewForm({ productId }: ReviewFormProps) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // This would come from auth context
+export function ReviewForm() {
+  const { user } = useApp();
+  const { id } = useParams();
+  const router = useRouter();
   const [hoveredRating, setHoveredRating] = useState(0);
-  const { toast } = useToast();
 
   const form = useForm<ReviewFormData>({
     resolver: zodResolver(reviewSchema),
     defaultValues: {
       rating: 0,
-      title: "",
       comment: "",
+      title: "",
     },
   });
 
@@ -59,22 +60,29 @@ export function ReviewForm({ productId }: ReviewFormProps) {
 
   const onSubmit = async (data: ReviewFormData) => {
     try {
-      toast({
-        title: "نظر شما ثبت شد",
-        description: "نظر شما پس از بررسی نمایش داده خواهد شد.",
+      const newComment = {
+        rating: data.rating,
+        text: data.comment,
+        title: data.title,
+      };
+      const response = await apiFetchClient(`/products/${id}/reviews`, {
+        method: "POST",
+        body: JSON.stringify(newComment),
       });
-
+      toast("نظر شما با موفقیت ثبت شد و پس از بررسی منتشر خواهد شد.");
+      console.log("Submitted review:", id, data, response);
       form.reset();
+      router.refresh();
     } catch (error) {
-      toast({
-        title: "خطا در ثبت نظر",
-        description: "لطفاً دوباره تلاش کنید.",
-        variant: "destructive",
-      });
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error("خطایی رخ داده است. لطفاً دوباره تلاش کنید.");
     }
   };
 
-  if (!isLoggedIn) {
+  if (!user) {
     return (
       <Card>
         <CardHeader>
@@ -91,12 +99,12 @@ export function ReviewForm({ productId }: ReviewFormProps) {
               شوید
             </p>
             <div className="flex gap-3">
-              <Button onClick={() => setIsLoggedIn(true)}>
-                ورود به حساب کاربری
-              </Button>
-              <Button variant="outline" onClick={() => setIsLoggedIn(true)}>
-                ثبت نام
-              </Button>
+              <Link href={`/auth?tab=login&redirect=/products/${id}`}>
+                <Button>ورود به حساب کاربری</Button>
+              </Link>
+              <Link href="/auth?tab=signup">
+                <Button variant="outline">ثبت نام</Button>
+              </Link>
             </div>
           </div>
         </CardContent>
@@ -115,7 +123,6 @@ export function ReviewForm({ productId }: ReviewFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Rating */}
             <FormField
               control={form.control}
               name="rating"
@@ -158,7 +165,6 @@ export function ReviewForm({ productId }: ReviewFormProps) {
               )}
             />
 
-            {/* Title */}
             <FormField
               control={form.control}
               name="title"
@@ -176,8 +182,6 @@ export function ReviewForm({ productId }: ReviewFormProps) {
                 </FormItem>
               )}
             />
-
-            {/* Comment */}
             <FormField
               control={form.control}
               name="comment"
@@ -199,7 +203,6 @@ export function ReviewForm({ productId }: ReviewFormProps) {
               )}
             />
 
-            {/* Submit Button */}
             <Button
               type="submit"
               className="w-full"

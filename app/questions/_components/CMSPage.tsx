@@ -1,8 +1,5 @@
-import { CMSPageSkeleton } from "@/src/components/fallbacks/CMSPageSkeleton";
 import { apiFetchServer } from "@/src/lib/apiFetch.server";
-import { fakeApi } from "@/src/utils";
 import DOMPurify from "isomorphic-dompurify";
-import { Suspense } from "react";
 import { PageType } from "../[id]/page";
 
 const CMSPage = async ({ id }: { id: string }) => {
