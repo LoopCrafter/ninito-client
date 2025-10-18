@@ -70,9 +70,7 @@ export function ReviewForm() {
         body: JSON.stringify(newComment),
       });
       toast("نظر شما با موفقیت ثبت شد و پس از بررسی منتشر خواهد شد.");
-      console.log("Submitted review:", id, data, response);
       form.reset();
-      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

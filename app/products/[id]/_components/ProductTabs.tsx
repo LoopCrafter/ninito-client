@@ -17,7 +17,9 @@ const ProductTabs: React.FC<ProductTabProps> = ({ product }) => {
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="description">توضیحات کامل</TabsTrigger>
         <TabsTrigger value="specifications">مشخصات فنی</TabsTrigger>
-        <TabsTrigger value="reviews">نظرات 120</TabsTrigger>
+        <TabsTrigger value="reviews">
+          نظرات ({product.comments.length ?? 0})
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="description" className="mt-8">
