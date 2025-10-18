@@ -67,17 +67,23 @@ export function Header() {
             <Search className="h-4 w-4" />
           </Button>
 
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
 
           {user?.email ? (
             <DropdownMenu dir="rtl">
               <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage src={user.image} />
-                  <AvatarFallback className="bg-rose-300 text-white">
-                    {userName}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="flex justify-center items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src={user.image} />
+                    <AvatarFallback className="bg-rose-300 text-white">
+                      {userName}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <span className="text-sm">
+                    {user.firstName ?? ""} {user.lastName ?? ""}
+                  </span>
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem
