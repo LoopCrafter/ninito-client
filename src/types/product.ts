@@ -26,7 +26,10 @@ interface User {
 
 export interface Comment {
   id: string;
-  productId: string;
+  product: {
+    id: string;
+    title: string;
+  };
   user: {
     email: string;
     firstName: string;

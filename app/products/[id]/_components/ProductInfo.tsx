@@ -10,14 +10,14 @@ import { toast } from "sonner";
 import ClientSanitizer from "./ClientSanitizer";
 
 type ProductInfoProps = {
-  product: Product;
+  product?: Product;
 };
 
 const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const { addToBasket } = useAddToBasket();
-  const variants = product.variants ?? [];
+  const variants = product?.variants ?? [];
 
   useEffect(() => {
     if (variants.length > 0) {
@@ -30,16 +30,16 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   );
 
   const finalPrice = selectedVariant
-    ? product.discount?.method === "percentage"
+    ? product?.discount?.method === "percentage"
       ? selectedVariant.price -
         (selectedVariant.price * product.discount.value) / 100
-      : selectedVariant.price - product.discount.value
-    : product.basePrice ?? 0;
+      : selectedVariant.price - (product?.discount?.value ?? 0)
+    : product?.basePrice ?? 0;
 
   useEffect(() => {
     if (!selectedColor) return;
 
-    const variantsWithColor = product.variants.find(
+    const variantsWithColor = product?.variants.find(
       (v) => v.color.name === selectedColor
     );
     if (variantsWithColor) {
@@ -54,7 +54,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       toast.error("لطفا سایز مورد نظر را انتخاب کنید");
     }
     if (!selectedVariant) return;
-    addToBasket(product, selectedVariant, 1);
+    if (product) {
+      addToBasket(product, selectedVariant, 1);
+    }
     toast.success("آیتم با موفقیت اضافه شد");
   };
 
@@ -68,7 +70,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     <div className="order-2 lg:order-1 space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-4">
-          {product.title}
+          {product?.title}
         </h1>
 
         {/* Rating */}
@@ -88,20 +90,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             ({product?.comments?.length} نظر)
           </span>
         </div>
-
-        {/* Stock Status */}
-        {/* <div className="mb-4">
-          {product.inStock ? (
-            <Badge
-              variant="secondary"
-              className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
-            >
-              موجود در انبار
-            </Badge>
-          ) : (
-            <Badge variant="destructive">ناموجود</Badge>
-          )}
-        </div> */}
       </div>
 
       {/* Price */}
@@ -109,7 +97,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         <div className="font-semibold text-primary">
           {formatPrice(finalPrice)}
         </div>
-        {selectedVariant?.price && product.discount?.value > 0 && (
+        {selectedVariant?.price && (product?.discount?.value ?? 0) > 0 && (
           <div className="text-xs text-muted-foreground">
             <del>{formatPrice(selectedVariant.price)}</del>
           </div>
@@ -174,7 +162,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
       {/* Description */}
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">توضیحات کوتاه</h3>
-        <ClientSanitizer html={product.shortDescription} />
+        <ClientSanitizer html={product?.shortDescription ?? ""} />
         {/* <p className="text-muted-foreground leading-relaxed" aria-colspan={}>{sanitizedHtml}</p> */}
       </div>
 

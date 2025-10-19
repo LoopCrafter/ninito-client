@@ -6,6 +6,10 @@ import { Product } from "@/src/types/product";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import ProductTabs from "./_components/ProductTabs";
+import { BreadcrumbSkeleton } from "@/src/components/fallbacks/BreadcrumbSkeleton";
+import ProductTopSection from "./_components/ProductTopSection";
+import { ProductDetailSkeleton } from "@/src/components/fallbacks/ProductDetailSkeleton";
+import ProductTabsSkeleton from "@/src/components/fallbacks/ProductTabsSkeleton";
 
 export default async function ProductDetail({
   params,
@@ -13,38 +17,19 @@ export default async function ProductDetail({
   params: { id: string };
 }) {
   const { id } = await params;
-  const productDetail = await apiFetchServer<{ product: Product }>(
-    `/products/${id}`
-  );
-  if (!productDetail?.product) {
-    redirect("/products");
-  }
-  const product = productDetail?.product;
+
   return (
     <div className="container mx-auto px-4 py-8">
-      {product ? (
-        <>
-          <BreadCrumb
-            productName={product.title}
-            category={product.category.title}
-            categoryId={product.category.id}
-          />
-          <Suspense fallback={<div>loading....</div>}>
-            <div className="grid lg:grid-cols-2 gap-12 mb-16">
-              <ProductInfo product={product} />
-              <ProductGallery
-                images={product.galleryUrls!}
-                productName={product.title}
-              />
-            </div>
-          </Suspense>
+      <Suspense fallback={<BreadcrumbSkeleton />}>
+        <BreadCrumb productId={id} />
+      </Suspense>
 
-          {/* Product Details Tabs */}
-          <ProductTabs product={product} />
-        </>
-      ) : (
-        <h1>THERE IS NO PRODUCT</h1>
-      )}
+      <Suspense fallback={<ProductDetailSkeleton />}>
+        <ProductTopSection productId={id} />
+      </Suspense>
+      <Suspense fallback={<ProductTabsSkeleton />}>
+        <ProductTabs productId={id} />
+      </Suspense>
     </div>
   );
 }

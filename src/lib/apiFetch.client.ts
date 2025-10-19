@@ -57,7 +57,7 @@ export async function apiFetchClient<T>(
         : (retryRes.text() as T);
     } catch (err) {
       console.error("Session expired");
-      window.location.href = "/login";
+      window.location.href = "/auth?tab=login";
       throw err;
     }
   }

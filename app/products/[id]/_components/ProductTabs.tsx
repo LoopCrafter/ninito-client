@@ -7,11 +7,21 @@ import {
 import { Product } from "@/src/types/product";
 import ClientSanitizer from "./ClientSanitizer";
 import ProductComments from "./ProductComments";
+import { apiFetchServer } from "@/src/lib/apiFetch.server";
+import { redirect } from "next/navigation";
 
 type ProductTabProps = {
-  product: Product;
+  productId: string;
 };
-const ProductTabs: React.FC<ProductTabProps> = ({ product }) => {
+const ProductTabs: React.FC<ProductTabProps> = async ({ productId }) => {
+  const productDetail = await apiFetchServer<{ product: Product }>(
+    `/products/${productId}`
+  );
+  const product = productDetail?.product;
+  if (!product) {
+    redirect("/products");
+  }
+
   return (
     <Tabs defaultValue="description" className="w-full rtl">
       <TabsList className="grid w-full grid-cols-3">
