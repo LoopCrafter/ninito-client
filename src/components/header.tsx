@@ -35,25 +35,43 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center">
-          <h1 className="text-2xl font-bold text-rose-400 tracking-tighter">
-            <Image
-              src="/images/logo.png"
-              alt="Ninito"
-              width={120}
-              height={40}
-              className="h-[40px] object-cover"
-            />
-          </h1>
-        </Link>
-
-        <div className="hidden md:flex flex-1 max-w-sm mx-8">
-          <div className="relative w-full">
-            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="جستجو در محصولات..."
-              className="pl-4 pr-10 rounded-full focus:outline-none"
-            />
+        <div className="flex justify-start items-center gap-4">
+          <Link href="/" className="flex items-center">
+            <h1 className="text-2xl font-bold text-rose-400 tracking-tighter">
+              <Image
+                src="/images/logo.png"
+                alt="Ninito"
+                width={120}
+                height={40}
+                className="h-[40px] object-cover"
+              />
+            </h1>
+          </Link>
+          <div className="flex items-center gap-9">
+            <a
+              className="text-text-light dark:text-text-dark text-base font-medium leading-normal"
+              href="#"
+            >
+              خانه
+            </a>
+            <a
+              className="text-gray-500 dark:text-gray-400 text-base font-medium leading-normal"
+              href="#"
+            >
+              فروشگاه
+            </a>
+            <a
+              className="text-gray-500 dark:text-gray-400 text-base font-medium leading-normal"
+              href="#"
+            >
+              درباره ما
+            </a>
+            <a
+              className="text-gray-500 dark:text-gray-400 text-base font-medium leading-normal"
+              href="#"
+            >
+              تماس با ما
+            </a>
           </div>
         </div>
 
@@ -67,7 +85,15 @@ export function Header() {
             <Search className="h-4 w-4" />
           </Button>
 
-          {/* <ThemeToggle /> */}
+          <div className="hidden md:flex flex-1 max-w-sm ">
+            <div className="relative w-full">
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="جستجو در محصولات..."
+                className="pl-4 pr-10 rounded-full focus:outline-none"
+              />
+            </div>
+          </div>
 
           {user?.email ? (
             <DropdownMenu dir="rtl">
